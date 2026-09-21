@@ -39,7 +39,7 @@
 
   h1 {
     font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: .01em;
-    line-height: 1; font-size: 36px; margin: 0 0 4px;
+    line-height: 1; font-size: 30px; margin: 0 0 4px; color: var(--teak);
   }
   h1 .full-stop { color: var(--terra); }
 
@@ -72,17 +72,27 @@
 
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--sand); border: 1px solid var(--sand); }
   .dow { background: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); text-align: center; padding: 8px 0; }
-  .cell { background: var(--paper); min-height: 74px; padding: 6px; position: relative; }
+  .cell { background: var(--paper); min-height: 74px; padding: 6px; position: relative; cursor: default; }
   .cell.other-month { background: #ece5d6; }
   .cell.today .daynum { background: var(--ink); color: var(--paper); border-radius: 50%; }
   .cell.long-weekend { background: #f0e2d4; }
+  .cell.booked { background: #efe6d8; cursor: help; }
+  .cell.booked:hover { background: #e9dcc7; }
   .daynum { font-family: 'Work Sans', sans-serif; font-size: 12px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
   .holiday-label { font-family: 'Work Sans', sans-serif; font-size: 8px; color: var(--terra); line-height: 1.2; margin-top: 2px; }
-  .dots { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .dot.airbnb { background: var(--terra); }
-  .dot.booking { background: var(--olive); }
-  .dot.ingo { background: var(--teak); }
+  .bars { display: flex; flex-direction: column; gap: 2px; margin-top: 5px; }
+  .bar { height: 4px; border-radius: 1px; width: 100%; }
+  .bar.airbnb { background: var(--terra); }
+  .bar.booking { background: var(--olive); }
+  .bar.ingo { background: var(--teak); }
+
+  #tooltip {
+    position: fixed; z-index: 50; background: var(--ink); color: var(--paper);
+    font-family: 'Work Sans', sans-serif; font-size: 11px; padding: 8px 12px; border-radius: 2px;
+    pointer-events: none; display: none; max-width: 220px; line-height: 1.5;
+  }
+  #tooltip .row { white-space: nowrap; }
+  #tooltip .row + .row { margin-top: 3px; padding-top: 3px; border-top: 1px solid rgba(243,237,224,.2); }
 
   .upcoming { margin-top: 40px; }
   .upcoming h2 { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--olive); border-bottom: 1.5px solid var(--sand); padding-bottom: 8px; }
@@ -97,7 +107,7 @@
 
 <div id="gate">
   <div class="arch-mark"></div>
-  <div style="font-family:'Anton',sans-serif; text-transform:uppercase; font-size:24px;">Enter code<span style="color:var(--terra)">.</span></div>
+  <div style="font-family:'Anton',sans-serif; text-transform:uppercase; font-size:22px; color:var(--teak);">Enter code<span style="color:var(--terra)">.</span></div>
   <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="······" autocomplete="off">
   <button id="pin-submit">Unlock</button>
   <div class="err" id="pin-err"></div>
@@ -139,6 +149,7 @@
   <footer>Hari Om Niwas — Jodhpur</footer>
 </main>
 </div>
+<div id="tooltip"></div>
 
 <script>
   const PIN = '012345';
@@ -238,6 +249,23 @@
     }).join('');
   }
 
+  function attachTooltip(cell, dayBookings) {
+    const tip = document.getElementById('tooltip');
+    cell.addEventListener('mouseenter', () => {
+      tip.innerHTML = dayBookings.map((b) =>
+        '<div class="row"><strong>' + (SOURCE_LABELS[b.source] || b.source) + '</strong><br>' +
+        new Date(b.start).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' – ' +
+        new Date(b.end).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + '</div>'
+      ).join('');
+      tip.style.display = 'block';
+    });
+    cell.addEventListener('mousemove', (e) => {
+      tip.style.left = (e.clientX + 14) + 'px';
+      tip.style.top = (e.clientY + 14) + 'px';
+    });
+    cell.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  }
+
   function renderMonth() {
     document.getElementById('month-title').textContent =
       new Date(viewYear, viewMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
@@ -296,15 +324,16 @@
 
       const dayBookings = bookingsOnDate(key);
       if (dayBookings.length) {
-        const dots = document.createElement('div');
-        dots.className = 'dots';
+        cell.classList.add('booked');
+        const bars = document.createElement('div');
+        bars.className = 'bars';
         dayBookings.forEach((b) => {
-          const dot = document.createElement('span');
-          dot.className = 'dot ' + b.source;
-          dot.title = (SOURCE_LABELS[b.source] || b.source) + ': ' + b.start.slice(0,10) + ' – ' + b.end.slice(0,10);
-          dots.appendChild(dot);
+          const bar = document.createElement('div');
+          bar.className = 'bar ' + b.source;
+          bars.appendChild(bar);
         });
-        cell.appendChild(dots);
+        cell.appendChild(bars);
+        attachTooltip(cell, dayBookings);
       }
 
       grid.appendChild(cell);
