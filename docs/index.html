@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hari Om Niwas — Boho Homestay, Jodhpur</title>
-<meta name="description" content="A family home in Jodhpur, not a hotel. Specialty coffee, Rajasthani home-cooked food, and a room built entirely around warm light.">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="A family home in Jodhpur, not a hotel. The whole upper floor, specialty coffee, and Rajasthani food cooked in the house.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
@@ -13,83 +14,110 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Spectral', serif; overflow-x: hidden; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Spectral', Georgia, serif; }
+  img { display: block; max-width: 100%; }
 
-  .arch-mark { width: 22px; height: 27px; border: 1.4px solid var(--terra); border-top-left-radius: 999px; border-top-right-radius: 999px; border-bottom: none; flex-shrink: 0; }
-  .arch-mark-big { width: 60px; height: 74px; border-width: 2px; }
+  .label {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: .2em; text-transform: uppercase; color: var(--olive);
+  }
 
   /* ---- Hero ---- */
-  .hero { text-align: center; padding: 90px 24px 70px; }
-  .logo-mark { width: min(280px, 60vw); height: auto; display: block; margin: 0 auto 20px; }
-  .subtitle { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 16px 0 26px; }
-  .tagline { font-style: italic; font-size: 19px; color: var(--faint); max-width: 480px; margin: 0 auto 34px; }
-  .hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 14px 30px; border-radius: 2px; text-decoration: none; display: inline-block; }
-  .btn-primary { background: var(--terra); color: var(--paper); }
-  .btn-secondary { border: 1.4px solid var(--ink); color: var(--ink); }
+  .hero { text-align: center; padding: 72px 24px 0; }
+  .logo { width: clamp(150px, 20vw, 200px); height: auto; margin: 0 auto; }
+  .logo text { font-family: 'Arimo', Arial, Helvetica, sans-serif; }
+  .hero .label { margin: 32px 0 0; }
+  .tagline { font-style: italic; font-size: 20px; line-height: 1.5; color: var(--faint); margin: 12px auto 0; max-width: 460px; }
+  .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    padding: 15px 28px; border-radius: 2px; text-decoration: none; border: 1.4px solid transparent; line-height: 1;
+  }
+  .btn-primary { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  .btn-secondary { border-color: var(--ink); color: var(--ink); }
+
+  .hero-photo { max-width: 1200px; margin: 64px auto 0; padding: 0 24px; }
+  .hero-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 2px; }
 
   /* ---- About ---- */
-  .about { max-width: 620px; margin: 0 auto; padding: 20px 24px 80px; text-align: center; font-size: 18px; line-height: 1.7; }
+  .about { max-width: 600px; margin: 0 auto; padding: 72px 24px; text-align: center; font-size: 19px; line-height: 1.7; }
+  .about p { margin: 0; }
 
   /* ---- Gallery ---- */
-  .gallery-section { padding: 0 24px 90px; }
-  .section-label { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); text-align: center; margin-bottom: 30px; border-bottom: 1.5px solid var(--sand); padding-bottom: 14px; max-width: 620px; margin-left: auto; margin-right: auto; }
-  .gallery {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; max-width: 1100px; margin: 0 auto;
-  }
-  .gallery img { width: 100%; height: 260px; object-fit: cover; display: block; border-radius: 2px; }
+  .gallery-section { max-width: 1200px; margin: 0 auto; padding: 0 24px 96px; }
+  .gallery-section .label { text-align: center; padding-bottom: 14px; border-bottom: 1.5px solid var(--sand); max-width: 600px; margin: 0 auto 32px; }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
 
   /* ---- Connect ---- */
-  .connect { background: var(--ink); color: var(--paper); padding: 80px 24px; text-align: center; }
-  .connect .arch-mark-big { border-color: var(--terra); }
-  .connect h2 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 28px; margin: 20px 0 8px; color: var(--paper); }
+  .connect { background: var(--ink); color: var(--paper); padding: 88px 24px; text-align: center; }
+  .connect .arch { width: 36px; height: 44px; margin: 0 auto; border: 1.6px solid var(--terra); border-bottom: none; border-radius: 999px 999px 0 0; }
+  .connect h2 { font-family: 'Arimo', Arial, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .04em; font-size: 26px; margin: 20px 0 8px; }
   .connect h2 span { color: var(--terra); }
-  .connect p { color: #cbb; font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 34px; }
+  .connect .label { color: var(--sand); margin: 0 0 36px; }
   .connect-links { display: flex; flex-direction: column; gap: 16px; align-items: center; }
   .connect-links a { color: var(--paper); text-decoration: none; font-size: 18px; border-bottom: 1px dotted var(--sand); padding-bottom: 3px; }
   .connect-links a:hover { border-color: var(--terra); }
 
-  footer { text-align: center; padding: 30px 24px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); background: var(--ink); }
+  footer { background: var(--ink); color: var(--faint); text-align: center; padding: 0 24px 32px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+
+  @media (max-width: 720px) {
+    .hero { padding-top: 56px; }
+    .tagline { font-size: 18px; }
+    .hero-photo { margin-top: 48px; padding: 0 12px; }
+    .hero-photo img { aspect-ratio: 4 / 3; }
+    .about { padding: 56px 24px; font-size: 17px; }
+    .gallery-section { padding: 0 12px 72px; }
+    .gallery { grid-template-columns: 1fr 1fr; gap: 6px; }
+  }
 </style>
 </head>
 <body>
 
 <section class="hero">
-  <img class="logo-mark" src="images/lock_ivory.png" alt="Hari Om Niwas">
-  <div class="subtitle">Boho Homestay · Jodhpur</div>
+  <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
+    <path d="M247 830V430a253 253 0 0 1 506 0v400" fill="none" stroke="#5C3A28" stroke-width="14"/>
+    <text x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5" fill="#6B6B44">JODHPUR</text>
+    <text x="500" y="530" text-anchor="middle" font-size="97" fill="#5C3A28">HARI</text>
+    <text x="500" y="625" text-anchor="middle" font-size="97" fill="#5C3A28">OM</text>
+    <text x="500" y="719" text-anchor="middle" font-size="97" fill="#5C3A28">NIWAS</text>
+    <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
+  </svg>
+  <p class="label">Boho Homestay</p>
   <p class="tagline">Wear light, eat heavy, and smile — you are in Jodhpur.</p>
-  <div class="hero-ctas">
+  <div class="ctas">
     <a class="btn btn-primary" href="https://wa.me/919414195901" target="_blank" rel="noopener">Message on WhatsApp</a>
     <a class="btn btn-secondary" href="#gallery">See the house</a>
   </div>
 </section>
 
+<div class="hero-photo">
+  <img src="images/img-9861.jpg" alt="The living room at night, cane lights on">
+</div>
+
 <div class="about">
-  This is a home that cooks. One family-owned 1BHK, an upper floor above the family who still lives here, specialty coffee brewed the slow way, and Rajasthani thalis made in the house kitchen. Not a hotel — a spare room, offered properly.
+  <p>This is a home that cooks. The whole upper floor is yours, and the family lives just below. Coffee is brewed the slow way. Thalis are made in the house kitchen. Not a hotel.</p>
 </div>
 
 <section class="gallery-section" id="gallery">
-  <div class="section-label">The House</div>
+  <p class="label">The House</p>
   <div class="gallery">
-    <img src="images/img-9860.jpg" alt="Living room, Hari Om Niwas">
-    <img src="images/img-8961.jpg" alt="Hall with balcony door open">
-    <img src="images/img-9855.jpg" alt="Bedroom with Rajasthani textile art">
-    <img src="images/img-9862.jpg" alt="Living room shelves and sofa">
-    <img src="images/img-8985.jpg" alt="Kitchen counter with coffee setup">
-    <img src="images/img-8972.jpg" alt="Bedroom wardrobe and mirror">
-    <img src="images/img-9861.jpg" alt="Living room, evening light">
-    <img src="images/img-8976.jpg" alt="Washroom">
-    <img src="images/img-9865.jpg" alt="Living room divan">
-    <img src="images/img-8988.jpg" alt="Entry door open to the balcony">
-    <img src="images/img-8963.jpg" alt="Living room wide view">
-    <img src="images/img-8977.jpg" alt="Washroom mirror and shelf">
+    <img src="images/img-9860.jpg" alt="Living room" loading="lazy">
+    <img src="images/img-9855.jpg" alt="Bedroom with Rajasthani textile art" loading="lazy">
+    <img src="images/img-8985.jpg" alt="Kitchen counter with the coffee setup" loading="lazy">
+    <img src="images/img-8961.jpg" alt="Hall in daylight, balcony door open" loading="lazy">
+    <img src="images/img-8972.jpg" alt="Bedroom wardrobe and mirror" loading="lazy">
+    <img src="images/img-8976.jpg" alt="Washroom" loading="lazy">
+    <img src="images/img-9865.jpg" alt="Divan and sofa in the hall" loading="lazy">
+    <img src="images/img-8988.jpg" alt="Entry door open to the balcony" loading="lazy">
+    <img src="images/img-9862.jpg" alt="Sofa, centre table and the menu book" loading="lazy">
   </div>
 </section>
 
 <section class="connect" id="connect">
-  <div class="arch-mark arch-mark-big" style="margin:0 auto;"></div>
+  <div class="arch"></div>
   <h2>Connect<span>.</span></h2>
-  <p>Questions, dates, anything at all</p>
+  <p class="label">Questions, dates, anything at all</p>
   <div class="connect-links">
     <a href="https://wa.me/919414195901" target="_blank" rel="noopener">WhatsApp — +91 94141 95901</a>
     <a href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Instagram — @hariomniwas</a>
@@ -98,5 +126,6 @@
 </section>
 
 <footer>Hari Om Niwas — Jodhpur, Rajasthan</footer>
+
 </body>
 </html>
