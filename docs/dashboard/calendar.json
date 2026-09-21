@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "sources": [
+    { "name": "Airbnb", "ok": false, "error": "Not synced yet — run the workflow once." },
+    { "name": "Booking.com", "ok": false, "error": "Not synced yet — run the workflow once." },
+    { "name": "MMT / Goibibo", "ok": false, "error": "Not synced yet — run the workflow once." }
+  ],
+  "bookings": []
+}
