@@ -7,231 +7,345 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #F3EDE0;
-    --ink: #3B2E22;
-    --terra: #B85C38;
-    --olive: #6B6B44;
-    --sand: #D9C9AC;
-    --teak: #5C3A28;
-    --faint: #8B7D68;
+    --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
+    --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
   }
-
   * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Spectral', serif; }
 
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Spectral', serif;
-    font-size: 17px;
-    line-height: 1.6;
+  #gate {
+    position: fixed; inset: 0; background: var(--paper); z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
   }
+  #gate input {
+    font-family: 'Work Sans', sans-serif; font-size: 20px; letter-spacing: .3em;
+    text-align: center; width: 200px; padding: 12px; border: 1.5px solid var(--sand);
+    border-radius: 2px; background: white; color: var(--ink);
+  }
+  #gate input:focus { outline: none; border-color: var(--terra); }
+  #gate button {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    background: var(--terra); color: var(--paper); border: none; padding: 12px 28px; border-radius: 2px; cursor: pointer;
+  }
+  #gate .err { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; min-height: 16px; }
+  #app { display: none; }
 
-  main {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 56px 24px 80px;
-  }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
 
   .arch-mark {
-    width: 26px;
-    height: 32px;
-    border: 1.6px solid var(--sand);
-    border-top-left-radius: 999px;
-    border-top-right-radius: 999px;
-    border-bottom: none;
-    margin-bottom: 28px;
+    width: 26px; height: 32px; border: 1.6px solid var(--sand);
+    border-top-left-radius: 999px; border-top-right-radius: 999px; border-bottom: none; margin-bottom: 24px;
   }
 
   h1 {
-    font-family: 'Anton', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: .01em;
-    line-height: 1;
-    font-size: 40px;
-    margin: 0 0 6px;
+    font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: .01em;
+    line-height: 1; font-size: 36px; margin: 0 0 4px;
   }
   h1 .full-stop { color: var(--terra); }
 
   .status-line {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin: 0 0 32px;
+    font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--faint); margin: 0 0 20px;
   }
-
   .status-line strong { color: var(--ink); font-weight: 500; }
 
-  .refresh {
-    display: inline-block;
-    margin: 16px 0 40px;
-    padding: 12px 22px;
-    background: var(--terra);
-    color: var(--paper);
-    text-decoration: none;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    border-radius: 2px;
-  }
+  .controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
 
-  .month-label {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 11px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--olive);
-    margin: 40px 0 14px;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid var(--sand);
+  .month-nav { display: flex; align-items: center; gap: 14px; }
+  .month-nav button {
+    background: none; border: 1.4px solid var(--sand); color: var(--ink); width: 32px; height: 32px;
+    border-radius: 2px; cursor: pointer; font-size: 16px; line-height: 1;
   }
+  .month-nav button:hover { border-color: var(--terra); color: var(--terra); }
+  .month-title { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; min-width: 200px; text-align: center; }
 
-  .booking {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px dotted var(--sand);
+  .refresh-btn {
+    font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--terra); color: var(--paper); border: none; padding: 10px 18px; border-radius: 2px; cursor: pointer;
   }
+  .refresh-btn:disabled { opacity: .6; cursor: default; }
+  .refresh-msg { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--olive); margin-top: 6px; text-align: right; }
 
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--sand); border: 1px solid var(--sand); }
+  .dow { background: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); text-align: center; padding: 8px 0; }
+  .cell { background: var(--paper); min-height: 74px; padding: 6px; position: relative; }
+  .cell.other-month { background: #ece5d6; }
+  .cell.today .daynum { background: var(--ink); color: var(--paper); border-radius: 50%; }
+  .cell.long-weekend { background: #f0e2d4; }
+  .daynum { font-family: 'Work Sans', sans-serif; font-size: 12px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+  .holiday-label { font-family: 'Work Sans', sans-serif; font-size: 8px; color: var(--terra); line-height: 1.2; margin-top: 2px; }
+  .dots { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
   .dot.airbnb { background: var(--terra); }
   .dot.booking { background: var(--olive); }
   .dot.ingo { background: var(--teak); }
 
-  .booking-main { flex: 1; }
+  .upcoming { margin-top: 40px; }
+  .upcoming h2 { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--olive); border-bottom: 1.5px solid var(--sand); padding-bottom: 8px; }
+  .lw-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted var(--sand); font-size: 15px; }
+  .lw-row .tag { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--faint); text-transform: uppercase; }
 
-  .booking-dates {
-    font-size: 17px;
-  }
-
-  .booking-source {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin-top: 2px;
-  }
-
-  .booking-nights {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 12px;
-    color: var(--faint);
-    white-space: nowrap;
-  }
-
-  .empty, .error {
-    font-style: italic;
-    color: var(--faint);
-    padding: 20px 0;
-  }
-
-  .error { color: var(--terra); font-style: normal; }
-
-  footer {
-    margin-top: 60px;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--faint);
-  }
+  .error { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; margin-top: 10px; }
+  footer { margin-top: 50px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 </style>
 </head>
 <body>
+
+<div id="gate">
+  <div class="arch-mark"></div>
+  <div style="font-family:'Anton',sans-serif; text-transform:uppercase; font-size:24px;">Enter code<span style="color:var(--terra)">.</span></div>
+  <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="······" autocomplete="off">
+  <button id="pin-submit">Unlock</button>
+  <div class="err" id="pin-err"></div>
+</div>
+
+<div id="app">
 <main>
   <div class="arch-mark"></div>
   <h1>Calendar<span class="full-stop">.</span></h1>
   <p class="status-line" id="status-line">Loading…</p>
 
-  <a class="refresh" id="refresh-link" href="#" target="_blank" rel="noopener">Refresh now on GitHub</a>
+  <div class="controls">
+    <div class="month-nav">
+      <button id="prev-month">‹</button>
+      <div class="month-title" id="month-title"></div>
+      <button id="next-month">›</button>
+    </div>
+    <div style="text-align:right;">
+      <button class="refresh-btn" id="refresh-btn">Refresh now</button>
+      <div class="refresh-msg" id="refresh-msg"></div>
+    </div>
+  </div>
 
-  <div id="bookings"></div>
+  <div class="legend">
+    <span><i style="background:var(--terra)"></i>Airbnb</span>
+    <span><i style="background:var(--olive)"></i>Booking.com</span>
+    <span><i style="background:var(--teak)"></i>MMT / Goibibo</span>
+    <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div id="errors"></div>
+
+  <div class="upcoming">
+    <h2>Upcoming long weekends</h2>
+    <div id="long-weekends"></div>
+  </div>
 
   <footer>Hari Om Niwas — Jodhpur</footer>
 </main>
+</div>
 
 <script>
-  // Edit this to your repo's Actions page so "Refresh now" opens the right place.
-  const ACTIONS_URL = 'https://github.com/ajaypanwarofficial/Hari-Om-Niwas/actions/workflows/sync-calendar.yml';
-  document.getElementById('refresh-link').href = ACTIONS_URL;
+  const PIN = '012345';
+  const gate = document.getElementById('gate');
+  const app = document.getElementById('app');
+  if (localStorage.getItem('hon_unlocked') === '1') {
+    gate.style.display = 'none';
+    app.style.display = 'block';
+  }
+  document.getElementById('pin-submit').onclick = tryUnlock;
+  document.getElementById('pin-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+  function tryUnlock() {
+    const val = document.getElementById('pin-input').value;
+    if (val === PIN) {
+      localStorage.setItem('hon_unlocked', '1');
+      gate.style.display = 'none';
+      app.style.display = 'block';
+      init();
+    } else {
+      document.getElementById('pin-err').textContent = 'Wrong code.';
+    }
+  }
 
+  const REFRESH_WORKER_URL = 'https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev/refresh';
   const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo' };
 
-  function formatDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  let bookings = [];
+  let holidays = [];
+  let viewYear, viewMonth;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function toKey(y, m, d) { return `${y}-${pad(m + 1)}-${pad(d)}`; }
+
+  async function loadData() {
+    const [calRes, holRes] = await Promise.all([
+      fetch('calendar.json?_=' + Date.now()).then(r => r.json()).catch(() => null),
+      fetch('holidays.json?_=' + Date.now()).then(r => r.json()).catch(() => []),
+    ]);
+    holidays = holRes || [];
+    if (calRes) {
+      bookings = calRes.bookings || [];
+      const synced = new Date(calRes.generatedAt);
+      document.getElementById('status-line').innerHTML =
+        'Last synced <strong>' + synced.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + '</strong>';
+      const failed = (calRes.sources || []).filter((s) => !s.ok);
+      document.getElementById('errors').innerHTML = failed.length
+        ? '<p class="error">' + failed.map((f) => f.name + ' feed failed — ' + f.error).join(' · ') + '</p>'
+        : '';
+    } else {
+      document.getElementById('status-line').textContent = 'Could not load booking data.';
+    }
   }
 
-  function monthKey(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+  function bookingsOnDate(dateStr) {
+    return bookings.filter((b) => dateStr >= b.start.slice(0, 10) && dateStr < b.end.slice(0, 10));
   }
 
-  fetch('calendar.json?_=' + Date.now())
-    .then((r) => r.json())
-    .then((data) => {
-      const synced = new Date(data.generatedAt);
-      const failed = data.sources.filter((s) => !s.ok);
-      let statusText = 'Last synced <strong>' + synced.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + '</strong>';
-      document.getElementById('status-line').innerHTML = statusText;
+  function holidayOnDate(dateStr) {
+    return holidays.find((h) => h.date === dateStr);
+  }
 
-      if (failed.length) {
-        const errDiv = document.createElement('p');
-        errDiv.className = 'error';
-        errDiv.textContent = failed.map((f) => f.name + ' feed failed — ' + f.error).join(' · ');
-        document.getElementById('bookings').appendChild(errDiv);
-      }
+  function computeLongWeekends(fromDate, days) {
+    const offDays = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date(fromDate);
+      d.setDate(d.getDate() + i);
+      const key = toKey(d.getFullYear(), d.getMonth(), d.getDate());
+      const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+      const hol = holidayOnDate(key);
+      if (isWeekend || hol) offDays.push({ date: new Date(d), key, holiday: hol });
+      else offDays.push(null);
+    }
+    const spans = [];
+    let run = [];
+    for (const entry of offDays) {
+      if (entry) { run.push(entry); }
+      else { if (run.length >= 3) spans.push(run); run = []; }
+    }
+    if (run.length >= 3) spans.push(run);
+    return spans;
+  }
 
-      const upcoming = data.bookings.filter((b) => new Date(b.end) >= new Date());
+  function fmt(d) { return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
 
-      if (!upcoming.length) {
-        const p = document.createElement('p');
-        p.className = 'empty';
-        p.textContent = 'No upcoming bookings across any platform.';
-        document.getElementById('bookings').appendChild(p);
-        return;
-      }
+  function renderLongWeekends() {
+    const today = new Date();
+    const spans = computeLongWeekends(today, 200);
+    const container = document.getElementById('long-weekends');
+    if (!spans.length) {
+      container.innerHTML = '<p style="color:var(--faint); font-style:italic;">None found in the coming months.</p>';
+      return;
+    }
+    container.innerHTML = spans.map((s) => {
+      const names = s.filter((e) => e.holiday).map((e) => e.holiday.name).join(', ');
+      return '<div class="lw-row"><span>' + fmt(s[0].date) + ' – ' + fmt(s[s.length - 1].date) + ' (' + s.length + ' days)</span>' +
+        '<span class="tag">' + (names || 'Weekend') + '</span></div>';
+    }).join('');
+  }
 
-      let lastMonth = null;
-      const container = document.getElementById('bookings');
-      upcoming.forEach((b) => {
-        const mKey = monthKey(b.start);
-        if (mKey !== lastMonth) {
-          const label = document.createElement('div');
-          label.className = 'month-label';
-          label.textContent = mKey;
-          container.appendChild(label);
-          lastMonth = mKey;
-        }
-        const row = document.createElement('div');
-        row.className = 'booking';
-        row.innerHTML =
-          '<span class="dot ' + b.source + '"></span>' +
-          '<div class="booking-main">' +
-            '<div class="booking-dates">' + formatDate(b.start) + ' — ' + formatDate(b.end) + '</div>' +
-            '<div class="booking-source">' + (SOURCE_LABELS[b.source] || b.source) + '</div>' +
-          '</div>' +
-          '<div class="booking-nights">' + (b.nights ? b.nights + (b.nights === 1 ? ' night' : ' nights') : '') + '</div>';
-        container.appendChild(row);
-      });
-    })
-    .catch((err) => {
-      document.getElementById('status-line').textContent = 'Could not load calendar data.';
-      const p = document.createElement('p');
-      p.className = 'error';
-      p.textContent = err.message;
-      document.getElementById('bookings').appendChild(p);
+  function renderMonth() {
+    document.getElementById('month-title').textContent =
+      new Date(viewYear, viewMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach((d) => {
+      const el = document.createElement('div');
+      el.className = 'dow';
+      el.textContent = d;
+      grid.appendChild(el);
     });
+
+    const firstDay = new Date(viewYear, viewMonth, 1);
+    const startOffset = firstDay.getDay();
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+    const today = new Date();
+    const todayKey = toKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+    const lwKeys = new Set();
+    computeLongWeekends(new Date(viewYear, viewMonth, 1), 45).forEach((s) => s.forEach((e) => lwKeys.add(e.key)));
+
+    const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+    for (let i = 0; i < totalCells; i++) {
+      const cell = document.createElement('div');
+      let dayNum, cellMonth = viewMonth, isOther = false;
+      if (i < startOffset) {
+        dayNum = daysInPrevMonth - startOffset + i + 1;
+        cellMonth = viewMonth - 1; isOther = true;
+      } else if (i >= startOffset + daysInMonth) {
+        dayNum = i - startOffset - daysInMonth + 1;
+        cellMonth = viewMonth + 1; isOther = true;
+      } else {
+        dayNum = i - startOffset + 1;
+      }
+      let normYear = viewYear, normMonth = cellMonth;
+      if (normMonth < 0) { normMonth = 11; normYear -= 1; }
+      if (normMonth > 11) { normMonth = 0; normYear += 1; }
+      const key = toKey(normYear, normMonth, dayNum);
+
+      cell.className = 'cell' + (isOther ? ' other-month' : '') + (key === todayKey ? ' today' : '') + (lwKeys.has(key) ? ' long-weekend' : '');
+
+      const num = document.createElement('div');
+      num.className = 'daynum';
+      num.textContent = dayNum;
+      cell.appendChild(num);
+
+      const hol = holidayOnDate(key);
+      if (hol) {
+        const label = document.createElement('div');
+        label.className = 'holiday-label';
+        label.textContent = hol.name;
+        cell.appendChild(label);
+      }
+
+      const dayBookings = bookingsOnDate(key);
+      if (dayBookings.length) {
+        const dots = document.createElement('div');
+        dots.className = 'dots';
+        dayBookings.forEach((b) => {
+          const dot = document.createElement('span');
+          dot.className = 'dot ' + b.source;
+          dot.title = (SOURCE_LABELS[b.source] || b.source) + ': ' + b.start.slice(0,10) + ' – ' + b.end.slice(0,10);
+          dots.appendChild(dot);
+        });
+        cell.appendChild(dots);
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  document.getElementById('prev-month').onclick = () => {
+    viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderMonth();
+  };
+  document.getElementById('next-month').onclick = () => {
+    viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderMonth();
+  };
+
+  document.getElementById('refresh-btn').onclick = async () => {
+    const btn = document.getElementById('refresh-btn');
+    const msg = document.getElementById('refresh-msg');
+    btn.disabled = true;
+    msg.textContent = 'Triggering sync…';
+    try {
+      const res = await fetch(REFRESH_WORKER_URL, { method: 'POST' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      msg.textContent = 'Sync triggered — reloading in 30s…';
+      setTimeout(async () => { await loadData(); renderMonth(); renderLongWeekends(); btn.disabled = false; msg.textContent = 'Done.'; }, 30000);
+    } catch (err) {
+      msg.textContent = 'Refresh failed — check the Worker is deployed.';
+      btn.disabled = false;
+    }
+  };
+
+  async function init() {
+    const today = new Date();
+    viewYear = today.getFullYear();
+    viewMonth = today.getMonth();
+    await loadData();
+    renderMonth();
+    renderLongWeekends();
+  }
+
+  if (gate.style.display === 'none') init();
 </script>
 </body>
 </html>

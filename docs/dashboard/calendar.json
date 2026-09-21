@@ -1,52 +1,9 @@
 {
-  "generatedAt": "2026-09-21T11:59:25.212Z",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
   "sources": [
-    {
-      "name": "Airbnb",
-      "ok": true,
-      "count": 1
-    },
-    {
-      "name": "Booking.com",
-      "ok": true,
-      "count": 2
-    },
-    {
-      "name": "MMT / Goibibo",
-      "ok": true,
-      "count": 0
-    }
+    { "name": "Airbnb", "ok": false, "error": "Not synced yet — run the workflow once." },
+    { "name": "Booking.com", "ok": false, "error": "Not synced yet — run the workflow once." },
+    { "name": "MMT / Goibibo", "ok": false, "error": "Not synced yet — run the workflow once." }
   ],
-  "bookings": [
-    {
-      "uid": "89afbf300de44e2a0adc2ee685a681cf@booking.com",
-      "source": "booking",
-      "sourceName": "Booking.com",
-      "summary": "CLOSED - Not available",
-      "start": "2026-10-17",
-      "end": "2026-10-18",
-      "allDay": true,
-      "nights": 1
-    },
-    {
-      "uid": "775dd094ab34327e4183d9d20dc8ae44@booking.com",
-      "source": "booking",
-      "sourceName": "Booking.com",
-      "summary": "CLOSED - Not available",
-      "start": "2026-11-08",
-      "end": "2026-11-10",
-      "allDay": true,
-      "nights": 2
-    },
-    {
-      "uid": "7f662ec65913-5ed47b5c7d07a30483019932dc865a42@airbnb.com",
-      "source": "airbnb",
-      "sourceName": "Airbnb",
-      "summary": "Airbnb (Not available)",
-      "start": "2027-09-21",
-      "end": "2027-09-22",
-      "allDay": true,
-      "nights": 1
-    }
-  ]
+  "bookings": []
 }

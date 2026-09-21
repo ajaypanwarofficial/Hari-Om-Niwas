@@ -1,89 +1,87 @@
-# Hari Om Niwas — Calendar Hub
+# Hari Om Niwas — website, calendar hub, and check-in
 
-Pulls the Airbnb, Booking.com, and MMT/Goibibo (InGo) calendars every 15
-minutes, merges them, and publishes:
+## What's in this repo now
 
-- `docs/calendar.json` — data for the dashboard
-- `docs/merged.ics` — one combined feed to import back into every platform
-- `docs/index.html` — the branded dashboard you actually look at
+- `docs/index.html` — the homepage (`hariomniwas.in`)
+- `docs/checkin/index.html` — the check-in form, embedded (`hariomniwas.in/checkin`)
+- `docs/dashboard/` — the OTA calendar hub, PIN-protected (`hariomniwas.in/dashboard`)
+- `docs/images/` — house photos used on the homepage
+- `.github/workflows/sync-calendar.yml` — pulls Airbnb/Booking.com/InGo calendars every 15 min
+- `scripts/sync.js` — the fetch/merge script the workflow runs
+- `cloudflare-worker/refresh-proxy.js` — lets the dashboard's Refresh button actually trigger a sync
 
-## Setup (one time)
+## Setup, in order
 
-1. **Create a new GitHub repository** (public is fine and free — private repos
-   also get free Actions minutes, so either works). Name it anything, e.g.
-   `hon-calendar-hub`.
+1. **Push everything to GitHub** (see the earlier instructions if you need the upload steps again).
+2. **Add the three OTA secrets**: repo → Settings → Secrets and variables → Actions →
+   `AIRBNB_ICAL_URL`, `BOOKING_ICAL_URL`, `INGO_ICAL_URL`.
+3. **Enable Pages**: Settings → Pages → Deploy from a branch → `main` → `/docs`.
+4. **Point hariomniwas.in's DNS** at GitHub Pages (the repo already has `docs/CNAME`
+   set to `hariomniwas.in`) — GitHub's Pages docs list the current required A
+   records for an apex domain.
+5. **Run the sync workflow once by hand**: Actions tab → "Sync OTA Calendars" → Run workflow.
 
-2. **Push these files into it** — the whole folder as-is.
+## Deploying the real "Refresh now" button (Cloudflare Worker)
 
-3. **Add your three calendar links as secrets**, not in any file:
-   Repo → Settings → Secrets and variables → Actions → New repository secret.
-   Create exactly these three:
-   - `AIRBNB_ICAL_URL`
-   - `BOOKING_ICAL_URL`
-   - `INGO_ICAL_URL`
+The dashboard's Refresh button needs somewhere to send the request that can hold a
+GitHub token safely — a static page can't do that itself. Cloudflare Workers does
+this for free, with nothing to host or maintain yourself:
 
-   Paste each platform's export link as the value. **Never commit these links
-   directly into a file** — treat them like passwords, since anyone with the
-   link can read your booking calendar.
+1. Go to workers.cloudflare.com, sign up free, "Create Worker" → "Quick edit."
+2. Paste in the entire contents of `cloudflare-worker/refresh-proxy.js`.
+3. Edit the three constants at the top: `OWNER` (your GitHub username), `REPO`
+   (your repo name), and confirm `ALLOWED_ORIGIN` matches your domain.
+4. Create a **fine-grained GitHub token**: GitHub → Settings → Developer settings →
+   Personal access tokens → Fine-grained tokens → New token. Scope it to
+   **only this one repository**, with **Actions: Read and write** permission and
+   nothing else. Copy the token.
+5. In the Worker: Settings → Variables and Secrets → Add → name it
+   `GITHUB_TOKEN`, paste the token value, mark it as a secret (encrypted).
+6. Deploy. Copy the Worker's URL (looks like
+   `https://hon-refresh-proxy.YOUR-SUBDOMAIN.workers.dev`).
+7. In `docs/dashboard/index.html`, find `REFRESH_WORKER_URL` near the top of the
+   `<script>` block and set it to `https://YOUR-WORKER-URL/refresh`. Commit.
 
-4. **Turn on GitHub Pages**: repo → Settings → Pages → Source: "Deploy from a
-   branch" → Branch: `main`, folder: `/docs` → Save.
+Once this is live, the dashboard's Refresh button triggers a real sync in the
+background — no click-through to GitHub needed.
 
-5. **Edit `docs/index.html`**: find the line
-   `const ACTIONS_URL = 'https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/...'`
-   and put in your actual GitHub username and repo name, so the "Refresh now"
-   button points at the right place. Commit that change.
+## The dashboard PIN — what it actually protects
 
-6. **Run it once by hand**: repo → Actions tab → "Sync OTA Calendars" →
-   "Run workflow" → Run workflow. Wait about a minute, then refresh.
+The PIN (`012345` — change it by editing the `PIN` constant in
+`docs/dashboard/index.html`) hides the page from a casual visitor who
+stumbles on the link. **Be clear-eyed about its limits:** `calendar.json` and
+`holidays.json` remain plain files at a guessable path — anyone who knows or
+guesses the exact URL can fetch them directly, PIN or not, because GitHub
+Pages is 100% static and has no way to check a password before serving a
+file. This is a deterrent, not a lock. If real access control ever matters —
+say, once other people are checking this dashboard — that needs the Cloudflare
+Worker to sit in front of the whole page as a reverse proxy, checking a
+session cookie before serving anything. Worth doing later if it becomes a
+real concern; not built now to keep this simple.
 
-7. **Your links, once live (via GitHub's own subdomain, before your custom
-   domain is pointed at it):**
-   - Dashboard: `https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/dashboard/`
-   - Master feed to import into Airbnb / Booking.com / InGo:
-     `https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/dashboard/merged.ics`
+## Holidays
 
-## Connecting hariomniwas.in (do this whenever you're ready)
+`docs/dashboard/holidays.json` has Rajasthan's 2026 public holidays, sourced
+and checked as of September 2026. Two things to keep in mind:
+- **Lunar-calendar dates (Eid, some others) are approximate** until confirmed
+  closer to the date by moon sighting — this is normal, not a bug in the data.
+- **2027 isn't in there yet.** Add it once the Rajasthan government's 2027
+  notification is out (usually announced toward the end of the preceding year).
 
-This repo is already structured for your real domain: everything lives under
-`docs/`, and `docs/CNAME` is pre-filled with `hariomniwas.in`. Once you point
-your domain here, the same dashboard becomes `hariomniwas.in/dashboard`.
+## The homepage door animation
 
-1. At wherever hariomniwas.in is registered, add these DNS records (GitHub's
-   current required values — worth double-checking against GitHub's own Pages
-   custom-domain docs in case they've changed):
-   - Four `A` records for the apex domain pointing to GitHub Pages' IPs
-   - Or a `CNAME` record if you're using a subdomain like `www`
-2. In the repo: Settings → Pages → confirm the custom domain shows
-   `hariomniwas.in` and enable "Enforce HTTPS" once it's available.
-3. **Don't do this until you actually want hariomniwas.in live** — until you
-   build a real homepage at `docs/index.html`, visiting the bare domain will
-   404. `docs/dashboard/` and any future `docs/checkin/` will still work fine
-   at their own paths regardless.
+A one-time entrance animation (illustrated arch doors swinging open) plays
+once per page load, respecting `prefers-reduced-motion` for anyone who has
+that turned on. Worth knowing: this is a bigger flourish than the Hari Om
+Niwas brand guide's own rule of "no animation beyond a 150ms fade" — it's
+included because it matches specifically what was asked for, but if it ever
+feels like it works against the calm, unhurried feeling the rest of the
+brand goes for, cutting it back to a plain fade is a one-line change (delete
+the `#door-scene` block and its script).
 
-## Adding more tools later, same repo
+## Replacing photos later
 
-Anything else you build — the check-in form embed, the eventual marketing
-site — just needs its own folder under `docs/`:
-- `docs/checkin/index.html` → `hariomniwas.in/checkin`
-- `docs/index.html` (root) → `hariomniwas.in` itself
+Once the exterior signage/board photos are ready, drop new images into
+`docs/images/`, update the `<img>` tags in `docs/index.html`, and this is a
+straight swap — nothing else needs to change.
 
-For the check-in form specifically, since it already lives on Tally, the
-`/checkin` page can just be a one-file HTML wrapper with the live form in an
-iframe — no need to move the form itself anywhere.
-
-## "Refresh now"
-
-The dashboard's refresh button opens your repo's Actions page on GitHub,
-where clicking **Run workflow** triggers an immediate sync. A truly
-one-click refresh from the dashboard itself would need a server holding a
-GitHub token — which breaks the "free, no server" requirement — so this is
-the honest trade-off: one extra click, on a page you're already logged into.
-
-## If a feed ever fails
-
-The dashboard shows which platform's feed failed, in plain text, instead of
-silently going stale. If every feed fails at once, the GitHub Action itself
-fails too (visible as a red X in the Actions tab and, if you enable it,
-GitHub's own failure emails) — so this doesn't fail silently the way an
-unmonitored script could.
