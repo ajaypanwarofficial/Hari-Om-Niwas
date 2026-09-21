@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-21T17:35:16.556Z",
+  "generatedAt": "2026-09-21T18:30:14.251Z",
   "sources": [
     {
       "name": "Airbnb",
       "ok": true,
-      "count": 2
+      "count": 1
     },
     {
       "name": "Booking.com",
@@ -47,16 +47,6 @@
       "end": "2026-11-10",
       "allDay": true,
       "nights": 2
-    },
-    {
-      "uid": "7f662ec65913-5ed47b5c7d07a30483019932dc865a42@airbnb.com",
-      "source": "airbnb",
-      "sourceName": "Airbnb",
-      "summary": "Airbnb (Not available)",
-      "start": "2027-09-21",
-      "end": "2027-09-22",
-      "allDay": true,
-      "nights": 1
     }
   ]
 }
