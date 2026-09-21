@@ -15,39 +15,12 @@
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Spectral', serif; overflow-x: hidden; }
 
-  /* ---- Door intro ---- */
-  #door-scene {
-    position: fixed; inset: 0; z-index: 200; perspective: 1800px; background: var(--ink);
-  }
-  .door-half { position: absolute; top: 0; bottom: 0; width: 50%; transform-style: preserve-3d; transition: transform 1.1s cubic-bezier(.65,0,.35,1); }
-  .door-half.left { left: 0; transform-origin: left center; }
-  .door-half.right { right: 0; transform-origin: right center; }
-  .door-half svg { width: 100%; height: 100%; display: block; }
-  #door-scene.open .door-half.left { transform: rotateY(-108deg); }
-  #door-scene.open .door-half.right { transform: rotateY(108deg); }
-  #door-scene.hide { display: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .door-half { transition: none; }
-  }
-
-  /* ---- Nav ---- */
-  nav {
-    position: sticky; top: 0; z-index: 20; background: var(--paper);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 24px; border-bottom: 1px solid var(--sand);
-  }
-  .nav-mark { display: flex; align-items: center; gap: 10px; font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 15px; letter-spacing: .02em; color: var(--teak); }
   .arch-mark { width: 22px; height: 27px; border: 1.4px solid var(--terra); border-top-left-radius: 999px; border-top-right-radius: 999px; border-bottom: none; flex-shrink: 0; }
-  .nav-links { display: flex; gap: 22px; font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
-  .nav-links a { color: var(--ink); text-decoration: none; }
-  .nav-links a.cta { color: var(--terra); }
+  .arch-mark-big { width: 60px; height: 74px; border-width: 2px; }
 
   /* ---- Hero ---- */
   .hero { text-align: center; padding: 90px 24px 70px; }
-  .hero .arch-mark-big { width: 60px; height: 74px; border: 2px solid var(--sand); border-top-left-radius: 999px; border-top-right-radius: 999px; border-bottom: none; margin: 0 auto 30px; }
-  h1.title { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: clamp(34px, 6.5vw, 58px); line-height: 1.02; margin: 0; color: var(--teak); letter-spacing: .01em; }
-  h1.title span { color: var(--terra); }
+  .logo-mark { width: min(280px, 60vw); height: auto; display: block; margin: 0 auto 20px; }
   .subtitle { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 16px 0 26px; }
   .tagline { font-style: italic; font-size: 19px; color: var(--faint); max-width: 480px; margin: 0 auto 34px; }
   .hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -81,38 +54,8 @@
 </head>
 <body>
 
-<div id="door-scene">
-  <div class="door-half left">
-    <svg viewBox="0 0 200 400" preserveAspectRatio="none">
-      <path d="M0,400 L0,80 A200,200 0 0,1 200,80 L200,400 Z" fill="#5C3A28"/>
-      <path d="M0,400 L0,80 A200,200 0 0,1 200,80 L200,400 Z" fill="none" stroke="#D9C9AC" stroke-width="3"/>
-      <rect x="30" y="150" width="140" height="90" fill="none" stroke="#D9C9AC" stroke-width="2"/>
-      <rect x="30" y="260" width="140" height="120" fill="none" stroke="#D9C9AC" stroke-width="2"/>
-      <circle cx="180" cy="300" r="6" fill="#D9C9AC"/>
-    </svg>
-  </div>
-  <div class="door-half right">
-    <svg viewBox="0 0 200 400" preserveAspectRatio="none">
-      <path d="M200,400 L200,80 A200,200 0 0,0 0,80 L0,400 Z" fill="#5C3A28"/>
-      <path d="M200,400 L200,80 A200,200 0 0,0 0,80 L0,400 Z" fill="none" stroke="#D9C9AC" stroke-width="3"/>
-      <rect x="30" y="150" width="140" height="90" fill="none" stroke="#D9C9AC" stroke-width="2"/>
-      <rect x="30" y="260" width="140" height="120" fill="none" stroke="#D9C9AC" stroke-width="2"/>
-      <circle cx="20" cy="300" r="6" fill="#D9C9AC"/>
-    </svg>
-  </div>
-</div>
-
-<nav>
-  <div class="nav-mark"><span class="arch-mark"></span>Hari Om Niwas</div>
-  <div class="nav-links">
-    <a href="#gallery">Gallery</a>
-    <a href="#connect">Connect</a>
-  </div>
-</nav>
-
 <section class="hero">
-  <div class="arch-mark-big"></div>
-  <h1 class="title">Hari Om<br>Niwas<span>.</span></h1>
+  <img class="logo-mark" src="images/lock_ivory.png" alt="Hari Om Niwas">
   <div class="subtitle">Boho Homestay · Jodhpur</div>
   <p class="tagline">Wear light, eat heavy, and smile — you are in Jodhpur.</p>
   <div class="hero-ctas">
@@ -155,16 +98,5 @@
 </section>
 
 <footer>Hari Om Niwas — Jodhpur, Rajasthan</footer>
-
-<script>
-  const scene = document.getElementById('door-scene');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) {
-    scene.classList.add('hide');
-  } else {
-    setTimeout(() => scene.classList.add('open'), 500);
-    setTimeout(() => scene.classList.add('hide'), 1700);
-  }
-</script>
 </body>
 </html>
