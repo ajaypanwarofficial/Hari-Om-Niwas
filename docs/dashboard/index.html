@@ -48,6 +48,7 @@
     color: var(--faint); margin: 0 0 20px;
   }
   .status-line strong { color: var(--ink); font-weight: 500; }
+  .status-line .warn { color: var(--terra); }
 
   .controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
 
@@ -206,24 +207,29 @@
       fetch(RUNS_API).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
     holidays = holRes || [];
-    const parts = [];
+    let line;
     const lastRun = runRes && runRes.workflow_runs && runRes.workflow_runs[0];
     if (lastRun) {
-      const bad = lastRun.conclusion && lastRun.conclusion !== 'success';
-      parts.push('Checked <strong>' + fmtStamp(new Date(lastRun.updated_at)) + '</strong>' + (bad ? ' (run ' + lastRun.conclusion + ')' : ''));
+      const at = new Date(lastRun.updated_at);
+      const hours = Math.floor((Date.now() - at) / 3600000);
+      line = 'Checked <strong>' + fmtStamp(at) + '</strong>';
+      if (lastRun.conclusion && lastRun.conclusion !== 'success') line += ' <span class="warn">— last run ' + lastRun.conclusion + '</span>';
+      else if (hours >= 2) line += ' <span class="warn">— no check for ' + hours + ' hours</span>';
+    } else if (calRes) {
+      // GitHub's run history couldn't be reached; fall back to the data's own timestamp.
+      line = 'Updated <strong>' + fmtStamp(new Date(calRes.generatedAt)) + '</strong>';
     }
     if (calRes) {
       bookings = calRes.bookings || [];
-      parts.push('Last change <strong>' + fmtStamp(new Date(calRes.generatedAt)) + '</strong>');
       const failed = (calRes.sources || []).filter((s) => !s.ok);
       document.getElementById('errors').innerHTML = failed.length
         ? '<p class="error">' + failed.map((f) => f.name + ' feed failed (' + f.error + ')' +
             (f.carriedForward ? ' — showing its last known ' + f.carriedForward + ' booking' + (f.carriedForward === 1 ? '' : 's') : '')).join(' · ') + '</p>'
         : '';
     } else {
-      parts.push('Could not load booking data');
+      line = 'Could not load booking data';
     }
-    document.getElementById('status-line').innerHTML = parts.join(' · ');
+    document.getElementById('status-line').innerHTML = line || '';
   }
 
   function bookingsOnDate(dateStr) {
