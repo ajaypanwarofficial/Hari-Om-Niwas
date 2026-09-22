@@ -8,15 +8,20 @@ on:
 permissions:
   contents: write
 
+# A manual refresh and a scheduled run must never push at the same time.
+concurrency:
+  group: calendar-sync
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Fetch and merge calendars
         env:
@@ -25,10 +30,16 @@ jobs:
           INGO_ICAL_URL: ${{ secrets.INGO_ICAL_URL }}
         run: node scripts/sync.js
 
-      - name: Commit updated calendar data
+      - name: Commit only if bookings changed
         run: |
           git config user.name "hon-calendar-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/dashboard/calendar.json docs/dashboard/merged.ics
-          git diff --cached --quiet || git commit -m "Sync calendars $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git add docs/dashboard/calendar.json docs/dashboard/merged.ics docs/dashboard/feed-for-*.ics
+          if git diff --cached --quiet; then
+            echo "No booking changes. Nothing to commit."
+            exit 0
+          fi
+          git commit -m "Sync calendars $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # A site deploy may have landed while this ran; rebase onto it before pushing.
+          git pull --rebase origin main
           git push

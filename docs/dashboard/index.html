@@ -183,24 +183,37 @@
   function pad(n) { return String(n).padStart(2, '0'); }
   function toKey(y, m, d) { return `${y}-${pad(m + 1)}-${pad(d)}`; }
 
+  const RUNS_API = 'https://api.github.com/repos/ajaypanwarofficial/Hari-Om-Niwas/actions/workflows/sync-calendar.yml/runs?per_page=1';
+
+  function fmtStamp(d) {
+    return d.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  }
+
   async function loadData() {
-    const [calRes, holRes] = await Promise.all([
+    const [calRes, holRes, runRes] = await Promise.all([
       fetch('calendar.json?_=' + Date.now()).then(r => r.json()).catch(() => null),
       fetch('holidays.json?_=' + Date.now()).then(r => r.json()).catch(() => []),
+      fetch(RUNS_API).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
     holidays = holRes || [];
+    const parts = [];
+    const lastRun = runRes && runRes.workflow_runs && runRes.workflow_runs[0];
+    if (lastRun) {
+      const bad = lastRun.conclusion && lastRun.conclusion !== 'success';
+      parts.push('Checked <strong>' + fmtStamp(new Date(lastRun.updated_at)) + '</strong>' + (bad ? ' (run ' + lastRun.conclusion + ')' : ''));
+    }
     if (calRes) {
       bookings = calRes.bookings || [];
-      const synced = new Date(calRes.generatedAt);
-      document.getElementById('status-line').innerHTML =
-        'Last synced <strong>' + synced.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + '</strong>';
+      parts.push('Last change <strong>' + fmtStamp(new Date(calRes.generatedAt)) + '</strong>');
       const failed = (calRes.sources || []).filter((s) => !s.ok);
       document.getElementById('errors').innerHTML = failed.length
-        ? '<p class="error">' + failed.map((f) => f.name + ' feed failed — ' + f.error).join(' · ') + '</p>'
+        ? '<p class="error">' + failed.map((f) => f.name + ' feed failed (' + f.error + ')' +
+            (f.carriedForward ? ' — showing its last known ' + f.carriedForward + ' booking' + (f.carriedForward === 1 ? '' : 's') : '')).join(' · ') + '</p>'
         : '';
     } else {
-      document.getElementById('status-line').textContent = 'Could not load booking data.';
+      parts.push('Could not load booking data');
     }
+    document.getElementById('status-line').innerHTML = parts.join(' · ');
   }
 
   function bookingsOnDate(dateStr) {

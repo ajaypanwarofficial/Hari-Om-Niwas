@@ -13,8 +13,8 @@
 // one repo, with "Actions" permission set to Read and write and nothing
 // else. Never give it broader scope than that.
 
-const OWNER = 'YOUR_GITHUB_USERNAME';
-const REPO = 'YOUR_REPO_NAME';
+const OWNER = 'ajaypanwarofficial';
+const REPO = 'Hari-Om-Niwas';
 const WORKFLOW_FILE = 'sync-calendar.yml';
 const ALLOWED_ORIGIN = 'https://hariomniwas.in'; // change if testing from the github.io URL
 
