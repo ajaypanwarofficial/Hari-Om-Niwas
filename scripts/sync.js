@@ -10,24 +10,71 @@
 // Each platform imports its own feed-for-*.ics, so it never re-imports
 // its own reservations as blocks.
 //
-// Two safety rules:
+// Safety rules:
 //   1. If a feed fails, that platform's last known bookings are kept.
 //      Dropping them would unblock those nights on every other platform.
 //   2. Files are only rewritten when bookings or feed status change, so the
 //      workflow doesn't commit (and rebuild Pages) every 15 minutes.
+//   3. From Airbnb, only "Reserved" entries are used. Airbnb labels every
+//      other unavailable date "Airbnb (Not available)", including copies of
+//      other platforms' bookings it imported. Passing those on would send
+//      bookings back to the platform they came from.
+//   4. Booking.com labels everything "CLOSED - Not available", guests and
+//      copies alike. Any Booking.com or MMT entry whose nights are all
+//      already covered by an Airbnb reservation or a date you blocked is
+//      treated as a copy and dropped.
+//
+// Dates you want blocked everywhere (family, maintenance) go in
+// blocked-dates.json at the repo root. See that file for the format.
 
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
 const FEEDS = [
-  { name: 'Airbnb', key: 'airbnb', url: process.env.AIRBNB_ICAL_URL },
+  { name: 'Airbnb', key: 'airbnb', url: process.env.AIRBNB_ICAL_URL, keep: (e) => /^reserved$/i.test((e.summary || '').trim()) },
   { name: 'Booking.com', key: 'booking', url: process.env.BOOKING_ICAL_URL },
   { name: 'MMT / Goibibo', key: 'ingo', url: process.env.INGO_ICAL_URL },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'dashboard');
 const CAL_PATH = path.join(OUT_DIR, 'calendar.json');
+const BLOCKED_PATH = path.join(__dirname, '..', 'blocked-dates.json');
+const TRUSTED = new Set(['airbnb', 'manual']);
+
+function addDays(iso, n) {
+  const d = new Date(iso + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+function nightsOf(ev) {
+  const out = [];
+  for (let d = ev.start.slice(0, 10); d < ev.end.slice(0, 10); d = addDays(d, 1)) out.push(d);
+  return out;
+}
+
+// blocked-dates.json: [{ "from": "2026-12-24", "to": "2026-12-26", "note": "Family" }]
+// "from" and "to" are the first and last NIGHT blocked, both included.
+function readManualBlocks() {
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(BLOCKED_PATH, 'utf8')); }
+  catch (e) { if (e.code !== 'ENOENT') console.warn('blocked-dates.json could not be read: ' + e.message); return []; }
+  if (!Array.isArray(raw)) { console.warn('blocked-dates.json must be a list'); return []; }
+  const ok = /^\d{4}-\d{2}-\d{2}$/;
+  return raw.flatMap((b, i) => {
+    if (!b || !ok.test(b.from) || !ok.test(b.to) || b.to < b.from) {
+      console.warn(`blocked-dates.json entry ${i + 1} skipped: needs "from" and "to" as YYYY-MM-DD, with "to" not before "from"`);
+      return [];
+    }
+    const end = addDays(b.to, 1);
+    return [{
+      uid: `manual-${b.from}-${b.to}`, source: 'manual', sourceName: 'Blocked',
+      summary: b.note || 'Blocked', start: b.from, end, allDay: true,
+      nights: nightsOf({ start: b.from, end }).length,
+    }];
+  });
+}
 
 function fetchText(url, redirectsLeft = 5) {
   if (url.startsWith('file://')) return Promise.resolve(fs.readFileSync(url.slice(7), 'utf8'));
@@ -114,7 +161,7 @@ function buildICS(events, calName) {
     lines.push(`UID:${ev.source}-${ev.uid}@hariomniwas.in`);
     lines.push(`DTSTART${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.start, ev.allDay)}`);
     lines.push(`DTEND${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.end, ev.allDay)}`);
-    lines.push(`SUMMARY:Blocked — ${ev.sourceName}`);
+    lines.push(`SUMMARY:${ev.source === 'manual' ? 'Blocked — Hari Om Niwas' : 'Blocked — ' + ev.sourceName}`);
     lines.push('END:VEVENT');
   }
   lines.push('END:VCALENDAR');
@@ -139,14 +186,37 @@ async function main() {
       continue;
     }
     try {
-      const events = parseICS(await fetchText(feed.url), feed.key, feed.name);
+      const parsed = parseICS(await fetchText(feed.url), feed.key, feed.name);
+      const events = feed.keep ? parsed.filter(feed.keep) : parsed;
       all.push(...events);
-      status.push({ name: feed.name, key: feed.key, ok: true, count: events.length });
+      const entry = { name: feed.name, key: feed.key, ok: true, count: events.length };
+      if (parsed.length !== events.length) entry.ignoredBlocks = parsed.length - events.length;
+      status.push(entry);
     } catch (err) {
       // Keep the last known bookings so the other platforms stay blocked.
       all.push(...carried);
       status.push({ name: feed.name, key: feed.key, ok: false, error: err.message, carriedForward: carried.length });
     }
+  }
+
+  const manual = readManualBlocks();
+  all.push(...manual);
+  status.push({ name: 'Blocked by you', key: 'manual', ok: true, count: manual.length });
+
+  // Drop Booking.com / MMT entries that are only copies of trusted nights.
+  const trustedNights = new Set(all.filter((e) => TRUSTED.has(e.source)).flatMap(nightsOf));
+  const copies = {};
+  for (let i = all.length - 1; i >= 0; i--) {
+    const e = all[i];
+    if (TRUSTED.has(e.source)) continue;
+    const nights = nightsOf(e);
+    if (nights.length && nights.every((n) => trustedNights.has(n))) {
+      copies[e.source] = (copies[e.source] || 0) + 1;
+      all.splice(i, 1);
+    }
+  }
+  for (const st of status) {
+    if (copies[st.key]) { st.copiesRemoved = copies[st.key]; if (typeof st.count === 'number') st.count -= copies[st.key]; }
   }
 
   all.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : a.source.localeCompare(b.source)));

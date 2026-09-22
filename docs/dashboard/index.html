@@ -57,6 +57,11 @@
     border-radius: 2px; cursor: pointer; font-size: 16px; line-height: 1;
   }
   .month-nav button:hover { border-color: var(--terra); color: var(--terra); }
+  .month-nav button.today-btn {
+    width: auto; padding: 0 12px; font-family: 'Work Sans', sans-serif; font-size: 10px;
+    letter-spacing: .12em; text-transform: uppercase;
+  }
+  .month-nav button.today-btn.hidden { visibility: hidden; }
   .month-title { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; min-width: 200px; text-align: center; }
 
 
@@ -83,6 +88,7 @@
   .tag.airbnb, .swatch.airbnb { background: #FF385C; }
   .tag.booking, .swatch.booking { background: #003B95; }
   .tag.ingo, .swatch.ingo { background: #F26722; }
+  .tag.manual, .swatch.manual { background: var(--ink); }
   .provisional-note { font-family: 'Work Sans', sans-serif; font-size: 11px; color: var(--faint); font-style: italic; margin-top: 10px; }
   @media (max-width: 480px) {
     .cell { padding: 4px 3px; min-height: 64px; }
@@ -91,6 +97,12 @@
 
   .upcoming { margin-top: 40px; }
   .upcoming h2 { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--olive); border-bottom: 1.5px solid var(--sand); padding-bottom: 8px; }
+  .bk-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px dotted var(--sand); font-size: 15px; }
+  .bk-row .tag { flex-shrink: 0; width: 64px; text-align: center; margin: 0; }
+  .bk-row .dates { flex: 1; }
+  .bk-row .when { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); text-align: right; white-space: nowrap; }
+  .bk-row .when.now { color: var(--terra); font-weight: 600; }
+  .empty-note { color: var(--faint); font-style: italic; font-size: 15px; padding: 10px 0; margin: 0; }
   .lw-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted var(--sand); font-size: 15px; }
   .lw-row .tag { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--faint); text-transform: uppercase; }
 
@@ -119,6 +131,7 @@
       <button id="prev-month">‹</button>
       <div class="month-title" id="month-title"></div>
       <button id="next-month">›</button>
+      <button id="today-btn" class="today-btn hidden">Today</button>
     </div>
   </div>
 
@@ -126,12 +139,18 @@
     <span><i class="swatch airbnb"></i>Airbnb</span>
     <span><i class="swatch booking"></i>Booking.com</span>
     <span><i class="swatch ingo"></i>MMT / Goibibo</span>
+    <span><i class="swatch manual"></i>Blocked by you</span>
     <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
   </div>
 
   <div class="grid" id="grid"></div>
   <p class="provisional-note" id="provisional-note" hidden>2027 holidays are provisional until Rajasthan publishes its official list, usually in December.</p>
   <div id="errors"></div>
+
+  <div class="upcoming">
+    <h2>Upcoming bookings</h2>
+    <div id="upcoming-bookings"></div>
+  </div>
 
   <div class="upcoming">
     <h2>Upcoming long weekends</h2>
@@ -164,8 +183,8 @@
     }
   }
 
-  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT' };
-  const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo' };
+  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT', manual: 'Blocked' };
+  const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo', manual: 'Blocked by you' };
 
   let bookings = [];
   let holidays = [];
@@ -255,6 +274,8 @@
   }
 
   function renderMonth() {
+    const nowD = new Date();
+    document.getElementById('today-btn').classList.toggle('hidden', viewYear === nowD.getFullYear() && viewMonth === nowD.getMonth());
     document.getElementById('provisional-note').hidden = !holidays.some((h) => h.provisional && h.date.startsWith(String(viewYear)));
     document.getElementById('month-title').textContent =
       new Date(viewYear, viewMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
@@ -333,6 +354,41 @@
     viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
     renderMonth();
   };
+  document.getElementById('today-btn').onclick = () => {
+    const t = new Date();
+    viewYear = t.getFullYear(); viewMonth = t.getMonth();
+    renderMonth();
+  };
+
+  function dayDiff(fromKey, toKey) {
+    return Math.round((new Date(toKey + 'T00:00:00') - new Date(fromKey + 'T00:00:00')) / 86400000);
+  }
+
+  function renderUpcoming() {
+    const t = new Date();
+    const todayKey = toKey(t.getFullYear(), t.getMonth(), t.getDate());
+    const list = bookings
+      .filter((b) => b.end.slice(0, 10) >= todayKey)
+      .sort((a, b) => (a.start < b.start ? -1 : 1));
+    const el = document.getElementById('upcoming-bookings');
+    if (!list.length) { el.innerHTML = '<p class="empty-note">No upcoming bookings.</p>'; return; }
+    el.innerHTML = list.map((b) => {
+      const start = b.start.slice(0, 10), end = b.end.slice(0, 10);
+      let when, now = false;
+      if (end === todayKey) { when = 'Checks out today'; now = true; }
+      else if (start <= todayKey) { when = 'Staying now'; now = true; }
+      else {
+        const n = dayDiff(todayKey, start);
+        when = n === 1 ? 'Tomorrow' : 'In ' + n + ' days';
+      }
+      const d = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+      const nights = b.nights ? ' · ' + b.nights + (b.nights === 1 ? ' night' : ' nights') : '';
+      return '<div class="bk-row"><span class="tag ' + b.source + '">' + (SHORT_LABELS[b.source] || b.source) + '</span>' +
+        '<span class="dates">' + d(start) + ' – ' + d(end) + nights + '</span>' +
+        '<span class="when' + (now ? ' now' : '') + '">' + when + '</span></div>';
+    }).join('');
+  }
+
   document.getElementById('next-month').onclick = () => {
     viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
     renderMonth();
@@ -346,6 +402,7 @@
     await loadData();
     renderMonth();
     renderLongWeekends();
+    renderUpcoming();
   }
 
   if (gate.style.display === 'none') init();

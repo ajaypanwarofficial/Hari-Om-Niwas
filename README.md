@@ -60,3 +60,23 @@ Once the exterior signage/board photos are ready, drop new images into
 `docs/images/`, update the `<img>` tags in `docs/index.html`, and this is a
 straight swap — nothing else needs to change.
 
+
+## Blocking dates yourself (family, maintenance)
+
+Don't block dates on one platform only. From Airbnb, the sync passes on
+guest reservations only, so a date you close on Airbnb alone won't reach
+the other platforms.
+
+Instead, list the dates in `blocked-dates.json` at the repo root. They are
+blocked on every platform at the next sync:
+
+```json
+[
+  { "from": "2026-12-24", "to": "2026-12-26", "note": "Family" }
+]
+```
+
+`from` and `to` are the first and last **night** blocked, both included.
+The example blocks the nights of 24, 25 and 26 December; the 27th is free
+for a new check-in. Remove an entry to unblock. A mistyped entry is skipped
+and a warning appears in the workflow log; the rest of the sync still runs.
