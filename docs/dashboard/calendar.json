@@ -1,18 +1,21 @@
 {
-  "generatedAt": "2026-09-22T00:08:25.057Z",
+  "generatedAt": "2026-09-22T04:49:19.989Z",
   "sources": [
     {
       "name": "Airbnb",
+      "key": "airbnb",
       "ok": true,
       "count": 2
     },
     {
       "name": "Booking.com",
+      "key": "booking",
       "ok": true,
       "count": 2
     },
     {
       "name": "MMT / Goibibo",
+      "key": "ingo",
       "ok": true,
       "count": 0
     }

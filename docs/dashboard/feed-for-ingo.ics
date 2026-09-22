@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Hari Om Niwas//Calendar Hub//EN
 CALSCALE:GREGORIAN
-X-WR-CALNAME:Hari Om Niwas — All Platforms
+X-WR-CALNAME:Hari Om Niwas — for MMT / Goibibo
 BEGIN:VEVENT
 UID:airbnb-1418fb94e984-72acb5a1b079092121ed2dd113d0e7f0@airbnb.com@hariomniwas.in
 DTSTART;VALUE=DATE:20260921
