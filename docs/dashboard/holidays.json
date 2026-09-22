@@ -1,28 +1,252 @@
 [
-  {"date": "2026-01-26", "name": "Republic Day", "type": "national"},
-  {"date": "2026-02-15", "name": "Maha Shivratri", "type": "state"},
-  {"date": "2026-03-02", "name": "Holika Dahan", "type": "state"},
-  {"date": "2026-03-03", "name": "Dhulandi (Holi)", "type": "state"},
-  {"date": "2026-03-21", "name": "Eid ul-Fitr", "type": "state"},
-  {"date": "2026-03-26", "name": "Ram Navami", "type": "state"},
-  {"date": "2026-03-31", "name": "Mahavir Jayanti", "type": "state"},
-  {"date": "2026-04-03", "name": "Good Friday", "type": "state"},
-  {"date": "2026-04-14", "name": "Dr. B.R. Ambedkar Jayanti", "type": "national"},
-  {"date": "2026-05-01", "name": "May Day", "type": "state"},
-  {"date": "2026-05-28", "name": "Eid ul-Adha", "type": "state"},
-  {"date": "2026-06-17", "name": "Maharana Pratap Jayanti", "type": "state"},
-  {"date": "2026-06-26", "name": "Muharram", "type": "state"},
-  {"date": "2026-08-15", "name": "Independence Day", "type": "national"},
-  {"date": "2026-08-26", "name": "Barawafat (Milad-un-Nabi)", "type": "state"},
-  {"date": "2026-08-28", "name": "Raksha Bandhan", "type": "state"},
-  {"date": "2026-09-04", "name": "Krishna Janmashtami", "type": "state"},
-  {"date": "2026-09-21", "name": "Ramdev Jayanti / Teja Dashami", "type": "state"},
-  {"date": "2026-10-02", "name": "Gandhi Jayanti", "type": "national"},
-  {"date": "2026-10-19", "name": "Durga Ashtami", "type": "state"},
-  {"date": "2026-10-20", "name": "Vijaya Dashami (Dussehra)", "type": "state"},
-  {"date": "2026-11-08", "name": "Deepawali", "type": "state"},
-  {"date": "2026-11-09", "name": "Govardhan Puja", "type": "state"},
-  {"date": "2026-11-11", "name": "Bhai Dooj", "type": "state"},
-  {"date": "2026-11-24", "name": "Guru Nanak Jayanti", "type": "state"},
-  {"date": "2026-12-25", "name": "Christmas Day", "type": "state"}
+  {
+    "date": "2026-01-26",
+    "name": "Republic Day",
+    "type": "national"
+  },
+  {
+    "date": "2026-02-15",
+    "name": "Maha Shivratri",
+    "type": "state"
+  },
+  {
+    "date": "2026-03-02",
+    "name": "Holika Dahan",
+    "type": "state"
+  },
+  {
+    "date": "2026-03-03",
+    "name": "Dhulandi (Holi)",
+    "type": "state"
+  },
+  {
+    "date": "2026-03-21",
+    "name": "Eid ul-Fitr",
+    "type": "state"
+  },
+  {
+    "date": "2026-03-26",
+    "name": "Ram Navami",
+    "type": "state"
+  },
+  {
+    "date": "2026-03-31",
+    "name": "Mahavir Jayanti",
+    "type": "state"
+  },
+  {
+    "date": "2026-04-03",
+    "name": "Good Friday",
+    "type": "state"
+  },
+  {
+    "date": "2026-04-14",
+    "name": "Dr. B.R. Ambedkar Jayanti",
+    "type": "national"
+  },
+  {
+    "date": "2026-05-01",
+    "name": "May Day",
+    "type": "state"
+  },
+  {
+    "date": "2026-05-28",
+    "name": "Eid ul-Adha",
+    "type": "state"
+  },
+  {
+    "date": "2026-06-17",
+    "name": "Maharana Pratap Jayanti",
+    "type": "state"
+  },
+  {
+    "date": "2026-06-26",
+    "name": "Muharram",
+    "type": "state"
+  },
+  {
+    "date": "2026-08-15",
+    "name": "Independence Day",
+    "type": "national"
+  },
+  {
+    "date": "2026-08-26",
+    "name": "Barawafat (Milad-un-Nabi)",
+    "type": "state"
+  },
+  {
+    "date": "2026-08-28",
+    "name": "Raksha Bandhan",
+    "type": "state"
+  },
+  {
+    "date": "2026-09-04",
+    "name": "Krishna Janmashtami",
+    "type": "state"
+  },
+  {
+    "date": "2026-09-21",
+    "name": "Ramdev Jayanti / Teja Dashami",
+    "type": "state"
+  },
+  {
+    "date": "2026-10-02",
+    "name": "Gandhi Jayanti",
+    "type": "national"
+  },
+  {
+    "date": "2026-10-19",
+    "name": "Durga Ashtami",
+    "type": "state"
+  },
+  {
+    "date": "2026-10-20",
+    "name": "Vijaya Dashami (Dussehra)",
+    "type": "state"
+  },
+  {
+    "date": "2026-11-08",
+    "name": "Deepawali",
+    "type": "state"
+  },
+  {
+    "date": "2026-11-09",
+    "name": "Govardhan Puja",
+    "type": "state"
+  },
+  {
+    "date": "2026-11-11",
+    "name": "Bhai Dooj",
+    "type": "state"
+  },
+  {
+    "date": "2026-11-24",
+    "name": "Guru Nanak Jayanti",
+    "type": "state"
+  },
+  {
+    "date": "2026-12-25",
+    "name": "Christmas Day",
+    "type": "state"
+  },
+  {
+    "date": "2027-01-26",
+    "name": "Republic Day",
+    "provisional": true
+  },
+  {
+    "date": "2027-03-06",
+    "name": "Maha Shivratri",
+    "provisional": true
+  },
+  {
+    "date": "2027-03-10",
+    "name": "Eid ul-Fitr",
+    "provisional": true
+  },
+  {
+    "date": "2027-03-22",
+    "name": "Holika Dahan",
+    "provisional": true
+  },
+  {
+    "date": "2027-03-23",
+    "name": "Dhulandi (Holi)",
+    "provisional": true
+  },
+  {
+    "date": "2027-03-26",
+    "name": "Good Friday",
+    "provisional": true
+  },
+  {
+    "date": "2027-04-14",
+    "name": "Dr. B.R. Ambedkar Jayanti",
+    "provisional": true
+  },
+  {
+    "date": "2027-04-15",
+    "name": "Ram Navami",
+    "provisional": true
+  },
+  {
+    "date": "2027-04-19",
+    "name": "Mahavir Jayanti",
+    "provisional": true
+  },
+  {
+    "date": "2027-05-01",
+    "name": "May Day",
+    "provisional": true
+  },
+  {
+    "date": "2027-05-17",
+    "name": "Eid ul-Adha",
+    "provisional": true
+  },
+  {
+    "date": "2027-05-20",
+    "name": "Buddha Purnima",
+    "provisional": true
+  },
+  {
+    "date": "2027-06-16",
+    "name": "Muharram",
+    "provisional": true
+  },
+  {
+    "date": "2027-08-15",
+    "name": "Independence Day / Milad-un-Nabi",
+    "provisional": true
+  },
+  {
+    "date": "2027-08-17",
+    "name": "Raksha Bandhan",
+    "provisional": true
+  },
+  {
+    "date": "2027-08-25",
+    "name": "Krishna Janmashtami",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-02",
+    "name": "Gandhi Jayanti",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-07",
+    "name": "Durga Ashtami",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-09",
+    "name": "Vijaya Dashami (Dussehra)",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-29",
+    "name": "Deepawali",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-30",
+    "name": "Govardhan Puja",
+    "provisional": true
+  },
+  {
+    "date": "2027-10-31",
+    "name": "Bhai Dooj",
+    "provisional": true
+  },
+  {
+    "date": "2027-11-14",
+    "name": "Guru Nanak Jayanti",
+    "provisional": true
+  },
+  {
+    "date": "2027-12-25",
+    "name": "Christmas Day",
+    "provisional": true
+  }
 ]

@@ -68,7 +68,7 @@
 
   .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--sand); border: 1px solid var(--sand); }
   .dow { background: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); text-align: center; padding: 8px 0; }
@@ -76,23 +76,25 @@
   .cell.other-month { background: #ece5d6; }
   .cell.today .daynum { background: var(--ink); color: var(--paper); border-radius: 50%; }
   .cell.long-weekend { background: #f0e2d4; }
-  .cell.booked { background: #efe6d8; cursor: help; }
-  .cell.booked:hover { background: #e9dcc7; }
+  .cell.booked { background: #f7f2e9; }
   .daynum { font-family: 'Work Sans', sans-serif; font-size: 12px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
   .holiday-label { font-family: 'Work Sans', sans-serif; font-size: 8px; color: var(--terra); line-height: 1.2; margin-top: 2px; }
-  .bars { display: flex; flex-direction: column; gap: 2px; margin-top: 5px; }
-  .bar { height: 4px; border-radius: 1px; width: 100%; }
-  .bar.airbnb { background: var(--terra); }
-  .bar.booking { background: var(--olive); }
-  .bar.ingo { background: var(--teak); }
-
-  #tooltip {
-    position: fixed; z-index: 50; background: var(--ink); color: var(--paper);
-    font-family: 'Work Sans', sans-serif; font-size: 11px; padding: 8px 12px; border-radius: 2px;
-    pointer-events: none; display: none; max-width: 220px; line-height: 1.5;
+  .holiday-label.provisional { opacity: .7; }
+  .tags { display: flex; flex-direction: column; gap: 2px; margin-top: 5px; }
+  .tag {
+    font-family: 'Work Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: #fff; padding: 3px 4px; border-radius: 2px; white-space: nowrap; overflow: hidden; line-height: 1.1;
   }
-  #tooltip .row { white-space: nowrap; }
-  #tooltip .row + .row { margin-top: 3px; padding-top: 3px; border-top: 1px solid rgba(243,237,224,.2); }
+  /* Platform colours on purpose: this is a private tool, and recognising a
+     booking at a glance matters more here than the house palette. */
+  .tag.airbnb, .swatch.airbnb { background: #FF385C; }
+  .tag.booking, .swatch.booking { background: #003B95; }
+  .tag.ingo, .swatch.ingo { background: #F26722; }
+  .provisional-note { font-family: 'Work Sans', sans-serif; font-size: 11px; color: var(--faint); font-style: italic; margin-top: 10px; }
+  @media (max-width: 480px) {
+    .cell { padding: 4px 3px; min-height: 64px; }
+    .tag { font-size: 8px; letter-spacing: 0; padding: 3px 2px; }
+  }
 
   .upcoming { margin-top: 40px; }
   .upcoming h2 { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--olive); border-bottom: 1.5px solid var(--sand); padding-bottom: 8px; }
@@ -132,13 +134,14 @@
   </div>
 
   <div class="legend">
-    <span><i style="background:var(--terra)"></i>Airbnb</span>
-    <span><i style="background:var(--olive)"></i>Booking.com</span>
-    <span><i style="background:var(--teak)"></i>MMT / Goibibo</span>
+    <span><i class="swatch airbnb"></i>Airbnb</span>
+    <span><i class="swatch booking"></i>Booking.com</span>
+    <span><i class="swatch ingo"></i>MMT / Goibibo</span>
     <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
   </div>
 
   <div class="grid" id="grid"></div>
+  <p class="provisional-note" id="provisional-note" hidden>2027 holidays are provisional until Rajasthan publishes its official list, usually in December.</p>
   <div id="errors"></div>
 
   <div class="upcoming">
@@ -149,7 +152,6 @@
   <footer>Hari Om Niwas — Jodhpur</footer>
 </main>
 </div>
-<div id="tooltip"></div>
 
 <script>
   const PIN = '012345';
@@ -174,6 +176,7 @@
   }
 
   const REFRESH_WORKER_URL = 'https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev/refresh';
+  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT' };
   const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo' };
 
   let bookings = [];
@@ -249,7 +252,8 @@
 
   function renderLongWeekends() {
     const today = new Date();
-    const spans = computeLongWeekends(today, 200);
+    const endOfNextYear = new Date(today.getFullYear() + 1, 11, 31);
+    const spans = computeLongWeekends(today, Math.ceil((endOfNextYear - today) / 86400000) + 1);
     const container = document.getElementById('long-weekends');
     if (!spans.length) {
       container.innerHTML = '<p style="color:var(--faint); font-style:italic;">None found in the coming months.</p>';
@@ -262,24 +266,8 @@
     }).join('');
   }
 
-  function attachTooltip(cell, dayBookings) {
-    const tip = document.getElementById('tooltip');
-    cell.addEventListener('mouseenter', () => {
-      tip.innerHTML = dayBookings.map((b) =>
-        '<div class="row"><strong>' + (SOURCE_LABELS[b.source] || b.source) + '</strong><br>' +
-        new Date(b.start).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' – ' +
-        new Date(b.end).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + '</div>'
-      ).join('');
-      tip.style.display = 'block';
-    });
-    cell.addEventListener('mousemove', (e) => {
-      tip.style.left = (e.clientX + 14) + 'px';
-      tip.style.top = (e.clientY + 14) + 'px';
-    });
-    cell.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-  }
-
   function renderMonth() {
+    document.getElementById('provisional-note').hidden = !holidays.some((h) => h.provisional && h.date.startsWith(String(viewYear)));
     document.getElementById('month-title').textContent =
       new Date(viewYear, viewMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 
@@ -330,7 +318,7 @@
       const hol = holidayOnDate(key);
       if (hol) {
         const label = document.createElement('div');
-        label.className = 'holiday-label';
+        label.className = 'holiday-label' + (hol.provisional ? ' provisional' : '');
         label.textContent = hol.name;
         cell.appendChild(label);
       }
@@ -338,15 +326,15 @@
       const dayBookings = bookingsOnDate(key);
       if (dayBookings.length) {
         cell.classList.add('booked');
-        const bars = document.createElement('div');
-        bars.className = 'bars';
+        const tags = document.createElement('div');
+        tags.className = 'tags';
         dayBookings.forEach((b) => {
-          const bar = document.createElement('div');
-          bar.className = 'bar ' + b.source;
-          bars.appendChild(bar);
+          const tag = document.createElement('div');
+          tag.className = 'tag ' + b.source;
+          tag.textContent = SHORT_LABELS[b.source] || b.source;
+          tags.appendChild(tag);
         });
-        cell.appendChild(bars);
-        attachTooltip(cell, dayBookings);
+        cell.appendChild(tags);
       }
 
       grid.appendChild(cell);
