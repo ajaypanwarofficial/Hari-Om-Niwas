@@ -8,7 +8,6 @@
 - `docs/images/` — house photos used on the homepage
 - `.github/workflows/sync-calendar.yml` — pulls Airbnb/Booking.com/InGo calendars every 15 min
 - `scripts/sync.js` — the fetch/merge script the workflow runs
-- `cloudflare-worker/refresh-proxy.js` — lets the dashboard's Refresh button actually trigger a sync
 
 ## Setup, in order
 
