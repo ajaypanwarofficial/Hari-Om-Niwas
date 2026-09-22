@@ -21,30 +21,6 @@
    records for an apex domain.
 5. **Run the sync workflow once by hand**: Actions tab → "Sync OTA Calendars" → Run workflow.
 
-## Deploying the real "Refresh now" button (Cloudflare Worker)
-
-The dashboard's Refresh button needs somewhere to send the request that can hold a
-GitHub token safely — a static page can't do that itself. Cloudflare Workers does
-this for free, with nothing to host or maintain yourself:
-
-1. Go to workers.cloudflare.com, sign up free, "Create Worker" → "Quick edit."
-2. Paste in the entire contents of `cloudflare-worker/refresh-proxy.js`.
-3. Edit the three constants at the top: `OWNER` (your GitHub username), `REPO`
-   (your repo name), and confirm `ALLOWED_ORIGIN` matches your domain.
-4. Create a **fine-grained GitHub token**: GitHub → Settings → Developer settings →
-   Personal access tokens → Fine-grained tokens → New token. Scope it to
-   **only this one repository**, with **Actions: Read and write** permission and
-   nothing else. Copy the token.
-5. In the Worker: Settings → Variables and Secrets → Add → name it
-   `GITHUB_TOKEN`, paste the token value, mark it as a secret (encrypted).
-6. Deploy. Copy the Worker's URL (looks like
-   `https://hon-refresh-proxy.YOUR-SUBDOMAIN.workers.dev`).
-7. In `docs/dashboard/index.html`, find `REFRESH_WORKER_URL` near the top of the
-   `<script>` block and set it to `https://YOUR-WORKER-URL/refresh`. Commit.
-
-Once this is live, the dashboard's Refresh button triggers a real sync in the
-background — no click-through to GitHub needed.
-
 ## The dashboard PIN — what it actually protects
 
 The PIN (`012345` — change it by editing the `PIN` constant in

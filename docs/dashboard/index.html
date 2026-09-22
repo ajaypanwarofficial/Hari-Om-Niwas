@@ -59,12 +59,6 @@
   .month-nav button:hover { border-color: var(--terra); color: var(--terra); }
   .month-title { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; min-width: 200px; text-align: center; }
 
-  .refresh-btn {
-    font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-    background: var(--terra); color: var(--paper); border: none; padding: 10px 18px; border-radius: 2px; cursor: pointer;
-  }
-  .refresh-btn:disabled { opacity: .6; cursor: default; }
-  .refresh-msg { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--olive); margin-top: 6px; text-align: right; }
 
   .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -73,10 +67,9 @@
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--sand); border: 1px solid var(--sand); }
   .dow { background: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); text-align: center; padding: 8px 0; }
   .cell { background: var(--paper); min-height: 74px; padding: 6px; position: relative; cursor: default; }
-  .cell.other-month { background: #ece5d6; }
+  .cell.other-month .daynum { opacity: .35; }
   .cell.today .daynum { background: var(--ink); color: var(--paper); border-radius: 50%; }
   .cell.long-weekend { background: #f0e2d4; }
-  .cell.booked { background: #f7f2e9; }
   .daynum { font-family: 'Work Sans', sans-serif; font-size: 12px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
   .holiday-label { font-family: 'Work Sans', sans-serif; font-size: 8px; color: var(--terra); line-height: 1.2; margin-top: 2px; }
   .holiday-label.provisional { opacity: .7; }
@@ -127,10 +120,6 @@
       <div class="month-title" id="month-title"></div>
       <button id="next-month">›</button>
     </div>
-    <div style="text-align:right;">
-      <button class="refresh-btn" id="refresh-btn">Refresh now</button>
-      <div class="refresh-msg" id="refresh-msg"></div>
-    </div>
   </div>
 
   <div class="legend">
@@ -175,7 +164,6 @@
     }
   }
 
-  const REFRESH_WORKER_URL = 'https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev/refresh';
   const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT' };
   const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo' };
 
@@ -350,21 +338,6 @@
     renderMonth();
   };
 
-  document.getElementById('refresh-btn').onclick = async () => {
-    const btn = document.getElementById('refresh-btn');
-    const msg = document.getElementById('refresh-msg');
-    btn.disabled = true;
-    msg.textContent = 'Triggering sync…';
-    try {
-      const res = await fetch(REFRESH_WORKER_URL, { method: 'POST' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      msg.textContent = 'Sync triggered — reloading in 30s…';
-      setTimeout(async () => { await loadData(); renderMonth(); renderLongWeekends(); btn.disabled = false; msg.textContent = 'Done.'; }, 30000);
-    } catch (err) {
-      msg.textContent = 'Refresh failed — check the Worker is deployed.';
-      btn.disabled = false;
-    }
-  };
 
   async function init() {
     const today = new Date();
