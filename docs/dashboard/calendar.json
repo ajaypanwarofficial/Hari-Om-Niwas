@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-09-22T04:49:19.989Z",
+  "generatedAt": "2026-09-22T13:15:10.645Z",
   "sources": [
     {
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 2
+      "count": 1,
+      "ignoredBlocks": 1
     },
     {
       "name": "Booking.com",
@@ -16,6 +17,12 @@
     {
       "name": "MMT / Goibibo",
       "key": "ingo",
+      "ok": true,
+      "count": 0
+    },
+    {
+      "name": "Blocked by you",
+      "key": "manual",
       "ok": true,
       "count": 0
     }
@@ -50,16 +57,6 @@
       "end": "2026-11-10",
       "allDay": true,
       "nights": 2
-    },
-    {
-      "uid": "7f662ec65913-dee4e94f13a6011050e1cbf5da596a47@airbnb.com",
-      "source": "airbnb",
-      "sourceName": "Airbnb",
-      "summary": "Airbnb (Not available)",
-      "start": "2027-09-22",
-      "end": "2027-09-23",
-      "allDay": true,
-      "nights": 1
     }
   ]
 }
