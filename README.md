@@ -7,18 +7,25 @@
 - `docs/dashboard/` — the OTA calendar hub, PIN-protected (`hariomniwas.in/dashboard`)
 - `docs/images/` — house photos used on the homepage
 - `.github/workflows/sync-calendar.yml` — pulls Airbnb/Booking.com/InGo calendars every 15 min
-- `scripts/sync.js` — the fetch/merge script the workflow runs
+- `.github/workflows/deploy-pages.yml` — deploys `docs/` to GitHub Pages on every push to `main`
+- `scripts/sync.js` — the fetch/merge script the sync workflow runs
 
 ## Setup, in order
 
 1. **Push everything to GitHub** (see the earlier instructions if you need the upload steps again).
 2. **Add the three OTA secrets**: repo → Settings → Secrets and variables → Actions →
    `AIRBNB_ICAL_URL`, `BOOKING_ICAL_URL`, `INGO_ICAL_URL`.
-3. **Enable Pages**: Settings → Pages → Deploy from a branch → `main` → `/docs`.
+3. **Enable Pages**: Settings → Pages → Source → **GitHub Actions** (not "Deploy from a
+   branch" — `deploy-pages.yml` handles the deploy itself). The first deploy runs
+   automatically on the next push to `main`, or trigger it by hand from the Actions
+   tab → "Deploy GitHub Pages" → Run workflow.
 4. **Point hariomniwas.in's DNS** at GitHub Pages (the repo already has `docs/CNAME`
    set to `hariomniwas.in`) — GitHub's Pages docs list the current required A
    records for an apex domain.
 5. **Run the sync workflow once by hand**: Actions tab → "Sync OTA Calendars" → Run workflow.
+   Each sync commit to `docs/dashboard/` triggers `deploy-pages.yml` automatically, so
+   fresh bookings go live within a minute or two of the sync, not just on the next
+   manual push.
 
 ## The dashboard PIN — what it actually protects
 
