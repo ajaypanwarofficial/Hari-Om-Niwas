@@ -2,6 +2,8 @@ name: Sync OTA Calendars
 
 on:
   schedule:
+    # GitHub runs scheduled jobs late and unevenly — in practice this fires
+    # every 2-4 hours, not every 15 minutes. That is normal, not a fault.
     - cron: '*/15 * * * *'
   workflow_dispatch: {}
 
@@ -16,6 +18,8 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # A hung run must not block the runs behind it.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
 
