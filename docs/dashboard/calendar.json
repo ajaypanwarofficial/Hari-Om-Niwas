@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-23T12:44:15.977Z",
+  "generatedAt": "2026-09-24T01:22:19.750Z",
   "sources": [
     {
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 1,
+      "count": 0,
       "ignoredBlocks": 1
     },
     {
@@ -28,16 +28,6 @@
     }
   ],
   "bookings": [
-    {
-      "uid": "1418fb94e984-72acb5a1b079092121ed2dd113d0e7f0@airbnb.com",
-      "source": "airbnb",
-      "sourceName": "Airbnb",
-      "summary": "Reserved",
-      "start": "2026-09-21",
-      "end": "2026-09-22",
-      "allDay": true,
-      "nights": 1
-    },
     {
       "uid": "4d7ead57e72c9a8b44c2616d408d4205@booking.com",
       "source": "booking",
