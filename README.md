@@ -251,7 +251,5 @@ publishes the site either way.
   list, usually in December. Festivals that follow the moon (Eid and some
   others) can shift by a day.
 - **Changing homepage photos:** put the new images in `docs/images/` and update
-  the matching `<img>` lines in `docs/index.html`.
-- **The homepage door animation** plays once when the page opens and is skipped
-  for visitors who have "reduce motion" turned on. To remove it, delete the
-  `#door-scene` block and its script in `docs/index.html`.
+  the matching `<img src="images/...">` lines in `docs/index.html`, including
+  the `alt` text that describes each photo.
