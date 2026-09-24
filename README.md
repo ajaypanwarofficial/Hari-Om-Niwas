@@ -77,6 +77,9 @@ PIN. The browser remembers it after that.
 - **Shaded days** are part of a long weekend (3+ days of weekends and public
   holidays in a row). Holiday names appear in small red text.
 - **"Upcoming bookings"** lists every stay from today onwards.
+- **"Past stays"** lists the 10 most recent finished stays, newest first. Every
+  past stay also stays on the calendar grid, so you can page back through the
+  months to see what happened while you were away.
 - **The line under the title** says when the sync last checked the platforms.
   - `Checked 24 Sept, 3:15 pm` means all is well.
   - `— no check for 2 hours` means the Cloudflare timer has stopped. See
@@ -129,7 +132,7 @@ edit the form in Tally. The page picks up the change by itself.
 │   └── dashboard/
 │       ├── index.html            The calendar dashboard
 │       ├── holidays.json         Rajasthan public holidays (edited by hand)
-│       ├── calendar.json         ┐
+│       ├── calendar.json         ┐ (also our booking history)
 │       ├── merged.ics            │ Written by the sync. Don't edit by hand;
 │       └── feed-for-*.ics        ┘ the next sync overwrites them.
 ├── scripts/sync.js               The sync: reads, merges and writes the calendars
@@ -155,6 +158,12 @@ back and forth. `scripts/sync.js` handles this:
 - **A platform's link fails to load:** its last known bookings are kept. Dropping
   them would unblock those nights everywhere.
 - **Nothing changed:** nothing is saved, so the site isn't rebuilt every 15 minutes.
+- **Past stays are kept as our own record.** Platforms drop a stay from their
+  calendar link a day or so after checkout, even though their apps still show
+  it. When a stay disappears *after* its checkout date, the sync keeps it in
+  `calendar.json`. When a stay disappears *before* its checkout date, the guest
+  cancelled, so it's removed and those nights open up again. Past stays aren't
+  sent to the platforms' feeds, since those nights can't be booked anyway.
 
 ---
 

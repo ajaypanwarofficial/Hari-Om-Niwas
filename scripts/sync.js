@@ -15,6 +15,10 @@
 //      Dropping them would unblock those nights on every other platform.
 //   2. Files are only rewritten when bookings or feed status change, so the
 //      workflow doesn't commit (and rebuild Pages) every 15 minutes.
+//   5. Past stays are kept as history. Platforms drop a stay from their feed
+//      a day or so after checkout; a stay that disappears after its checkout
+//      date is kept in calendar.json. A stay that disappears BEFORE its
+//      checkout date was cancelled, so it is dropped and the nights reopen.
 //   3. From Airbnb, only "Reserved" entries are used. Airbnb labels every
 //      other unavailable date "Airbnb (Not available)", including copies of
 //      other platforms' bookings it imported. Passing those on would send
@@ -199,6 +203,13 @@ async function main() {
     }
   }
 
+  // Keep finished stays the platforms have stopped listing (rule 5).
+  const today = new Date().toISOString().slice(0, 10);
+  const seen = new Set(all.map((e) => e.source + '|' + e.uid));
+  for (const b of prevBookings) {
+    if (b.source !== 'manual' && !seen.has(b.source + '|' + b.uid) && b.end.slice(0, 10) <= today) all.push(b);
+  }
+
   const manual = readManualBlocks();
   all.push(...manual);
   status.push({ name: 'Blocked by you', key: 'manual', ok: true, count: manual.length });
@@ -233,11 +244,13 @@ async function main() {
   } else {
     fs.mkdirSync(OUT_DIR, { recursive: true });
     fs.writeFileSync(CAL_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), sources: status, bookings: all }, null, 2) + '\n');
-    fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(all, 'Hari Om Niwas — All Platforms'));
+    // The feeds only need nights that can still be booked; history stays in calendar.json.
+    const current = all.filter((e) => e.end.slice(0, 10) > today);
+    fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(current, 'Hari Om Niwas — All Platforms'));
     for (const f of FEEDS) {
       fs.writeFileSync(
         path.join(OUT_DIR, `feed-for-${f.key}.ics`),
-        buildICS(all.filter((e) => e.source !== f.key), `Hari Om Niwas — for ${f.name}`)
+        buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas — for ${f.name}`)
       );
     }
     console.log('Bookings or feed status changed. Files written.');

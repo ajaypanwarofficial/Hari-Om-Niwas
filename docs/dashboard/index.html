@@ -158,6 +158,11 @@
   </div>
 
   <div class="upcoming">
+    <h2>Past stays</h2>
+    <div id="past-bookings"></div>
+  </div>
+
+  <div class="upcoming">
     <h2>Upcoming long weekends</h2>
     <div id="long-weekends"></div>
   </div>
@@ -400,6 +405,25 @@
     }).join('');
   }
 
+  // Newest first. The sync keeps stays after the platforms drop them, so this is our own record.
+  const PAST_SHOWN = 10;
+  function renderPast() {
+    const t = new Date();
+    const todayKey = toKey(t.getFullYear(), t.getMonth(), t.getDate());
+    const list = bookings
+      .filter((b) => b.source !== 'manual' && b.end.slice(0, 10) < todayKey)
+      .sort((a, b) => (a.start < b.start ? 1 : -1));
+    const el = document.getElementById('past-bookings');
+    if (!list.length) { el.innerHTML = '<p class="empty-note">No past stays yet.</p>'; return; }
+    const d = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    el.innerHTML = list.slice(0, PAST_SHOWN).map((b) => {
+      const nights = b.nights ? b.nights + (b.nights === 1 ? ' night' : ' nights') : '';
+      return '<div class="bk-row"><span class="tag ' + b.source + '">' + (SHORT_LABELS[b.source] || b.source) + '</span>' +
+        '<span class="dates">' + d(b.start.slice(0, 10)) + ' – ' + d(b.end.slice(0, 10)) + '</span>' +
+        '<span class="when">' + nights + '</span></div>';
+    }).join('') + (list.length > PAST_SHOWN ? '<p class="empty-note">Showing the latest ' + PAST_SHOWN + ' of ' + list.length + '. Older stays are still on the calendar.</p>' : '');
+  }
+
   document.getElementById('next-month').onclick = () => {
     viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
     renderMonth();
@@ -414,6 +438,7 @@
     renderMonth();
     renderLongWeekends();
     renderUpcoming();
+    renderPast();
   }
 
   if (gate.style.display === 'none') init();
