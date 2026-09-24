@@ -74,7 +74,10 @@
   .dow { background: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); text-align: center; padding: 8px 0; }
   .cell { background: var(--paper); min-height: 74px; padding: 6px; position: relative; cursor: default; }
   .cell.other-month .daynum { opacity: .35; }
-  .cell.today .daynum { background: var(--ink); color: var(--paper); border-radius: 50%; }
+  /* Today is a terracotta ring, not a filled dot, so it can't be mistaken
+     for a dark "Blocked" tag. The inset outline marks the whole day. */
+  .cell.today { box-shadow: inset 0 0 0 2px var(--terra); }
+  .cell.today .daynum { border: 1.5px solid var(--terra); color: var(--terra); font-weight: 600; border-radius: 50%; }
   .cell.long-weekend { background: #f0e2d4; }
   .daynum { font-family: 'Work Sans', sans-serif; font-size: 12px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
   .holiday-label { font-family: 'Work Sans', sans-serif; font-size: 8px; color: var(--terra); line-height: 1.2; margin-top: 2px; }
@@ -142,6 +145,7 @@
     <span><i class="swatch ingo"></i>MMT / Goibibo</span>
     <span><i class="swatch manual"></i>Blocked by you</span>
     <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
+    <span><i style="border:1.5px solid var(--terra); border-radius:50%"></i>Today</span>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -214,7 +218,8 @@
       const hours = Math.floor((Date.now() - at) / 3600000);
       line = 'Checked <strong>' + fmtStamp(at) + '</strong>';
       if (lastRun.conclusion && lastRun.conclusion !== 'success') line += ' <span class="warn">— last run ' + lastRun.conclusion + '</span>';
-      else if (hours >= 6) line += ' <span class="warn">— no check for ' + hours + ' hours</span>';
+      // The Cloudflare timer starts a run every 15 minutes, so an hour of silence means it has stopped.
+      else if (hours >= 1) line += ' <span class="warn">— no check for ' + hours + (hours === 1 ? ' hour' : ' hours') + '</span>';
     } else if (calRes) {
       // GitHub's run history couldn't be reached; fall back to the data's own timestamp.
       line = 'Bookings last changed <strong>' + fmtStamp(new Date(calRes.generatedAt)) + '</strong> <span class="warn">— run history unavailable</span>';

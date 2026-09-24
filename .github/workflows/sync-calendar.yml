@@ -2,8 +2,10 @@ name: Sync OTA Calendars
 
 on:
   schedule:
-    # GitHub runs scheduled jobs late and unevenly — in practice this fires
-    # every 2-4 hours, not every 15 minutes. That is normal, not a fault.
+    # Backup only. GitHub runs scheduled jobs late and unevenly (every 2-5
+    # hours in practice). The on-time trigger is the Cloudflare Worker in
+    # cloudflare-worker/sync-timer.js, which starts a run every 15 minutes
+    # through workflow_dispatch below.
     - cron: '*/15 * * * *'
   workflow_dispatch: {}
 
