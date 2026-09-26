@@ -1,0 +1,8 @@
+preview_urls = false
+name = "hon-sync-timer"
+main = "sync-timer.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[triggers]
+crons = ["*/15 * * * *"]

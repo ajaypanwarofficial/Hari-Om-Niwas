@@ -60,8 +60,11 @@ function nightsOf(ev) {
   return out;
 }
 
-// blocked-dates.json: [{ "from": "2026-12-24", "to": "2026-12-26", "note": "Family" }]
+// blocked-dates.json: [{ "from": "2026-12-24", "to": "2026-12-26", "kind": "closed", "note": "Family" }]
 // "from" and "to" are the first and last NIGHT blocked, both included.
+// "kind" is "direct" for a guest who booked with us directly; anything else
+// (or nothing) means closed. It only changes the dashboard's label: every
+// platform sees the same "Blocked — Hari Om Niwas" either way.
 function readManualBlocks() {
   let raw;
   try { raw = JSON.parse(fs.readFileSync(BLOCKED_PATH, 'utf8')); }
@@ -76,7 +79,8 @@ function readManualBlocks() {
     const end = addDays(b.to, 1);
     return [{
       uid: `manual-${b.from}-${b.to}`, source: 'manual', sourceName: 'Blocked',
-      summary: b.note || 'Blocked', start: b.from, end, allDay: true,
+      kind: b.kind === 'direct' ? 'direct' : 'closed',
+      summary: b.note || (b.kind === 'direct' ? 'Direct booking' : 'Blocked'), start: b.from, end, allDay: true,
       nights: nightsOf({ start: b.from, end }).length,
     }];
   });

@@ -7,7 +7,7 @@ that is listed on Airbnb, Booking.com and MakeMyTrip/Goibibo:
 |---|---|---|
 | **Homepage** | [hariomniwas.in](https://hariomniwas.in) | Guests |
 | **Check-in form** | [hariomniwas.in/checkin](https://hariomniwas.in/checkin) | Guests, on arrival |
-| **Calendar dashboard** | [hariomniwas.in/dashboard](https://hariomniwas.in/dashboard) | Us only (needs a PIN) |
+| **Calendar dashboard** | [hariomniwas.in/dashboard](https://hariomniwas.in/dashboard) | Us only (needs the PIN) |
 
 It costs nothing to run: GitHub hosts the site and does the syncing, and a free
 Cloudflare Worker keeps the syncing on time. There is no server to look after.
@@ -30,7 +30,7 @@ one link back with everyone else's bookings in it.
  Booking.com ┼──► sync (every 15 min) ──► merge ─┼──► feed-for-booking.ics ──► Booking.com
  MMT/Goibibo ┘          ▲                        ├──► feed-for-ingo.ics    ──► MMT/Goibibo
                         │                        └──► calendar.json        ──► our dashboard
-         blocked-dates.json (dates we close ourselves)
+         blocked-dates.json (dates we close ourselves, from the dashboard)
 ```
 
 Each platform gets a feed that **leaves out its own bookings**, so a platform
@@ -68,10 +68,15 @@ backup.
 ### Reading the dashboard
 
 Open [hariomniwas.in/dashboard](https://hariomniwas.in/dashboard) and enter the
-PIN. The browser remembers it after that.
+PIN.
 
+- **"Remember this device"** is ticked by default. On your own phone, leave it
+  ticked and the browser remembers the PIN. On someone else's browser, untick
+  it: the dashboard then locks after 10 minutes without use, and forgets the PIN
+  when the tab is closed.
 - **Coloured tags** on a day mean that night is taken. Pink = Airbnb, dark blue =
-  Booking.com, orange = MMT/Goibibo, dark brown = blocked by us.
+  Booking.com, orange = MMT/Goibibo, olive = a direct booking, dark brown =
+  closed by us.
 - **Today** has a terracotta outline around the whole day and a ring around
   the date.
 - **Shaded days** are part of a long weekend (3+ days of weekends and public
@@ -88,27 +93,52 @@ PIN. The browser remembers it after that.
   platform's link couldn't be read. That platform's last known bookings are kept,
   so nothing gets unblocked by accident.
 
-### Closing dates yourself (family visit, repairs)
+### Direct bookings and closing dates yourself
 
-**Don't** close dates on just one platform. The other platforms won't find out.
-In particular, Airbnb's link only shares real guest reservations, so dates
-closed only on Airbnb are never passed on.
+Use **Block dates** on the dashboard:
 
-Instead, edit `blocked-dates.json` in this repository (on GitHub, open the
-file, click the pencil icon, then **Commit changes**):
+1. Enter the **check-in** and **check-out** dates, the same way a guest would.
+2. Choose **Direct booking** (a guest who booked with us) or **Closed** (family,
+   repairs). This only changes our dashboard's label. The platforms see
+   "Blocked" either way.
+3. Add a short note if you like, e.g. "2 guests, via Instagram". The platforms
+   never see it, but it's saved in this public repository, so leave out phone
+   numbers and full names.
+4. Tap **Block these nights**. The dashboard shows it in about 2 minutes.
+   Airbnb, Booking.com and MMT close those nights when they next read our link,
+   usually within the hour.
+
+To reopen the dates, tap **Remove** next to the entry under "Upcoming bookings",
+then tap again to confirm.
+
+**Don't** close dates on just one platform. The dates show on our dashboard as
+that platform's booking, not as ours. Also, Airbnb's link only shares real guest
+reservations, so dates closed only on Airbnb are never passed on.
+
+**For a booking made today for tonight,** block it on the dashboard *and* close
+it on each platform yourself. The platforms read our link on their own
+schedule, so they may take an hour or more. Once the platforms have read our
+link, you can reopen it on each platform. Leaving it closed there is harmless,
+though: the sync ignores a platform's block when our own block already covers
+those nights.
+
+**Without the dashboard,** you can edit `blocked-dates.json` in this repository
+directly (on GitHub, open the file, click the pencil icon, then **Commit
+changes**):
 
 ```json
 [
-  { "from": "2026-12-24", "to": "2026-12-26", "note": "Family" }
+  { "from": "2026-12-24", "to": "2026-12-26", "kind": "closed", "note": "Family" }
 ]
 ```
 
 - `from` and `to` are the **first and last night** that are closed, both
   included. The example closes the nights of the 24th, 25th and 26th, and a new
-  guest can check in on the 27th.
-- Add more lines inside the `[ ]` for more date ranges, with a comma between them.
-- To reopen dates, delete the line. An empty list is `[]`.
-- It takes effect on every platform at the next sync.
+  guest can check in on the 27th. (The dashboard's form works this out from the
+  check-out date for you.)
+- `kind` is `"direct"` for a direct booking or `"closed"` for anything else.
+- One line per date range, with a comma between lines. An empty list is `[]`.
+- A change made this way takes effect at the next sync, within 15 minutes.
 - If a line is mistyped, only that line is skipped. The sync log on GitHub says
   which one.
 
@@ -137,7 +167,8 @@ edit the form in Tally. The page picks up the change by itself.
 ├── scripts/sync.js               The sync: reads, merges and writes the calendars
 ├── blocked-dates.json            Dates we close ourselves (see above)
 ├── cloudflare-worker/
-│   └── sync-timer.js             Starts the sync every 15 minutes, on time
+│   └── sync-timer.js             Starts the sync every 15 minutes; checks the
+│                                 dashboard PIN and saves blocked dates
 └── .github/workflows/
     ├── sync-calendar.yml         Runs scripts/sync.js on GitHub's servers
     └── deploy-pages.yml          Not used for now (see below)
@@ -195,30 +226,43 @@ account.
    - MMT/Goibibo: `https://hariomniwas.in/dashboard/feed-for-ingo.ics`
 7. **Set up the Cloudflare timer**, as described in the next section.
 
-### The Cloudflare timer (sync-timer.js)
+### The Cloudflare Worker (sync-timer.js)
 
-Setup takes about 10 minutes, once, on Cloudflare's free plan.
+The Worker has two jobs. It starts the sync every 15 minutes, and it's what the
+dashboard talks to: it checks the PIN and saves blocked dates. Setup takes about
+10 minutes, once, on Cloudflare's free plan.
 
-1. **Make a GitHub token** the Worker can use to start the sync. GitHub (your
-   profile) → Settings → Developer settings → Personal access tokens →
-   Fine-grained tokens → Generate new token.
+1. **Make a GitHub token** the Worker can use. GitHub (your profile) → Settings
+   → Developer settings → Personal access tokens → Fine-grained tokens →
+   Generate new token.
    - Repository access: **Only select repositories** → `Hari-Om-Niwas`
-   - Permissions: **Actions → Read and write**. Leave everything else as "No access".
+   - Permissions: **Actions → Read and write** (to start the sync) and
+     **Contents → Read and write** (to save `blocked-dates.json`). Leave
+     everything else as "No access".
    - Expiry: choose one, and **put a reminder in your calendar** a few days
      before it runs out.
 2. **Create the Worker.** Cloudflare dashboard → Workers & Pages → Create →
    Worker. Name it `hon-sync-timer` → Deploy → Edit code. Replace everything
    with the contents of `cloudflare-worker/sync-timer.js`, then Deploy.
-3. **Give it the token.** The Worker → Settings → Variables and Secrets → Add →
-   Type: *Secret*, Name: `GITHUB_TOKEN`, Value: the token.
+3. **Give it the token and the PIN.** The Worker → Settings → Variables and
+   Secrets → Add, twice:
+   - Type: *Secret*, Name: `GITHUB_TOKEN`, Value: the token.
+   - Type: *Secret*, Name: `DASHBOARD_PIN`, Value: the dashboard PIN.
 4. **Set the timer.** The Worker → Settings → Trigger Events → Add → Cron
    Triggers → `*/15 * * * *`, which means every 15 minutes.
+5. **Tell the dashboard where the Worker is.** The Worker's address is shown on
+   its overview page, e.g. `https://hon-sync-timer.yourname.workers.dev`. Put it
+   in the `WORKER_URL` line near the top of the script in
+   `docs/dashboard/index.html`.
 
 **To check it works:** after 15–20 minutes, GitHub's Actions tab should show
 "Sync OTA Calendars" runs marked `workflow_dispatch`, one every 15 minutes.
 
 **When the token expires:** make a new token (step 1) and replace the secret
 (step 3). You don't need to change anything else.
+
+**To change the PIN:** replace the `DASHBOARD_PIN` secret. Every browser that
+remembered the old PIN is asked for the new one next time it's used.
 
 ### About deploy-pages.yml
 
@@ -241,19 +285,19 @@ publishes the site either way.
 | Red text: `Booking.com feed failed (HTTP 404)` | That platform's link changed or was reset | Copy the new export link from the platform and update the matching secret. |
 | Red text: `No URL configured (missing secret)` | A secret is missing or misspelled | Check the secret names match exactly (step 2 of setup). |
 | A booking shows on a platform but not on the dashboard | The platform hasn't updated its link yet, or it's within the 15-minute window | Wait 30–45 minutes. To check right away: Actions → "Sync OTA Calendars" → Run workflow. |
+| "Could not save" when blocking dates | The Worker couldn't reach GitHub, usually because the token expired or is missing the Contents permission | Cloudflare → the Worker → Logs shows the error. Fix the token as in step 1. |
 | A change to a page doesn't show | Browser cache | Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows). On a phone, close and reopen the tab. |
 
 ---
 
 ## Things to know
 
-- **The dashboard PIN is a curtain, not a lock.** It's set by the `PIN` line
-  near the top of the script in `docs/dashboard/index.html`. Since the repository
-  is public, anyone who looks at the code can find it, and the files behind the
-  dashboard (`calendar.json`, the feeds) can be opened directly by anyone who
-  knows the address. They contain only dates and platform names, no guest
-  details. If that ever matters, the fix is a Cloudflare Worker that checks a
-  login before serving the dashboard.
+- **The PIN is kept by the Cloudflare Worker, not in this public code.** The
+  Worker checks it on every block or unblock, and answers a wrong PIN slowly so
+  it can't be guessed quickly. The files behind the dashboard (`calendar.json`,
+  the feeds, `blocked-dates.json`) can still be opened by anyone who knows their
+  address. They contain dates, platform names and our own short notes, never
+  guest details from the platforms.
 - **Holidays are entered by hand** in `docs/dashboard/holidays.json`. 2026 is
   confirmed. 2027 is marked provisional until Rajasthan publishes its official
   list, usually in December. Festivals that follow the moon (Eid and some
