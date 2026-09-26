@@ -2,5 +2,6 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Hari Om Niwas//Calendar Hub//EN
 CALSCALE:GREGORIAN
-X-WR-CALNAME:Hari Om Niwas — for Booking.com
+METHOD:PUBLISH
+X-WR-CALNAME:Hari Om Niwas - for Booking.com
 END:VCALENDAR
