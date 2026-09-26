@@ -77,8 +77,7 @@ PIN. The browser remembers it after that.
 - **Shaded days** are part of a long weekend (3+ days of weekends and public
   holidays in a row). Holiday names appear in small red text.
 - **"Upcoming bookings"** lists every stay from today onwards.
-- **"Past stays"** lists the 10 most recent finished stays, newest first. Every
-  past stay also stays on the calendar grid, so you can page back through the
+- **Past stays** stay on the calendar grid, so you can page back through the
   months to see what happened while you were away.
 - **The line under the title** says when the sync last checked the platforms.
   - `Checked 24 Sept, 3:15 pm` means all is well.
