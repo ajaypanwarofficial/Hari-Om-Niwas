@@ -4,12 +4,6 @@ PRODID:-//Hari Om Niwas//Calendar Hub//EN
 CALSCALE:GREGORIAN
 X-WR-CALNAME:Hari Om Niwas — for Airbnb
 BEGIN:VEVENT
-UID:booking-4d7ead57e72c9a8b44c2616d408d4205@booking.com@hariomniwas.in
-DTSTART;VALUE=DATE:20261002
-DTEND;VALUE=DATE:20261004
-SUMMARY:Blocked — Booking.com
-END:VEVENT
-BEGIN:VEVENT
 UID:booking-89afbf300de44e2a0adc2ee685a681cf@booking.com@hariomniwas.in
 DTSTART;VALUE=DATE:20261017
 DTEND;VALUE=DATE:20261018
