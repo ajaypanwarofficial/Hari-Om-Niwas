@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T18:46:01.507Z",
+  "generatedAt": "2026-09-26T19:16:51.859Z",
   "feedFormat": 3,
   "sources": [
     {
@@ -12,7 +12,7 @@
       "name": "Booking.com",
       "key": "booking",
       "ok": true,
-      "count": 3
+      "count": 2
     },
     {
       "name": "MMT / Goibibo",
@@ -24,7 +24,7 @@
       "name": "Blocked by you",
       "key": "manual",
       "ok": true,
-      "count": 0
+      "count": 1
     }
   ],
   "bookings": [
@@ -39,10 +39,11 @@
       "nights": 1
     },
     {
-      "uid": "4d7ead57e72c9a8b44c2616d408d4205@booking.com",
-      "source": "booking",
-      "sourceName": "Booking.com",
-      "summary": "CLOSED - Not available",
+      "uid": "manual-2026-10-02-2026-10-03",
+      "source": "manual",
+      "sourceName": "Blocked",
+      "kind": "direct",
+      "summary": "Direct booking",
       "start": "2026-10-02",
       "end": "2026-10-04",
       "allDay": true,
