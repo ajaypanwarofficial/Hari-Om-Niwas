@@ -17,16 +17,17 @@
     position: fixed; inset: 0; background: var(--paper); z-index: 100;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
   }
-  #gate input {
+  #gate #pin-input {
     font-family: 'Work Sans', sans-serif; font-size: 20px; letter-spacing: .3em;
     text-align: center; width: 200px; padding: 12px; border: 1.5px solid var(--sand);
     border-radius: 2px; background: white; color: var(--ink);
   }
-  #gate input:focus { outline: none; border-color: var(--terra); }
+  #gate #pin-input:focus { outline: none; border-color: var(--terra); }
   #gate button {
     font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
     background: var(--terra); color: var(--paper); border: none; padding: 12px 28px; border-radius: 2px; cursor: pointer;
   }
+  #gate .remember { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--faint); display: flex; align-items: center; gap: 6px; cursor: pointer; }
   #gate .err { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; min-height: 16px; }
   #app { display: none; }
 
@@ -93,6 +94,7 @@
   .tag.booking, .swatch.booking { background: #003B95; }
   .tag.ingo, .swatch.ingo { background: #F26722; }
   .tag.manual, .swatch.manual { background: var(--ink); }
+  .tag.direct, .swatch.direct { background: var(--olive); }
   .provisional-note { font-family: 'Work Sans', sans-serif; font-size: 11px; color: var(--faint); font-style: italic; margin-top: 10px; }
   @media (max-width: 480px) {
     .cell { padding: 4px 3px; min-height: 64px; }
@@ -110,6 +112,37 @@
   .lw-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted var(--sand); font-size: 15px; }
   .lw-row .tag { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--faint); text-transform: uppercase; }
 
+  .block-toggle {
+    font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    background: none; border: 1.4px solid var(--sand); color: var(--ink); height: 32px; padding: 0 14px; border-radius: 2px; cursor: pointer;
+  }
+  .block-toggle:hover { border-color: var(--terra); color: var(--terra); }
+  #block-form { border: 1.4px solid var(--sand); background: #faf6ee; padding: 16px; margin-bottom: 20px; font-family: 'Work Sans', sans-serif; font-size: 12px; }
+  #block-form[hidden] { display: none; }
+  #block-form .row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+  #block-form label { display: flex; flex-direction: column; gap: 4px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); }
+  #block-form .choice { flex-direction: row; align-items: center; gap: 6px; font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  #block-form input[type=date], #block-form input[type=text] {
+    font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px; border: 1.4px solid var(--sand); border-radius: 2px; background: white; color: var(--ink);
+  }
+  #block-form input[type=text] { width: 100%; }
+  #block-form .note-label { flex: 1; min-width: 200px; }
+  #block-form .hint { color: var(--faint); font-size: 11px; margin: 0 0 12px; }
+  #block-form .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  #block-form button[type=submit] {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    background: var(--terra); color: var(--paper); border: none; padding: 11px 22px; border-radius: 2px; cursor: pointer;
+  }
+  #block-form button[disabled] { opacity: .6; cursor: default; }
+  .form-msg { font-size: 12px; color: var(--ink); }
+  .form-msg.bad { color: var(--terra); }
+  .bk-row .remove {
+    font-family: 'Work Sans', sans-serif; font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
+    background: none; border: 1px solid var(--sand); color: var(--faint); padding: 4px 8px; border-radius: 2px; cursor: pointer; white-space: nowrap;
+  }
+  .bk-row .remove.confirm { border-color: var(--terra); color: var(--terra); }
+  .bk-row .note { color: var(--faint); font-style: italic; }
+
   .error { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; margin-top: 10px; }
   footer { margin-top: 50px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 </style>
@@ -120,6 +153,7 @@
   <div class="arch-mark"></div>
   <div style="font-family:'Anton',sans-serif; text-transform:uppercase; font-size:22px; color:var(--teak);">Enter code<span style="color:var(--terra)">.</span></div>
   <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="······" autocomplete="off">
+  <label class="remember"><input type="checkbox" id="pin-remember" checked>Remember this device</label>
   <button id="pin-submit">Unlock</button>
   <div class="err" id="pin-err"></div>
 </div>
@@ -137,13 +171,34 @@
       <button id="next-month">›</button>
       <button id="today-btn" class="today-btn hidden">Today</button>
     </div>
+    <button id="block-toggle" class="block-toggle">Block dates</button>
   </div>
+
+  <form id="block-form" hidden>
+    <div class="row">
+      <label>Check-in<input type="date" id="bf-in" required></label>
+      <label>Check-out<input type="date" id="bf-out" required></label>
+    </div>
+    <div class="row">
+      <label class="choice"><input type="radio" name="bf-kind" value="direct" checked>Direct booking</label>
+      <label class="choice"><input type="radio" name="bf-kind" value="closed">Closed (family, repairs)</label>
+    </div>
+    <div class="row">
+      <label class="note-label">Note (optional)<input type="text" id="bf-note" maxlength="60" placeholder="e.g. 2 guests, via Instagram"></label>
+    </div>
+    <p class="hint">Airbnb, Booking.com and MMT only see "Blocked", never the note. But anyone who knows the right link can read notes, so no phone numbers or full names.</p>
+    <div class="actions">
+      <button type="submit" id="bf-submit">Block these nights</button>
+      <span class="form-msg" id="bf-msg"></span>
+    </div>
+  </form>
 
   <div class="legend">
     <span><i class="swatch airbnb"></i>Airbnb</span>
     <span><i class="swatch booking"></i>Booking.com</span>
     <span><i class="swatch ingo"></i>MMT / Goibibo</span>
-    <span><i class="swatch manual"></i>Blocked by you</span>
+    <span><i class="swatch direct"></i>Direct booking</span>
+    <span><i class="swatch manual"></i>Closed by you</span>
     <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
     <span><i style="border:1.5px solid var(--terra); border-radius:50%"></i>Today</span>
   </div>
@@ -167,29 +222,98 @@
 </div>
 
 <script>
-  const PIN = '012345';
+  // The PIN is checked by the Cloudflare Worker (cloudflare-worker/sync-timer.js),
+  // which also saves blocked dates. It is kept there as a secret, not in this public page.
+  const WORKER_URL = 'WORKER_URL_GOES_HERE';
   const gate = document.getElementById('gate');
   const app = document.getElementById('app');
-  if (localStorage.getItem('hon_unlocked') === '1') {
+  // "Remember this device" keeps the code in localStorage, so it survives closing the browser.
+  // Unticked (someone else's browser), it goes in sessionStorage, which the browser
+  // forgets when the tab closes, and the page also locks after 10 minutes idle.
+  const IDLE_LIMIT = 10 * 60 * 1000;
+  const store = {
+    get() { try { return localStorage.getItem('hon_pin') || sessionStorage.getItem('hon_pin'); } catch { return null; } },
+    remembered() { try { return !!localStorage.getItem('hon_pin'); } catch { return false; } },
+    set(v, remember) {
+      try {
+        localStorage.removeItem('hon_unlocked');
+        (remember ? localStorage : sessionStorage).setItem('hon_pin', v);
+        (remember ? sessionStorage : localStorage).removeItem('hon_pin');
+      } catch {}
+    },
+    clear() { try { localStorage.removeItem('hon_pin'); sessionStorage.removeItem('hon_pin'); } catch {} },
+  };
+  let pin = store.get();
+
+  let lastActive = Date.now();
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((ev) =>
+    addEventListener(ev, () => { lastActive = Date.now(); }, { passive: true, capture: true }));
+  function checkIdle() {
+    if (pin && !store.remembered() && Date.now() - lastActive > IDLE_LIMIT) {
+      store.clear(); pin = null;
+      lock('Locked after 10 minutes without use.');
+    }
+  }
+  setInterval(checkIdle, 30000);
+  // Timers are paused in background tabs, so check again as soon as the tab is looked at.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkIdle(); });
+
+  // Returns the parsed reply; throws { status, message } when the Worker says no.
+  async function callWorker(path, body) {
+    let res;
+    try {
+      res = await fetch(WORKER_URL + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Pin': pin || '' },
+        body: JSON.stringify(body || {}),
+      });
+    } catch {
+      throw { status: 0, message: 'No connection. Check the internet and try again.' };
+    }
+    if (res.status === 401) {
+      store.clear(); pin = null; lock('Code changed. Enter it again.');
+      throw { status: 401, message: 'Wrong code.' };
+    }
+    const data = res.status === 204 ? {} : await res.json().catch(() => ({}));
+    if (!res.ok) throw { status: res.status, message: data.error || 'Something went wrong. Try again.' };
+    return data;
+  }
+
+  function lock(msg) {
+    app.style.display = 'none';
+    gate.style.display = 'flex';
+    document.getElementById('pin-err').textContent = msg || '';
+    document.getElementById('pin-input').value = '';
+  }
+  function unlock() {
     gate.style.display = 'none';
     app.style.display = 'block';
   }
+
   document.getElementById('pin-submit').onclick = tryUnlock;
   document.getElementById('pin-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
-  function tryUnlock() {
-    const val = document.getElementById('pin-input').value;
-    if (val === PIN) {
-      localStorage.setItem('hon_unlocked', '1');
-      gate.style.display = 'none';
-      app.style.display = 'block';
+  async function tryUnlock() {
+    const err = document.getElementById('pin-err');
+    pin = document.getElementById('pin-input').value.trim();
+    err.textContent = 'Checking…';
+    try {
+      await callWorker('/check');
+      store.set(pin, document.getElementById('pin-remember').checked);
+      lastActive = Date.now();
+      err.textContent = '';
+      unlock();
       init();
-    } else {
-      document.getElementById('pin-err').textContent = 'Wrong code.';
+    } catch (e) {
+      if (e.status !== 401) pin = null;
+      err.textContent = e.message;
     }
   }
 
-  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT', manual: 'Blocked' };
-  const SOURCE_LABELS = { airbnb: 'Airbnb', booking: 'Booking.com', ingo: 'MMT / Goibibo', manual: 'Blocked by you' };
+  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT', manual: 'Closed', direct: 'Direct' };
+  // Our own blocks are all source "manual"; a direct booking gets its own tag.
+  function tagKey(b) { return b.source === 'manual' && b.kind === 'direct' ? 'direct' : b.source; }
+  function tagHTML(b) { const k = tagKey(b); return '<span class="tag ' + k + '">' + (SHORT_LABELS[k] || k) + '</span>'; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, (c) => '&#' + c.charCodeAt(0) + ';'); }
 
   let bookings = [];
   let holidays = [];
@@ -350,8 +474,8 @@
         tags.className = 'tags';
         dayBookings.forEach((b) => {
           const tag = document.createElement('div');
-          tag.className = 'tag ' + b.source;
-          tag.textContent = SHORT_LABELS[b.source] || b.source;
+          tag.className = 'tag ' + tagKey(b);
+          tag.textContent = SHORT_LABELS[tagKey(b)] || b.source;
           tags.appendChild(tag);
         });
         cell.appendChild(tags);
@@ -394,10 +518,104 @@
       }
       const d = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
       const nights = b.nights ? ' · ' + b.nights + (b.nights === 1 ? ' night' : ' nights') : '';
-      return '<div class="bk-row"><span class="tag ' + b.source + '">' + (SHORT_LABELS[b.source] || b.source) + '</span>' +
-        '<span class="dates">' + d(start) + ' – ' + d(end) + nights + '</span>' +
-        '<span class="when' + (now ? ' now' : '') + '">' + when + '</span></div>';
+      const own = b.source === 'manual';
+      const note = own && b.summary && b.summary !== 'Blocked' && b.summary !== 'Direct booking' ? '<br><span class="note">' + esc(b.summary) + '</span>' : '';
+      const remove = own ? '<button class="remove" data-from="' + start + '" data-to="' + addDaysKey(end, -1) + '">Remove</button>' : '';
+      return '<div class="bk-row">' + tagHTML(b) +
+        '<span class="dates">' + d(start) + ' – ' + d(end) + nights + note + '</span>' +
+        '<span class="when' + (now ? ' now' : '') + '">' + when + '</span>' + remove + '</div>';
     }).join('');
+  }
+
+  function addDaysKey(key, n) {
+    const d = new Date(key + 'T00:00:00');
+    d.setDate(d.getDate() + n);
+    return toKey(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  // Remove needs a second tap, so a stray tap can't reopen dates.
+  document.getElementById('upcoming-bookings').addEventListener('click', async (e) => {
+    const btn = e.target.closest('.remove');
+    if (!btn || btn.disabled) return;
+    if (!btn.classList.contains('confirm')) {
+      document.querySelectorAll('.remove.confirm').forEach((b) => { b.classList.remove('confirm'); b.textContent = 'Remove'; });
+      btn.classList.add('confirm');
+      btn.textContent = 'Tap again to reopen';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Removing…';
+    try {
+      await callWorker('/unblock', { from: btn.dataset.from, to: btn.dataset.to });
+      btn.textContent = 'Removed — updates in ~2 min';
+      scheduleRefresh();
+    } catch (err) {
+      btn.disabled = false;
+      btn.classList.remove('confirm');
+      btn.textContent = 'Remove';
+      if (err.status !== 401) showStatusNote(err.message, true);
+    }
+  });
+
+  // --- Block dates form
+  const form = document.getElementById('block-form');
+  const msg = document.getElementById('bf-msg');
+  function setMsg(text, bad) { msg.textContent = text; msg.className = 'form-msg' + (bad ? ' bad' : ''); }
+  function showStatusNote(text, bad) {
+    form.hidden = false;
+    setMsg(text, bad);
+  }
+  document.getElementById('block-toggle').onclick = () => {
+    form.hidden = !form.hidden;
+    if (!form.hidden) {
+      const t = new Date();
+      const todayKey = toKey(t.getFullYear(), t.getMonth(), t.getDate());
+      document.getElementById('bf-in').min = todayKey;
+      document.getElementById('bf-out').min = addDaysKey(todayKey, 1);
+      setMsg('');
+    }
+  };
+  document.getElementById('bf-in').addEventListener('change', (e) => {
+    const out = document.getElementById('bf-out');
+    if (e.target.value) {
+      out.min = addDaysKey(e.target.value, 1);
+      if (!out.value || out.value <= e.target.value) out.value = out.min;
+    }
+  });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const checkIn = document.getElementById('bf-in').value;
+    const checkOut = document.getElementById('bf-out').value;
+    if (!checkIn || !checkOut || checkOut <= checkIn) { setMsg('Check-out must be after check-in.', true); return; }
+    const submit = document.getElementById('bf-submit');
+    submit.disabled = true;
+    setMsg('Saving…');
+    try {
+      await callWorker('/block', {
+        from: checkIn,
+        to: addDaysKey(checkOut, -1),
+        kind: form.querySelector('input[name=bf-kind]:checked').value,
+        note: document.getElementById('bf-note').value,
+      });
+      setMsg('Saved. The calendar updates in about 2 minutes; the platforms usually within the hour.');
+      form.reset();
+      scheduleRefresh();
+    } catch (err) {
+      if (err.status !== 401) setMsg(err.message, true);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  // The sync takes about 2 minutes after a change; reload the data then, and once more a bit later.
+  let refreshTimers = [];
+  function scheduleRefresh() {
+    refreshTimers.forEach(clearTimeout);
+    refreshTimers = [120000, 240000].map((ms) => setTimeout(async () => {
+      await loadData();
+      renderMonth();
+      renderUpcoming();
+    }, ms));
   }
 
   document.getElementById('next-month').onclick = () => {
@@ -416,7 +634,12 @@
     renderUpcoming();
   }
 
-  if (gate.style.display === 'none') init();
+  if (pin) {
+    unlock();
+    init();
+    // Confirm the saved code still works; callWorker locks the page if it doesn't.
+    callWorker('/check').catch(() => {});
+  }
 </script>
 </body>
 </html>
