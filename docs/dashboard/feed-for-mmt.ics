@@ -3,7 +3,7 @@ VERSION:2.0
 PRODID:-//Hari Om Niwas//Calendar Hub//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:Hari Om Niwas - for Airbnb
+X-WR-CALNAME:Hari Om Niwas - for MMT / Goibibo
 BEGIN:VEVENT
 UID:booking-4d7ead57e72c9a8b44c2616d408d4205@booking.com@hariomniwas.in
 DTSTAMP:20260926T184601Z
