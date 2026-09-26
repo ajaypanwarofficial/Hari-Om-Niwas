@@ -45,6 +45,8 @@ const OUT_DIR = path.join(__dirname, '..', 'docs', 'dashboard');
 const CAL_PATH = path.join(OUT_DIR, 'calendar.json');
 const BLOCKED_PATH = path.join(__dirname, '..', 'blocked-dates.json');
 const TRUSTED = new Set(['airbnb', 'manual']);
+// Raise this when the feed file layout changes, so the next sync rewrites the feeds even if no booking changed.
+const FEED_FORMAT = 2;
 
 function addDays(iso, n) {
   const d = new Date(iso + 'T00:00:00Z');
@@ -158,14 +160,19 @@ function toICSDate(iso, allDay) {
   return allDay ? iso.replace(/-/g, '') : iso.replace(/[-:]/g, '');
 }
 
+// Kept strictly to the iCal standard (RFC 5545) and plain ASCII. Airbnb and
+// Booking.com accept looser files, but MMT's importer rejects a feed whose
+// events lack DTSTAMP ("Incorrect link. Please add a valid calendar link").
 function buildICS(events, calName) {
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hari Om Niwas//Calendar Hub//EN', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${calName}`];
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hari Om Niwas//Calendar Hub//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${calName}`];
   for (const ev of events) {
     lines.push('BEGIN:VEVENT');
     lines.push(`UID:${ev.source}-${ev.uid}@hariomniwas.in`);
+    lines.push(`DTSTAMP:${stamp}`);
     lines.push(`DTSTART${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.start, ev.allDay)}`);
     lines.push(`DTEND${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.end, ev.allDay)}`);
-    lines.push(`SUMMARY:${ev.source === 'manual' ? 'Blocked — Hari Om Niwas' : 'Blocked — ' + ev.sourceName}`);
+    lines.push(`SUMMARY:${ev.source === 'manual' ? 'Blocked - Hari Om Niwas' : 'Blocked - ' + ev.sourceName}`);
     lines.push('END:VEVENT');
   }
   lines.push('END:VCALENDAR');
@@ -233,7 +240,7 @@ async function main() {
   all.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : a.source.localeCompare(b.source)));
 
   const statusForCompare = (s) => (s || []).map(({ key, ok, error }) => ({ key, ok, error: error || null }));
-  const unchanged = prev &&
+  const unchanged = prev && prev.feedFormat === FEED_FORMAT &&
     JSON.stringify(prev.bookings) === JSON.stringify(all) &&
     JSON.stringify(statusForCompare(prev.sources)) === JSON.stringify(statusForCompare(status));
 
@@ -243,14 +250,14 @@ async function main() {
     console.log('No change since last sync. Nothing written.');
   } else {
     fs.mkdirSync(OUT_DIR, { recursive: true });
-    fs.writeFileSync(CAL_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), sources: status, bookings: all }, null, 2) + '\n');
+    fs.writeFileSync(CAL_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), feedFormat: FEED_FORMAT, sources: status, bookings: all }, null, 2) + '\n');
     // The feeds only need nights that can still be booked; history stays in calendar.json.
     const current = all.filter((e) => e.end.slice(0, 10) > today);
-    fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(current, 'Hari Om Niwas — All Platforms'));
+    fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(current, 'Hari Om Niwas - All Platforms'));
     for (const f of FEEDS) {
       fs.writeFileSync(
         path.join(OUT_DIR, `feed-for-${f.key}.ics`),
-        buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas — for ${f.name}`)
+        buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas - for ${f.name}`)
       );
     }
     console.log('Bookings or feed status changed. Files written.');
