@@ -224,7 +224,7 @@
 <script>
   // The PIN is checked by the Cloudflare Worker (cloudflare-worker/sync-timer.js),
   // which also saves blocked dates. It is kept there as a secret, not in this public page.
-  const WORKER_URL = 'WORKER_URL_GOES_HERE';
+  const WORKER_URL = 'https://hon-sync-timer.panwarajay149.workers.dev';
   const gate = document.getElementById('gate');
   const app = document.getElementById('app');
   // "Remember this device" keeps the code in localStorage, so it survives closing the browser.
