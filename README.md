@@ -36,6 +36,35 @@ one link back with everyone else's bookings in it.
 Each platform gets a feed that **leaves out its own bookings**, so a platform
 never sees its own reservation come back as a block.
 
+### How the platforms are actually connected
+
+Each platform imports **our link**, and they also still import **each other's
+links directly**. That was how they were set up before this project, and we
+kept those links on purpose as a backup: if our sync ever stopped, the
+platforms would still hear about each other's bookings. Our calendar is simply
+one more member of the group, one that can only close or open dates.
+
+| Platform | Imports |
+|---|---|
+| Airbnb | our `feed-for-airbnb.ics`, Booking.com's link, MMT's link |
+| Booking.com | our `feed-for-booking.ics`, Airbnb's link, MMT's link |
+| MMT/Goibibo | our `feed-for-mmt.ics`, Airbnb's link, Booking.com's link |
+
+The direct links can't cause a double booking, but they have two side effects
+to watch for:
+
+- **A date can stay closed after a cancellation.** Platform A closes a date,
+  B copies the closure from A, then A copies it back from B, so the date can
+  stay closed after the guest cancels. The sign: a night is closed on a
+  platform, but our dashboard shows nothing on it.
+- **One booking can show two tags on our dashboard,** e.g. an MMT booking shown
+  as both MMT and Booking, because Booking.com's link lists every date it has
+  closed, including ones it copied from MMT. It's still one booking.
+
+If either becomes a problem, remove the direct links (the rows that aren't
+ours in each platform's "sync calendars" page), so each platform imports only
+our link.
+
 ---
 
 ## How an update travels, and how long it takes
@@ -111,9 +140,11 @@ Use **Block dates** on the dashboard:
 To reopen the dates, tap **Remove** next to the entry under "Upcoming bookings",
 then tap again to confirm.
 
-**Don't** close dates on just one platform. The dates show on our dashboard as
-that platform's booking, not as ours. Also, Airbnb's link only shares real guest
-reservations, so dates closed only on Airbnb are never passed on.
+**Use the dashboard, not a platform, to close dates.** Dates closed on a
+platform show on our dashboard as that platform's booking, not as ours, and
+our link never passes on a date closed only on Airbnb (it shares only real
+guest reservations). If you had closed dates on a platform before, block them on
+the dashboard, then reopen them on that platform, as was done for 2–3 Oct 2026.
 
 **For a booking made today for tonight,** block it on the dashboard *and* close
 it on each platform yourself. The platforms read our link on their own
@@ -167,8 +198,9 @@ edit the form in Tally. The page picks up the change by itself.
 ├── scripts/sync.js               The sync: reads, merges and writes the calendars
 ├── blocked-dates.json            Dates we close ourselves (see above)
 ├── cloudflare-worker/
-│   └── sync-timer.js             Starts the sync every 15 minutes; checks the
-│                                 dashboard PIN and saves blocked dates
+│   ├── sync-timer.js             Starts the sync every 15 minutes; checks the
+│   │                             dashboard PIN and saves blocked dates
+│   └── wrangler.toml             Settings for deploying it from a computer
 └── .github/workflows/
     ├── sync-calendar.yml         Runs scripts/sync.js on GitHub's servers
     └── deploy-pages.yml          Not used for now (see below)
@@ -246,7 +278,9 @@ dashboard talks to: it checks the PIN and saves blocked dates. Setup takes about
      before it runs out.
 2. **Create the Worker.** Cloudflare dashboard → Workers & Pages → Create →
    Worker. Name it `hon-sync-timer` → Deploy → Edit code. Replace everything
-   with the contents of `cloudflare-worker/sync-timer.js`, then Deploy.
+   with the contents of `cloudflare-worker/sync-timer.js`, then Deploy. Its
+   `workers.dev` address must be switched on (Settings → Domains & Routes), since
+   that's the address the dashboard calls.
 3. **Give it the token and the PIN.** The Worker → Settings → Variables and
    Secrets → Add, twice:
    - Type: *Secret*, Name: `GITHUB_TOKEN`, Value: the token.
@@ -266,6 +300,11 @@ dashboard talks to: it checks the PIN and saves blocked dates. Setup takes about
 
 **To change the PIN:** replace the `DASHBOARD_PIN` secret. Every browser that
 remembered the old PIN is asked for the new one next time it's used.
+
+**Updating the Worker from a computer** instead of pasting code: from the
+`cloudflare-worker` folder, after logging in to Cloudflare once with
+`npx wrangler login`, run `npx wrangler deploy` (wrangler 4 needs Node 22 or
+newer). A secret is set with `npx wrangler secret put DASHBOARD_PIN`.
 
 ### About deploy-pages.yml
 
@@ -288,6 +327,10 @@ publishes the site either way.
 | Red text: `Booking.com feed failed (HTTP 404)` | That platform's link changed or was reset | Copy the new export link from the platform and update the matching secret. |
 | Red text: `No URL configured (missing secret)` | A secret is missing or misspelled | Check the secret names match exactly (step 2 of setup). |
 | A booking shows on a platform but not on the dashboard | The platform hasn't updated its link yet, or it's within the 15-minute window | Wait 30–45 minutes. To check right away: Actions → "Sync OTA Calendars" → Run workflow. |
+| A platform says "Incorrect link" when importing our link | MMT (and possibly others) rejects a link whose address contains another platform's name: "ingo", "google", "booking", "airbnb" or "agoda" | Use the link exactly as listed in step 6 of setup. Never rename a feed to include one of those words. |
+| A night is closed on a platform, but the dashboard shows nothing | A copied closure is stuck between two platforms that import each other directly | Reopen it on that platform. If it keeps happening, remove the direct links (see "How the platforms are actually connected"). |
+| One booking shows two platform tags | Booking.com's link repeats bookings it copied from MMT | Harmless. Removing the direct links stops it. |
+| The dashboard asks for the code again | The PIN was changed, or "Remember this device" was unticked | Enter the current PIN. |
 | "Could not save" when blocking dates | The Worker couldn't reach GitHub, usually because the token expired or is missing the Contents permission | Cloudflare → the Worker → Logs shows the error. Fix the token as in step 1. |
 | A change to a page doesn't show | Browser cache | Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows). On a phone, close and reopen the tab. |
 
@@ -296,8 +339,9 @@ publishes the site either way.
 ## Things to know
 
 - **The PIN is kept by the Cloudflare Worker, not in this public code.** The
-  Worker checks it on every block or unblock, and answers a wrong PIN slowly so
-  it can't be guessed quickly. The files behind the dashboard (`calendar.json`,
+  Worker checks it when the dashboard is opened and on every block or unblock,
+  and answers a wrong PIN slowly so it can't be guessed quickly. Don't write
+  the PIN in this repository. The files behind the dashboard (`calendar.json`,
   the feeds, `blocked-dates.json`) can still be opened by anyone who knows their
   address. They contain dates, platform names and our own short notes, never
   guest details from the platforms.
