@@ -5,7 +5,7 @@
 //   merged.ics             every booking from every platform
 //   feed-for-airbnb.ics    everything EXCEPT Airbnb's own bookings
 //   feed-for-booking.ics   everything EXCEPT Booking.com's own bookings
-//   feed-for-ingo.ics      everything EXCEPT MMT/Goibibo's own bookings
+//   feed-for-mmt.ics       everything EXCEPT MMT/Goibibo's own bookings
 //
 // Each platform imports its own feed-for-*.ics, so it never re-imports
 // its own reservations as blocks.
@@ -38,7 +38,9 @@ const path = require('path');
 const FEEDS = [
   { name: 'Airbnb', key: 'airbnb', url: process.env.AIRBNB_ICAL_URL, keep: (e) => /^reserved$/i.test((e.summary || '').trim()) },
   { name: 'Booking.com', key: 'booking', url: process.env.BOOKING_ICAL_URL },
-  { name: 'MMT / Goibibo', key: 'ingo', url: process.env.INGO_ICAL_URL },
+  // MMT refuses to import a link containing "ingo", "google", "booking", "airbnb"
+  // or "agoda" (it takes those for another platform's link), hence feed-for-mmt.
+  { name: 'MMT / Goibibo', key: 'ingo', file: 'mmt', url: process.env.INGO_ICAL_URL },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'dashboard');
@@ -46,7 +48,7 @@ const CAL_PATH = path.join(OUT_DIR, 'calendar.json');
 const BLOCKED_PATH = path.join(__dirname, '..', 'blocked-dates.json');
 const TRUSTED = new Set(['airbnb', 'manual']);
 // Raise this when the feed file layout changes, so the next sync rewrites the feeds even if no booking changed.
-const FEED_FORMAT = 2;
+const FEED_FORMAT = 3;
 
 function addDays(iso, n) {
   const d = new Date(iso + 'T00:00:00Z');
@@ -250,7 +252,7 @@ async function main() {
 
   console.log(JSON.stringify(status, null, 2));
 
-  if (unchanged && FEEDS.every((f) => fs.existsSync(path.join(OUT_DIR, `feed-for-${f.key}.ics`)))) {
+  if (unchanged && FEEDS.every((f) => fs.existsSync(path.join(OUT_DIR, `feed-for-${f.file || f.key}.ics`)))) {
     console.log('No change since last sync. Nothing written.');
   } else {
     fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -260,7 +262,7 @@ async function main() {
     fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(current, 'Hari Om Niwas - All Platforms'));
     for (const f of FEEDS) {
       fs.writeFileSync(
-        path.join(OUT_DIR, `feed-for-${f.key}.ics`),
+        path.join(OUT_DIR, `feed-for-${f.file || f.key}.ics`),
         buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas - for ${f.name}`)
       );
     }

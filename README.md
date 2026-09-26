@@ -28,7 +28,7 @@ one link back with everyone else's bookings in it.
 ```
  Airbnb ─────┐                                   ┌──► feed-for-airbnb.ics  ──► Airbnb
  Booking.com ┼──► sync (every 15 min) ──► merge ─┼──► feed-for-booking.ics ──► Booking.com
- MMT/Goibibo ┘          ▲                        ├──► feed-for-ingo.ics    ──► MMT/Goibibo
+ MMT/Goibibo ┘          ▲                        ├──► feed-for-mmt.ics     ──► MMT/Goibibo
                         │                        └──► calendar.json        ──► our dashboard
          blocked-dates.json (dates we close ourselves, from the dashboard)
 ```
@@ -223,7 +223,10 @@ account.
    paste its own link:
    - Airbnb: `https://hariomniwas.in/dashboard/feed-for-airbnb.ics`
    - Booking.com: `https://hariomniwas.in/dashboard/feed-for-booking.ics`
-   - MMT/Goibibo: `https://hariomniwas.in/dashboard/feed-for-ingo.ics`
+   - MMT/Goibibo: `https://hariomniwas.in/dashboard/feed-for-mmt.ics`
+
+   MMT rejects any link containing "ingo", "google", "booking", "airbnb" or
+   "agoda" as "Incorrect link", which is why its feed is named `feed-for-mmt`.
 7. **Set up the Cloudflare timer**, as described in the next section.
 
 ### The Cloudflare Worker (sync-timer.js)
