@@ -90,7 +90,7 @@
   /* ---- Where to book ---- */
   .book { max-width: 680px; margin: 0 auto; padding: 48px 24px 0; text-align: center; }
   .book[hidden] { display: none; }
-  .book p { margin: 14px auto 22px; color: var(--faint); font-style: italic; }
+  .book p:not(.label) { margin: 14px auto 22px; color: var(--faint); font-style: italic; }
   .otas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .otas a {
     font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .16em;
@@ -98,6 +98,22 @@
     border-radius: 2px; transition: border-color .15s, color .15s;
   }
   .otas a:hover { border-color: var(--terra); color: var(--terra); }
+
+  .dates { max-width: 460px; margin: 22px auto 0; padding: 20px 18px; border: 1.4px solid var(--sand); border-radius: 2px; }
+  .dates[hidden] { display: none; }
+  .dates-for { margin: 0 0 14px !important; font-style: normal !important; color: var(--text) !important; }
+  .dates-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .dates label { display: flex; flex-direction: column; gap: 6px; text-align: left;
+                 font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); }
+  .dates input, .dates select {
+    font-family: 'Work Sans', sans-serif; font-size: 15px; color: var(--text); background: transparent;
+    border: none; border-bottom: 1.5px solid var(--sand); border-radius: 0; padding: 6px 2px; min-width: 130px;
+  }
+  .dates select { min-width: 70px; }
+  .dates input:focus, .dates select:focus { outline: none; border-bottom-color: var(--terra); }
+  .dates button { border: none; cursor: pointer; }
+  .dates-err { color: var(--terra) !important; font-style: normal !important; font-family: 'Work Sans', sans-serif; font-size: 12px; margin: 10px 0 0 !important; min-height: 1em; }
+  @media (prefers-color-scheme: dark) { .dates label { color: #B5B08A; } .dates input { color-scheme: dark; } }
 
   footer {
     width: 100%; max-width: 980px; margin: 0 auto; padding: 64px 24px 32px;
@@ -165,11 +181,23 @@
   <h2>Find us listed<span class="stop">.</span></h2>
   <p>Same house, same family. Book wherever you are comfortable.</p>
   <div class="otas">
-    <a data-ota href="" target="_blank" rel="noopener">Airbnb</a>
-    <a data-ota href="" target="_blank" rel="noopener">Booking.com</a>
-    <a data-ota href="" target="_blank" rel="noopener">MakeMyTrip</a>
-    <a data-ota href="" target="_blank" rel="noopener">Goibibo</a>
+    <a data-ota href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener">Airbnb</a>
+    <a data-ota href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener">Booking.com</a>
+    <a data-ota href="#dates" data-dated="mmt" role="button">MakeMyTrip</a>
+    <a data-ota href="#dates" data-dated="goibibo" role="button">Goibibo</a>
   </div>
+  <!-- MakeMyTrip and Goibibo have no plain share link: their pages need dates,
+       so we ask for them here and open the listing on those dates. -->
+  <form class="dates" id="dates" hidden>
+    <p class="dates-for">Your dates, for <span id="dates-site">MakeMyTrip</span></p>
+    <div class="dates-row">
+      <label>Check-in<input type="date" id="d-in" required></label>
+      <label>Check-out<input type="date" id="d-out" required></label>
+      <label>Adults<select id="d-adults"><option>1</option><option selected>2</option><option>3</option></select></label>
+    </div>
+    <button type="submit" class="btn" id="d-go">See the listing</button>
+    <p class="dates-err" id="d-err"></p>
+  </form>
 </section>
 
 <footer>
@@ -183,6 +211,50 @@
     var links = document.querySelectorAll('[data-ota]'), any = false;
     links.forEach(function (a) { if (a.getAttribute('href')) any = true; else a.remove(); });
     if (any) document.getElementById('book').hidden = false;
+  })();
+
+  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them.
+  (function () {
+    var HOTEL = '202609111336168255';
+    var form = document.getElementById('dates'), site = null;
+    var din = document.getElementById('d-in'), dout = document.getElementById('d-out'), err = document.getElementById('d-err');
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    var key = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+    var plus = function (k, n) { var p = k.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2] + n); return key(d); };
+    var today = key(new Date());
+    din.min = today; dout.min = plus(today, 1);
+    din.addEventListener('change', function () {
+      if (!din.value) return;
+      dout.min = plus(din.value, 1);
+      if (!dout.value || dout.value <= din.value) dout.value = dout.min;
+    });
+    document.querySelectorAll('[data-dated]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        site = a.getAttribute('data-dated');
+        document.getElementById('dates-site').textContent = a.textContent;
+        form.hidden = false; err.textContent = '';
+        if (!din.value) { din.value = plus(today, 7); dout.value = plus(today, 8); }
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!din.value || !dout.value || dout.value <= din.value) { err.textContent = 'Check-out has to be after check-in.'; return; }
+      var a = din.value.split('-'), b = dout.value.split('-'), adults = document.getElementById('d-adults').value, url;
+      if (site === 'mmt') {
+        // MakeMyTrip wants MMDDYYYY.
+        url = 'https://www.makemytrip.com/hotels/hotel-details/?hotelId=' + HOTEL +
+              '&checkin=' + a[1] + a[2] + a[0] + '&checkout=' + b[1] + b[2] + b[0] +
+              '&roomStayQualifier=' + adults + 'e0e&city=CTJDH&country=IN&currency=INR';
+      } else {
+        // Goibibo wants YYYYMMDD.
+        var ci = a.join(''), co = b.join('');
+        url = 'https://www.goibibo.com/hotels/Hari-Om-Niwas-hotel-in-Jodhpur-' + HOTEL + '/?hquery=' +
+              encodeURIComponent(JSON.stringify({ ci: ci, co: co })) + '&checkin=' + ci + '&checkout=' + co + '&roomString=1-' + adults + '-0';
+      }
+      window.open(url, '_blank', 'noopener');
+    });
   })();
 </script>
 </body>
