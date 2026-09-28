@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T04:45:43.042Z",
+  "generatedAt": "2026-09-28T09:08:58.027Z",
   "feedFormat": 3,
   "sources": [
     {
@@ -25,7 +25,7 @@
       "name": "Blocked by you",
       "key": "manual",
       "ok": true,
-      "count": 1
+      "count": 2
     }
   ],
   "bookings": [
@@ -49,6 +49,17 @@
       "end": "2026-10-04",
       "allDay": true,
       "nights": 2
+    },
+    {
+      "uid": "manual-2026-10-14-2026-10-14",
+      "source": "manual",
+      "sourceName": "Blocked",
+      "kind": "direct",
+      "summary": "Direct booking",
+      "start": "2026-10-14",
+      "end": "2026-10-15",
+      "allDay": true,
+      "nights": 1
     },
     {
       "uid": "89afbf300de44e2a0adc2ee685a681cf@booking.com",
