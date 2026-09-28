@@ -3,129 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hari Om Niwas — Boho Homestay, Jodhpur</title>
-<meta name="description" content="A family home in Jodhpur, not a hotel. The whole upper floor, specialty coffee, and Rajasthani food cooked in the house.">
+<title>Hari Om Niwas — Jodhpur</title>
+<meta name="description" content="A family home in Jodhpur, not a hotel. The whole upper floor, specialty coffee, and Rajasthani food cooked in the house. A new website is on its way.">
+<meta name="theme-color" content="#F3EDE0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<!-- Arimo is used ONLY inside the logo, to match the lockup files (lock_ivory.png / lock_terra.png). -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
     --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
+    --ground: var(--paper); --text: var(--ink); --heading: var(--teak);
   }
+  /* Dark mode: the same palette inverted onto #262624, paper as the text. */
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; }
+  }
+
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Spectral', Georgia, serif; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--text);
+    font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.6;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  a { color: inherit; }
   img { display: block; max-width: 100%; }
 
   .label {
     font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500;
-    letter-spacing: .2em; text-transform: uppercase; color: var(--olive);
+    letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 0;
   }
+  @media (prefers-color-scheme: dark) { .label { color: #B5B08A; } }
 
-  /* ---- Hero ---- */
-  .hero { text-align: center; padding: 72px 24px 0; }
-  .logo { width: clamp(150px, 20vw, 200px); height: auto; margin: 0 auto; }
+  main { flex: 1; width: 100%; max-width: 680px; margin: 0 auto; padding: 64px 24px 40px; text-align: center; }
+
+  /* ---- The lockup ---- */
+  .logo { width: clamp(170px, 42vw, 230px); height: auto; margin: 0 auto; }
   .logo text { font-family: 'Arimo', Arial, Helvetica, sans-serif; }
-  .hero .label { margin: 32px 0 0; }
-  .tagline { font-style: italic; font-size: 20px; line-height: 1.5; color: var(--faint); margin: 12px auto 0; max-width: 460px; }
-  .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
-  .btn {
-    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
-    padding: 15px 28px; border-radius: 2px; text-decoration: none; border: 1.4px solid transparent; line-height: 1;
+  .logo .arch, .logo .word { stroke: var(--heading); fill: var(--heading); }
+  .logo .arch { fill: none; }
+  .logo .city { fill: var(--olive); }
+  @media (prefers-color-scheme: dark) { .logo .city { fill: #B5B08A; } }
+
+  h1 {
+    font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase;
+    letter-spacing: .01em; line-height: 1.02; color: var(--heading);
+    font-size: clamp(38px, 9vw, 58px); margin: 56px 0 0;
   }
-  .btn-primary { background: var(--terra); border-color: var(--terra); color: var(--paper); }
-  .btn-secondary { border-color: var(--ink); color: var(--ink); }
+  h1 .stop { color: var(--terra); }
 
-  .hero-photo { max-width: 1200px; margin: 64px auto 0; padding: 0 24px; }
-  .hero-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 2px; }
+  .lede { font-size: 19px; line-height: 1.65; margin: 22px auto 0; max-width: 520px; }
+  .tagline { font-style: italic; color: var(--faint); margin: 18px auto 0; max-width: 440px; }
 
-  /* ---- About ---- */
-  .about { max-width: 600px; margin: 0 auto; padding: 72px 24px; text-align: center; font-size: 19px; line-height: 1.7; }
-  .about p { margin: 0; }
+  .photo { margin: 52px auto 0; max-width: 980px; padding: 0 16px; }
+  .photo img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 2px; }
+  .photo figcaption { font-style: italic; font-size: 14px; color: var(--faint); margin-top: 10px; text-align: center; }
 
-  /* ---- Gallery ---- */
-  .gallery-section { max-width: 1200px; margin: 0 auto; padding: 0 24px 96px; }
-  .gallery-section .label { text-align: center; padding-bottom: 14px; border-bottom: 1.5px solid var(--sand); max-width: 600px; margin: 0 auto 32px; }
-  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+  /* ---- Enquiries ---- */
+  .contact { max-width: 680px; margin: 0 auto; padding: 56px 24px 8px; text-align: center; }
+  .rule { border: none; border-top: 1.5px solid var(--sand); margin: 0 auto 36px; width: 100%; max-width: 520px; }
+  .contact h2, .book h2 {
+    font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .01em;
+    line-height: 1; color: var(--heading); font-size: 28px; margin: 12px 0 0;
+  }
+  .contact h2 .stop, .book h2 .stop { color: var(--terra); }
+  .contact p.note { margin: 14px auto 28px; max-width: 460px; }
 
-  /* ---- Connect ---- */
-  .connect { background: var(--ink); color: var(--paper); padding: 88px 24px; text-align: center; }
-  .connect .arch { width: 36px; height: 44px; margin: 0 auto; border: 1.6px solid var(--terra); border-bottom: none; border-radius: 999px 999px 0 0; }
-  .connect h2 { font-family: 'Arimo', Arial, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .04em; font-size: 26px; margin: 20px 0 8px; }
-  .connect h2 span { color: var(--terra); }
-  .connect .label { color: var(--sand); margin: 0 0 36px; }
-  .connect-links { display: flex; flex-direction: column; gap: 16px; align-items: center; }
-  .connect-links a { color: var(--paper); text-decoration: none; font-size: 18px; border-bottom: 1px dotted var(--sand); padding-bottom: 3px; }
-  .connect-links a:hover { border-color: var(--terra); }
+  .btn {
+    display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase; text-decoration: none; line-height: 1;
+    padding: 16px 28px; border-radius: 2px; background: var(--terra); color: var(--paper);
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .9; }
 
-  footer { background: var(--ink); color: var(--faint); text-align: center; padding: 0 24px 32px; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+  .lines { list-style: none; padding: 0; margin: 28px auto 0; max-width: 420px; text-align: left; }
+  .lines li { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; }
+  .lines .k { font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em;
+              text-transform: uppercase; color: var(--olive); flex-shrink: 0; }
+  @media (prefers-color-scheme: dark) { .lines .k { color: #B5B08A; } }
+  .lines .dots { flex: 1; border-bottom: 1.5px dotted var(--sand); transform: translateY(-4px); min-width: 16px; }
+  .lines a { text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s; white-space: nowrap; }
+  .lines a:hover { border-color: var(--terra); }
 
-  @media (max-width: 720px) {
-    .hero { padding-top: 56px; }
-    .tagline { font-size: 18px; }
-    .hero-photo { margin-top: 48px; padding: 0 12px; }
-    .hero-photo img { aspect-ratio: 4 / 3; }
-    .about { padding: 56px 24px; font-size: 17px; }
-    .gallery-section { padding: 0 12px 72px; }
-    .gallery { grid-template-columns: 1fr 1fr; gap: 6px; }
+  /* ---- Where to book ---- */
+  .book { max-width: 680px; margin: 0 auto; padding: 48px 24px 0; text-align: center; }
+  .book[hidden] { display: none; }
+  .book p { margin: 14px auto 22px; color: var(--faint); font-style: italic; }
+  .otas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .otas a {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .16em;
+    text-transform: uppercase; text-decoration: none; padding: 14px 20px; border: 1.4px solid var(--sand);
+    border-radius: 2px; transition: border-color .15s, color .15s;
+  }
+  .otas a:hover { border-color: var(--terra); color: var(--terra); }
+
+  footer {
+    width: 100%; max-width: 980px; margin: 0 auto; padding: 64px 24px 32px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  }
+  footer .arch-mark {
+    width: 26px; height: 32px; border: 1.6px solid var(--sand); border-bottom: none;
+    border-top-left-radius: 999px; border-top-right-radius: 999px; flex-shrink: 0;
+  }
+  footer .label { font-size: 10px; color: var(--faint); text-align: right; }
+
+  @media (max-width: 520px) {
+    main { padding-top: 48px; }
+    h1 { margin-top: 44px; }
+    .lede { font-size: 18px; }
+    .photo { padding: 0; margin-top: 44px; }
+    .photo img { border-radius: 0; aspect-ratio: 4 / 3; }
+    .photo figcaption { padding: 0 24px; }
+    .lines li { flex-wrap: wrap; gap: 2px 10px; }
+    .lines .dots { display: none; }
+    .lines { text-align: center; }
+    .lines li { justify-content: center; }
+    .lines .k { width: 100%; }
   }
 </style>
 </head>
 <body>
 
-<section class="hero">
+<main>
   <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
-    <path d="M247 830V430a253 253 0 0 1 506 0v400" fill="none" stroke="#5C3A28" stroke-width="14"/>
-    <text x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5" fill="#6B6B44">JODHPUR</text>
-    <text x="500" y="530" text-anchor="middle" font-size="97" fill="#5C3A28">HARI</text>
-    <text x="500" y="625" text-anchor="middle" font-size="97" fill="#5C3A28">OM</text>
-    <text x="500" y="719" text-anchor="middle" font-size="97" fill="#5C3A28">NIWAS</text>
+    <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
+    <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
+    <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
+    <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
+    <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
     <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
   </svg>
-  <p class="label">Boho Homestay</p>
+
+  <h1>A new site is<br>being built<span class="stop">.</span></h1>
+  <p class="lede">We are taking our time with it. The house is open in the meantime, and the kitchen is cooking.</p>
   <p class="tagline">Wear light, eat heavy, and smile — you are in Jodhpur.</p>
-  <div class="ctas">
-    <a class="btn btn-primary" href="https://wa.me/919414195901" target="_blank" rel="noopener">Message on WhatsApp</a>
-    <a class="btn btn-secondary" href="#gallery">See the house</a>
+</main>
+
+<figure class="photo" style="margin-left:auto;margin-right:auto">
+  <img src="images/img-9861.jpg" alt="The living room at night, cane lights on" width="1800" height="1199">
+  <figcaption>The hall at night. The family lives just below.</figcaption>
+</figure>
+
+<section class="contact" id="enquiries">
+  <hr class="rule">
+  <p class="label">Enquiries</p>
+  <h2>Ask us anything<span class="stop">.</span></h2>
+  <p class="note">Dates, prices, whether the kitchen can make a thali for four. The family answers, not a desk.</p>
+  <a class="btn" href="https://wa.me/919414195901" target="_blank" rel="noopener">Message on WhatsApp</a>
+  <ul class="lines">
+    <li><span class="k">Call</span><span class="dots"></span><a href="tel:+919414195901">+91 94141 95901</a></li>
+    <li><span class="k">Email</span><span class="dots"></span><a href="mailto:stay@hariomniwas.in">stay@hariomniwas.in</a></li>
+    <li><span class="k">Instagram</span><span class="dots"></span><a href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">@hariomniwas</a></li>
+  </ul>
+</section>
+
+<!-- Listing links. The section stays hidden until at least one link is filled in. -->
+<section class="book" id="book" hidden>
+  <p class="label" style="margin-top:8px">Or book on</p>
+  <h2>Find us listed<span class="stop">.</span></h2>
+  <p>Same house, same family. Book wherever you are comfortable.</p>
+  <div class="otas">
+    <a data-ota href="" target="_blank" rel="noopener">Airbnb</a>
+    <a data-ota href="" target="_blank" rel="noopener">Booking.com</a>
+    <a data-ota href="" target="_blank" rel="noopener">MakeMyTrip</a>
+    <a data-ota href="" target="_blank" rel="noopener">Goibibo</a>
   </div>
 </section>
 
-<div class="hero-photo">
-  <img src="images/img-9861.jpg" alt="The living room at night, cane lights on">
-</div>
+<footer>
+  <div class="arch-mark" aria-hidden="true"></div>
+  <p class="label">Hari Om Niwas · Mahamandir, Jodhpur</p>
+</footer>
 
-<div class="about">
-  <p>This is a home that cooks. The whole upper floor is yours, and the family lives just below. Coffee is brewed the slow way. Thalis are made in the house kitchen. Not a hotel.</p>
-</div>
-
-<section class="gallery-section" id="gallery">
-  <p class="label">The House</p>
-  <div class="gallery">
-    <img src="images/img-9860.jpg" alt="Living room" loading="lazy">
-    <img src="images/img-9855.jpg" alt="Bedroom with Rajasthani textile art" loading="lazy">
-    <img src="images/img-8985.jpg" alt="Kitchen counter with the coffee setup" loading="lazy">
-    <img src="images/img-8961.jpg" alt="Hall in daylight, balcony door open" loading="lazy">
-    <img src="images/img-8972.jpg" alt="Bedroom wardrobe and mirror" loading="lazy">
-    <img src="images/img-8976.jpg" alt="Washroom" loading="lazy">
-    <img src="images/img-9865.jpg" alt="Divan and sofa in the hall" loading="lazy">
-    <img src="images/img-8988.jpg" alt="Entry door open to the balcony" loading="lazy">
-    <img src="images/img-9862.jpg" alt="Sofa, centre table and the menu book" loading="lazy">
-  </div>
-</section>
-
-<section class="connect" id="connect">
-  <div class="arch"></div>
-  <h2>Connect<span>.</span></h2>
-  <p class="label">Questions, dates, anything at all</p>
-  <div class="connect-links">
-    <a href="https://wa.me/919414195901" target="_blank" rel="noopener">WhatsApp — +91 94141 95901</a>
-    <a href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Instagram — @hariomniwas</a>
-    <a href="mailto:connect@hariomniwas.in">connect@hariomniwas.in</a>
-  </div>
-</section>
-
-<footer>Hari Om Niwas — Jodhpur, Rajasthan</footer>
-
+<script>
+  // Show only the listings that have a link; hide the section if none do.
+  (function () {
+    var links = document.querySelectorAll('[data-ota]'), any = false;
+    links.forEach(function (a) { if (a.getAttribute('href')) any = true; else a.remove(); });
+    if (any) document.getElementById('book').hidden = false;
+  })();
+</script>
 </body>
 </html>
