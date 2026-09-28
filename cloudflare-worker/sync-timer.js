@@ -14,8 +14,18 @@
 //      POST /check    is the PIN right?
 //      POST /block    { from, to, kind, note }  adds a line to blocked-dates.json
 //      POST /unblock  { from, to }              removes that line
+//      POST /booking  { name, checkIn, checkOut, ... }  records a direct
+//                     booking and sends its voucher (see 3 below)
 //    Each change is committed to blocked-dates.json on GitHub and the sync
 //    is started straight away, so the dashboard shows it in about 2 minutes.
+//
+// 3. Booking relay. blocked-dates.json is public, so a guest's name, phone,
+//    email and money never go in it. /booking passes them straight on to the
+//    Apps Script web app, which writes the private Google Sheet, makes the
+//    voucher PDF and emails it. The dashboard calls /block first and
+//    /booking second, so the nights are closed even if the voucher fails;
+//    posting the same booking again is safe (Apps Script finds the same row).
+//    The request body is never logged here: it carries guest details.
 //
 //    The PIN lives only in this Worker's secrets, never in the public code.
 //    Every request must carry it, and a wrong PIN is answered slowly so it
@@ -29,6 +39,10 @@
 //                     to ONLY the Hari-Om-Niwas repo, and two permissions:
 //                     "Actions: Read and write" and "Contents: Read and write".
 //      DASHBOARD_PIN  the dashboard PIN.
+//    And two more for the booking relay. Without them /booking answers
+//    "not set up" and blocking dates still works:
+//      APPS_SCRIPT_URL  the Apps Script web app's /exec URL
+//      BOOKING_SECRET   the same value as Script Property BOOKING_SECRET
 // 3. Settings -> Trigger Events -> Cron Triggers -> "*/15 * * * *".
 
 const OWNER = 'ajaypanwarofficial';
@@ -38,6 +52,11 @@ const BLOCKED_FILE = 'blocked-dates.json';
 const ALLOWED_ORIGIN = 'https://hariomniwas.in';
 const MAX_NIGHTS = 90;
 const MAX_NOTE = 60;
+// Apps Script takes ~15 s to make and email a voucher; give it room.
+const BOOKING_TIMEOUT_MS = 60000;
+// Only these fields are passed on. Apps Script validates them properly.
+const BOOKING_FIELDS = ['name', 'email', 'phone', 'adults', 'children', 'checkIn', 'checkOut',
+  'arrival', 'tariff', 'roomTotal', 'advance', 'paymentRef', 'note', 'send'];
 
 const GITHUB_HEADERS = (env) => ({
   Authorization: `Bearer ${env.GITHUB_TOKEN}`,
@@ -137,7 +156,7 @@ async function handle(request, env) {
       },
     });
   }
-  if (request.method !== 'POST' || !['/check', '/block', '/unblock'].includes(url.pathname)) {
+  if (request.method !== 'POST' || !['/check', '/block', '/unblock', '/booking'].includes(url.pathname)) {
     return new Response('Not found', { status: 404 });
   }
 
@@ -149,6 +168,7 @@ async function handle(request, env) {
 
   let body;
   try { body = await request.json(); } catch { return reply(400, { error: 'Bad request.' }); }
+  if (url.pathname === '/booking') return relayBooking(body, env);
   const { from, to } = body || {};
   if (!validDate(from) || !validDate(to) || to < from) return reply(400, { error: 'Check the dates: the last night can\'t be before the first.' });
 
@@ -171,6 +191,46 @@ async function handle(request, env) {
   }
   await startSync(env);
   return reply(200, { ok: true });
+}
+
+// Passes a direct booking to Apps Script and returns its answer as is:
+// { ok, ref, voucher, voucherUrl, whatsappUrl, upiUrl, emailed, duplicate, errors }.
+// ok means the booking row exists; voucher says whether the guest got it.
+async function relayBooking(body, env) {
+  if (!env.APPS_SCRIPT_URL || !env.BOOKING_SECRET) {
+    return reply(503, { error: 'The voucher system is not set up on the Worker yet. The dates are blocked.' });
+  }
+  if (!body || typeof body.name !== 'string' || !body.name.trim()) return reply(400, { error: 'Guest name is required.' });
+  if (!validDate(body.checkIn) || !validDate(body.checkOut) || body.checkOut <= body.checkIn) {
+    return reply(400, { error: 'Check-out must be after check-in.' });
+  }
+  const payload = { route: 'booking', source: 'Direct' };
+  for (const k of BOOKING_FIELDS) if (body[k] !== undefined && body[k] !== null) payload[k] = body[k];
+
+  let res;
+  try {
+    // Apps Script answers a POST with a redirect to the result; fetch follows it.
+    res = await fetch(env.APPS_SCRIPT_URL + '?t=' + encodeURIComponent(env.BOOKING_SECRET), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(BOOKING_TIMEOUT_MS),
+    });
+  } catch (err) {
+    console.error('booking relay: ' + (err && err.name));
+    return reply(504, { error: 'The voucher system did not answer in time. Check the Bookings sheet before trying again.' });
+  }
+  const text = await res.text();
+  let data;
+  try { data = JSON.parse(text); } catch { data = null; }
+  if (!data) {
+    console.error('booking relay: HTTP ' + res.status + ', not JSON');
+    return reply(502, { error: text.trim() === 'forbidden'
+      ? 'The Worker\'s BOOKING_SECRET does not match Apps Script.'
+      : 'The voucher system gave an unexpected answer (HTTP ' + res.status + ').' });
+  }
+  if (!data.ok) return reply(422, { error: data.error || 'The booking was not saved.' });
+  return reply(200, data);
 }
 
 export default {

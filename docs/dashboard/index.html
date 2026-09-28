@@ -136,6 +136,35 @@
   #block-form button[disabled] { opacity: .6; cursor: default; }
   .form-msg { font-size: 12px; color: var(--ink); }
   .form-msg.bad { color: var(--terra); }
+  #block-form fieldset { border: none; border-top: 1.4px solid var(--sand); margin: 4px 0 12px; padding: 14px 0 0; }
+  #block-form fieldset[hidden] { display: none; }
+  #block-form legend { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); padding: 0 8px 0 0; }
+  #block-form input[type=email], #block-form input[type=tel], #block-form input.num, #block-form textarea {
+    font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px; border: 1.4px solid var(--sand); border-radius: 2px; background: white; color: var(--ink);
+  }
+  #block-form input.num { width: 110px; }
+  #block-form input.small { width: 70px; }
+  #block-form .grow { flex: 1; min-width: 200px; }
+  #block-form .grow input, #block-form .grow textarea { width: 100%; }
+  #block-form textarea { resize: vertical; min-height: 54px; }
+  #block-form .sum { font-family: 'Spectral', serif; font-size: 15px; color: var(--ink); margin: 0 0 12px; min-height: 20px; }
+  #block-form .sum .bad { color: var(--terra); }
+
+  #bk-result { border: 1.4px solid var(--sand); background: #faf6ee; padding: 18px 16px; margin-bottom: 20px; font-family: 'Work Sans', sans-serif; font-size: 13px; }
+  #bk-result[hidden] { display: none; }
+  #bk-result .lbl { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 0 0 4px; }
+  #bk-result .ref { font-family: 'Anton', sans-serif; font-size: 26px; color: var(--teak); letter-spacing: .01em; margin: 0 0 8px; }
+  #bk-result .said { font-family: 'Spectral', serif; font-size: 15px; margin: 0 0 14px; }
+  #bk-result .said.bad { color: var(--terra); }
+  #bk-result .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  #bk-result .btns a, #bk-result .btns button {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+    border: 1.4px solid var(--sand); color: var(--ink); background: white; padding: 10px 14px; border-radius: 2px; cursor: pointer;
+  }
+  #bk-result .btns .primary { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  #bk-result .upi { font-size: 12px; color: var(--faint); margin: 0 0 14px; }
+  #bk-result .upi b { color: var(--ink); font-weight: 500; user-select: all; }
+  #bk-result .done { background: none; border: none; color: var(--faint); font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; padding: 0; }
   .bk-row .remove {
     font-family: 'Work Sans', sans-serif; font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
     background: none; border: 1px solid var(--sand); color: var(--faint); padding: 4px 8px; border-radius: 2px; cursor: pointer; white-space: nowrap;
@@ -184,14 +213,46 @@
       <label class="choice"><input type="radio" name="bf-kind" value="closed">Closed (family, repairs)</label>
     </div>
     <div class="row">
-      <label class="note-label">Note (optional)<input type="text" id="bf-note" maxlength="60" placeholder="e.g. 2 guests, via Instagram"></label>
+      <label class="note-label">Calendar note (optional)<input type="text" id="bf-note" maxlength="60" placeholder="e.g. 2 guests, via Instagram"></label>
     </div>
     <p class="hint">Airbnb, Booking.com and MMT only see "Blocked", never the note. But anyone who knows the right link can read notes, so no phone numbers or full names.</p>
+
+    <fieldset id="bf-guest">
+      <legend>Guest — for the confirmation voucher</legend>
+      <p class="hint">Private: this goes only to the Bookings sheet, never to the calendar. Leave the name empty to just block the dates.</p>
+      <div class="row">
+        <label class="grow">Guest name<input type="text" id="bg-name" maxlength="120" autocomplete="off" placeholder="as on their ID"></label>
+      </div>
+      <div class="row">
+        <label class="grow">WhatsApp number<input type="tel" id="bg-phone" maxlength="40" autocomplete="off" placeholder="+91 98xxx xxxxx"></label>
+        <label class="grow">Email<input type="email" id="bg-email" maxlength="200" autocomplete="off" placeholder="for the voucher"></label>
+      </div>
+      <div class="row">
+        <label>Adults<input type="number" id="bg-adults" class="num small" min="1" max="10" value="2"></label>
+        <label>Children<input type="number" id="bg-children" class="num small" min="0" max="10" value="0"></label>
+        <label>Arrival time<input type="text" id="bg-arrival" class="num" maxlength="20" placeholder="e.g. 2 pm"></label>
+      </div>
+      <div class="row">
+        <label>Per night ₹<input type="text" id="bg-tariff" class="num" inputmode="numeric" placeholder="3500"></label>
+        <label>Total ₹ (if agreed)<input type="text" id="bg-total" class="num" inputmode="numeric" placeholder="optional"></label>
+        <label>Advance paid ₹<input type="text" id="bg-advance" class="num" inputmode="numeric" placeholder="0"></label>
+        <label>UPI / payment ref<input type="text" id="bg-payref" class="num" maxlength="100" placeholder="optional"></label>
+      </div>
+      <p class="sum" id="bg-sum"></p>
+      <div class="row">
+        <label class="grow">Private note<textarea id="bg-note" maxlength="1000" placeholder="anything to remember — only you see this"></textarea></label>
+      </div>
+      <div class="row">
+        <label class="choice"><input type="checkbox" id="bg-send" checked>Email the voucher to the guest</label>
+      </div>
+    </fieldset>
     <div class="actions">
       <button type="submit" id="bf-submit">Block these nights</button>
       <span class="form-msg" id="bf-msg"></span>
     </div>
   </form>
+
+  <div id="bk-result" hidden></div>
 
   <div class="legend">
     <span><i class="swatch airbnb"></i>Airbnb</span>
@@ -573,6 +634,7 @@
       document.getElementById('bf-in').min = todayKey;
       document.getElementById('bf-out').min = addDaysKey(todayKey, 1);
       setMsg('');
+      updateGuestBox();
     }
   };
   document.getElementById('bf-in').addEventListener('change', (e) => {
@@ -582,24 +644,149 @@
       if (!out.value || out.value <= e.target.value) out.value = out.min;
     }
   });
+  // --- Guest details (direct bookings only). They go to the Worker's
+  // /booking, which hands them to the private Google Sheet; nothing here is
+  // stored in the browser or written to the public calendar.
+  const guestBox = document.getElementById('bf-guest');
+  const gv = (id) => document.getElementById(id).value.trim();
+  function kindNow() { return form.querySelector('input[name=bf-kind]:checked').value; }
+  function amount(id) {
+    const v = gv(id).replace(/[₹,\s]/g, '');
+    if (v === '') return null;
+    return /^\d+$/.test(v) ? Number(v) : NaN;
+  }
+  function inr(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+  function nightsNow() {
+    const a = document.getElementById('bf-in').value, b = document.getElementById('bf-out').value;
+    return a && b && b > a ? dayDiff(a, b) : 0;
+  }
+  function updateGuestBox() {
+    guestBox.hidden = kindNow() !== 'direct';
+    document.getElementById('bf-submit').textContent =
+      kindNow() === 'direct' && gv('bg-name') ? 'Block nights & send voucher' : 'Block these nights';
+    updateSum();
+  }
+  // A running check of the money, so a typo is caught before the guest sees it.
+  function updateSum() {
+    const out = document.getElementById('bg-sum');
+    const n = nightsNow(), tariff = amount('bg-tariff'), total = amount('bg-total'), adv = amount('bg-advance');
+    if ([tariff, total, adv].some((x) => Number.isNaN(x))) { out.innerHTML = '<span class="bad">Amounts: digits only.</span>'; return; }
+    const room = total !== null ? total : (tariff !== null && n ? tariff * n : null);
+    if (room === null) { out.textContent = n ? n + (n === 1 ? ' night' : ' nights') : ''; return; }
+    let t = (n ? n + (n === 1 ? ' night' : ' nights') + ' · ' : '') + 'Total ' + inr(room);
+    if (total !== null && tariff !== null && n && tariff * n !== total) t += ' (agreed; voucher says "Agreed rate")';
+    const bal = room - (adv || 0);
+    t += bal <= 0 ? ' · Paid in full' : ' · Balance on arrival ' + inr(bal);
+    out.innerHTML = bal < 0 ? '<span class="bad">' + esc(t) + ' — advance is more than the total.</span>' : esc(t);
+  }
+  form.addEventListener('change', updateGuestBox);
+  form.addEventListener('input', updateGuestBox);
+
+  function guestPayload(checkIn, checkOut) {
+    const n = (id) => { const v = amount(id); return v === null ? '' : v; };
+    return {
+      name: gv('bg-name'), phone: gv('bg-phone'), email: gv('bg-email'),
+      adults: Number(gv('bg-adults')) || 1, children: Number(gv('bg-children')) || 0,
+      arrival: gv('bg-arrival'), tariff: n('bg-tariff'), roomTotal: n('bg-total'), advance: n('bg-advance'),
+      paymentRef: gv('bg-payref'), note: gv('bg-note'),
+      send: document.getElementById('bg-send').checked,
+      checkIn, checkOut,
+    };
+  }
+  function guestProblem() {
+    const tariff = amount('bg-tariff'), total = amount('bg-total'), adv = amount('bg-advance');
+    if ([tariff, total, adv].some((x) => Number.isNaN(x))) return 'Amounts: digits only, e.g. 3500.';
+    if (tariff === null && total === null) return 'Enter the per-night rate or the agreed total — the voucher needs it.';
+    const room = total !== null ? total : tariff * nightsNow();
+    if ((adv || 0) > room) return 'The advance is more than the total.';
+    if (!gv('bg-phone') && !gv('bg-email')) return 'Add a WhatsApp number or an email, so the guest can get the voucher.';
+    const em = gv('bg-email');
+    if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return 'That email doesn\'t look right.';
+    return '';
+  }
+
+  // --- After saving: the reference, what happened, and the next taps.
+  const result = document.getElementById('bk-result');
+  let lastBooking = null;   // kept only in memory, for "Try again"
+  function showResult(html) { result.innerHTML = html; result.hidden = false; result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  function upiParts(u) {
+    try { const q = new URLSearchParams(u.split('?')[1]); return { pa: q.get('pa'), am: q.get('am'), tn: q.get('tn') }; }
+    catch { return null; }
+  }
+  function renderBooking(r, guest) {
+    const said = {
+      emailed: ['Confirmed. The voucher has been emailed to ' + esc(guest.email) + '. Send the WhatsApp too.', false],
+      made: ['Confirmed. The voucher is ready — send it on WhatsApp.', false],
+      email_failed: ['Confirmed, but the email did not go through. Send the voucher on WhatsApp.', true],
+      pdf_failed: ['The booking is saved, but the voucher could not be made: ' + esc((r.errors || []).join('; ')), true],
+    }[r.voucher] || ['Saved.', false];
+    let h = '<p class="lbl">Booking reference</p><p class="ref">' + esc(r.ref) + '</p>' +
+            '<p class="said' + (said[1] ? ' bad' : '') + '">' + said[0] + (r.duplicate ? ' (This booking already existed — nothing was duplicated.)' : '') + '</p>' +
+            '<div class="btns">';
+    if (r.whatsappUrl && r.voucherUrl) h += '<a class="primary" target="_blank" rel="noopener" href="' + esc(r.whatsappUrl) + '">WhatsApp the voucher</a>';
+    if (r.voucherUrl) h += '<a target="_blank" rel="noopener" href="' + esc(r.voucherUrl) + '">Open voucher</a>';
+    const upi = r.upiUrl && upiParts(r.upiUrl);
+    if (upi && upi.pa) {
+      // The UPI ID goes over WhatsApp, never on the PDF (decisions file).
+      const text = 'To pay the balance of ' + inr(upi.am) + ' by UPI:\n' + upi.pa + ' (Hari Om Niwas)\nPlease add ' + upi.tn + ' as the note.';
+      const phone = (r.whatsappUrl || '').match(/wa\.me\/(\d*)/);
+      h += '<a target="_blank" rel="noopener" href="https://wa.me/' + (phone ? phone[1] : '') + '?text=' + encodeURIComponent(text) + '">WhatsApp payment details</a>';
+    }
+    if (r.voucher === 'pdf_failed') h += '<button type="button" id="bk-retry">Try the voucher again</button>';
+    h += '</div>';
+    if (upi && upi.pa) h += '<p class="upi">UPI <b>' + esc(upi.pa) + '</b> · balance <b>' + esc(inr(upi.am)) + '</b> · note <b>' + esc(upi.tn) + '</b></p>';
+    h += '<button type="button" class="done" id="bk-done">Done — clear</button>';
+    showResult(h);
+  }
+  function renderBookingError(message) {
+    showResult('<p class="lbl">Dates blocked — voucher not sent</p>' +
+      '<p class="said bad">' + esc(message) + '</p>' +
+      '<div class="btns"><button type="button" class="primary" id="bk-retry">Try again</button></div>' +
+      '<button type="button" class="done" id="bk-done">Done — clear</button>');
+  }
+  async function sendBooking() {
+    showResult('<p class="said">Dates blocked. Making the voucher — this takes about 15 seconds…</p>');
+    try {
+      const r = await callWorker('/booking', lastBooking);
+      renderBooking(r, lastBooking);
+      if (r.voucher !== 'pdf_failed') { form.reset(); updateGuestBox(); }
+    } catch (err) {
+      if (err.status !== 401) renderBookingError(err.message);
+    }
+  }
+  result.addEventListener('click', (e) => {
+    if (e.target.id === 'bk-retry') sendBooking();
+    if (e.target.id === 'bk-done') { result.hidden = true; result.innerHTML = ''; lastBooking = null; }
+  });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const checkIn = document.getElementById('bf-in').value;
     const checkOut = document.getElementById('bf-out').value;
     if (!checkIn || !checkOut || checkOut <= checkIn) { setMsg('Check-out must be after check-in.', true); return; }
+    const withGuest = kindNow() === 'direct' && !!gv('bg-name');
+    if (withGuest) { const p = guestProblem(); if (p) { setMsg(p, true); return; } }
     const submit = document.getElementById('bf-submit');
     submit.disabled = true;
     setMsg('Saving…');
     try {
+      // The nights are closed first and on their own: a failed voucher must
+      // never leave the dates open to a double booking.
       await callWorker('/block', {
         from: checkIn,
         to: addDaysKey(checkOut, -1),
-        kind: form.querySelector('input[name=bf-kind]:checked').value,
+        kind: kindNow(),
         note: document.getElementById('bf-note').value,
       });
       setMsg('Saved. The calendar updates in about 2 minutes; the platforms usually within the hour.');
-      form.reset();
       scheduleRefresh();
+      if (withGuest) {
+        lastBooking = guestPayload(checkIn, checkOut);
+        await sendBooking();
+      } else {
+        form.reset();
+        updateGuestBox();
+      }
     } catch (err) {
       if (err.status !== 401) setMsg(err.message, true);
     } finally {
