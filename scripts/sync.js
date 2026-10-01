@@ -33,6 +33,7 @@
 // blocked-dates.json at the repo root. See that file for the format.
 
 const https = require('https');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -43,7 +44,9 @@ const FEEDS = [
   // or "agoda" (it takes those for another platform's link), hence feed-for-mmt.
   { name: 'MMT / Goibibo', key: 'ingo', file: 'mmt', url: process.env.INGO_ICAL_URL },
   // Agoda also says "Please enter a valid link" for a link containing "agoda", hence feed-for-ag.
-  { name: 'Agoda', key: 'agoda', file: 'ag', url: process.env.AGODA_ICAL_URL },
+  // Agoda's importer also refused our usual feed ("Unable to import calendar"),
+  // so it gets a plain one: one "@" per UID and no platform names.
+  { name: 'Agoda', key: 'agoda', file: 'ag', plain: true, url: process.env.AGODA_ICAL_URL },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'dashboard');
@@ -51,7 +54,7 @@ const CAL_PATH = path.join(OUT_DIR, 'calendar.json');
 const BLOCKED_PATH = path.join(__dirname, '..', 'blocked-dates.json');
 const TRUSTED = new Set(['airbnb', 'manual']);
 // Raise this when the feed file layout changes, so the next sync rewrites the feeds even if no booking changed.
-const FEED_FORMAT = 5;
+const FEED_FORMAT = 6;
 
 function addDays(iso, n) {
   const d = new Date(iso + 'T00:00:00Z');
@@ -172,16 +175,20 @@ function toICSDate(iso, allDay) {
 // Kept strictly to the iCal standard (RFC 5545) and plain ASCII. Airbnb and
 // Booking.com accept looser files, but MMT's importer rejects a feed whose
 // events lack DTSTAMP ("Incorrect link. Please add a valid calendar link").
-function buildICS(events, calName) {
+function buildICS(events, calName, plain = false) {
   const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hari Om Niwas//Calendar Hub//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${calName}`];
+  const lines = plain
+    ? ['BEGIN:VCALENDAR', 'PRODID:-//Hari Om Niwas//Calendar Hub//EN', 'VERSION:2.0']
+    : ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hari Om Niwas//Calendar Hub//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${calName}`];
   for (const ev of events) {
     lines.push('BEGIN:VEVENT');
-    lines.push(`UID:${ev.source}-${ev.uid}@hariomniwas.in`);
+    lines.push(plain
+      ? `UID:${crypto.createHash('sha1').update(ev.source + '|' + ev.uid).digest('hex').slice(0, 20)}@hariomniwas.in`
+      : `UID:${ev.source}-${ev.uid}@hariomniwas.in`);
     lines.push(`DTSTAMP:${stamp}`);
     lines.push(`DTSTART${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.start, ev.allDay)}`);
     lines.push(`DTEND${ev.allDay ? ';VALUE=DATE' : ''}:${toICSDate(ev.end, ev.allDay)}`);
-    lines.push(`SUMMARY:${ev.source === 'manual' ? 'Blocked - Hari Om Niwas' : 'Blocked - ' + ev.sourceName}`);
+    lines.push(`SUMMARY:${plain ? 'Not available' : ev.source === 'manual' ? 'Blocked - Hari Om Niwas' : 'Blocked - ' + ev.sourceName}`);
     lines.push('END:VEVENT');
   }
   lines.push('END:VCALENDAR');
@@ -266,7 +273,7 @@ async function main() {
     for (const f of FEEDS) {
       fs.writeFileSync(
         path.join(OUT_DIR, `feed-for-${f.file || f.key}.ics`),
-        buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas - for ${f.name}`)
+        buildICS(current.filter((e) => e.source !== f.key), `Hari Om Niwas - for ${f.name}`, f.plain)
       );
     }
     console.log('Bookings or feed status changed. Files written.');
