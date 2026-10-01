@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-28T09:13:16.439Z",
-  "feedFormat": 3,
+  "generatedAt": "2026-10-01T05:45:39.818Z",
+  "feedFormat": 4,
   "sources": [
     {
       "name": "Airbnb",
@@ -18,6 +18,12 @@
     {
       "name": "MMT / Goibibo",
       "key": "ingo",
+      "ok": true,
+      "count": 0
+    },
+    {
+      "name": "Agoda",
+      "key": "agoda",
       "ok": true,
       "count": 0
     },
