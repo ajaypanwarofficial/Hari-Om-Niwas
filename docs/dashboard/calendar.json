@@ -1,25 +1,25 @@
 {
-  "generatedAt": "2026-10-01T06:00:56.787Z",
+  "generatedAt": "2026-10-01T22:00:34.110Z",
   "feedFormat": 6,
   "sources": [
     {
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 0,
-      "ignoredBlocks": 1
+      "count": 0
     },
     {
       "name": "Booking.com",
       "key": "booking",
       "ok": true,
-      "count": 2
+      "count": 3
     },
     {
       "name": "MMT / Goibibo",
       "key": "ingo",
       "ok": true,
-      "count": 0
+      "count": 0,
+      "copiesRemoved": 2
     },
     {
       "name": "Agoda",
@@ -75,6 +75,16 @@
       "end": "2026-11-10",
       "allDay": true,
       "nights": 2
+    },
+    {
+      "uid": "07d940e4f6998413d0b17f3d91f85361@booking.com",
+      "source": "booking",
+      "sourceName": "Booking.com",
+      "summary": "CLOSED - Not available",
+      "start": "2028-04-01",
+      "end": "2028-04-02",
+      "allDay": true,
+      "nights": 1
     }
   ]
 }
