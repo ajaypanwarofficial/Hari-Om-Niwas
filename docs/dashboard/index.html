@@ -93,6 +93,7 @@
   .tag.airbnb, .swatch.airbnb { background: #FF385C; }
   .tag.booking, .swatch.booking { background: #003B95; }
   .tag.ingo, .swatch.ingo { background: #F26722; }
+  .tag.agoda, .swatch.agoda { background: #5542F6; }
   .tag.manual, .swatch.manual { background: var(--ink); }
   .tag.direct, .swatch.direct { background: var(--olive); }
   .provisional-note { font-family: 'Work Sans', sans-serif; font-size: 11px; color: var(--faint); font-style: italic; margin-top: 10px; }
@@ -215,7 +216,7 @@
     <div class="row">
       <label class="note-label">Calendar note (optional)<input type="text" id="bf-note" maxlength="60" placeholder="e.g. 2 guests, via Instagram"></label>
     </div>
-    <p class="hint">Airbnb, Booking.com and MMT only see "Blocked", never the note. But anyone who knows the right link can read notes, so no phone numbers or full names.</p>
+    <p class="hint">Airbnb, Booking.com, MMT and Agoda only see "Blocked", never the note. But anyone who knows the right link can read notes, so no phone numbers or full names.</p>
 
     <fieldset id="bf-guest">
       <legend>Guest — for the confirmation voucher</legend>
@@ -258,6 +259,7 @@
     <span><i class="swatch airbnb"></i>Airbnb</span>
     <span><i class="swatch booking"></i>Booking.com</span>
     <span><i class="swatch ingo"></i>MMT / Goibibo</span>
+    <span><i class="swatch agoda"></i>Agoda</span>
     <span><i class="swatch direct"></i>Direct booking</span>
     <span><i class="swatch manual"></i>Closed by you</span>
     <span><i style="background:#f0e2d4; border:1px solid var(--sand)"></i>Long weekend</span>
@@ -370,7 +372,7 @@
     }
   }
 
-  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT', manual: 'Closed', direct: 'Direct' };
+  const SHORT_LABELS = { airbnb: 'Airbnb', booking: 'Booking', ingo: 'MMT', agoda: 'Agoda', manual: 'Closed', direct: 'Direct' };
   // Our own blocks are all source "manual"; a direct booking gets its own tag.
   function tagKey(b) { return b.source === 'manual' && b.kind === 'direct' ? 'direct' : b.source; }
   function tagHTML(b) { const k = tagKey(b); return '<span class="tag ' + k + '">' + (SHORT_LABELS[k] || k) + '</span>'; }

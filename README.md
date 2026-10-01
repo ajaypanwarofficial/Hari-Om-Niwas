@@ -28,7 +28,8 @@ one link back with everyone else's bookings in it.
 ```
  Airbnb ─────┐                                   ┌──► feed-for-airbnb.ics  ──► Airbnb
  Booking.com ┼──► sync (every 15 min) ──► merge ─┼──► feed-for-booking.ics ──► Booking.com
- MMT/Goibibo ┘          ▲                        ├──► feed-for-mmt.ics     ──► MMT/Goibibo
+ MMT/Goibibo ┤          ▲                        ├──► feed-for-mmt.ics     ──► MMT/Goibibo
+ Agoda ──────┘          │                        ├──► feed-for-agoda.ics   ──► Agoda
                         │                        └──► calendar.json        ──► our dashboard
          blocked-dates.json (dates we close ourselves, from the dashboard)
 ```
@@ -49,6 +50,7 @@ one more member of the group, one that can only close or open dates.
 | Airbnb | our `feed-for-airbnb.ics`, Booking.com's link, MMT's link |
 | Booking.com | our `feed-for-booking.ics`, Airbnb's link, MMT's link |
 | MMT/Goibibo | our `feed-for-mmt.ics`, Airbnb's link, Booking.com's link |
+| Agoda | our `feed-for-agoda.ics` only (added Oct 2026) |
 
 The direct links can't cause a double booking, but they have two side effects
 to watch for:
@@ -241,6 +243,7 @@ account.
    - `AIRBNB_ICAL_URL`: Airbnb → Listing → Availability → Sync calendars → Export
    - `BOOKING_ICAL_URL`: Booking.com extranet → Rates & availability → Sync calendars
    - `INGO_ICAL_URL`: InGo-MMT → Calendar sync / iCal export
+   - `AGODA_ICAL_URL`: Agoda YCS → Calendar → iCal export
 
    These are secret because anyone with the link can read the booking dates.
 3. **Turn on GitHub Pages.** Settings → Pages → Source: **Deploy from a branch**
@@ -256,6 +259,7 @@ account.
    - Airbnb: `https://hariomniwas.in/dashboard/feed-for-airbnb.ics`
    - Booking.com: `https://hariomniwas.in/dashboard/feed-for-booking.ics`
    - MMT/Goibibo: `https://hariomniwas.in/dashboard/feed-for-mmt.ics`
+   - Agoda: `https://hariomniwas.in/dashboard/feed-for-agoda.ics`
 
    MMT rejects any link containing "ingo", "google", "booking", "airbnb" or
    "agoda" as "Incorrect link", which is why its feed is named `feed-for-mmt`.

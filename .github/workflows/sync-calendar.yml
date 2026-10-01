@@ -34,6 +34,7 @@ jobs:
           AIRBNB_ICAL_URL: ${{ secrets.AIRBNB_ICAL_URL }}
           BOOKING_ICAL_URL: ${{ secrets.BOOKING_ICAL_URL }}
           INGO_ICAL_URL: ${{ secrets.INGO_ICAL_URL }}
+          AGODA_ICAL_URL: ${{ secrets.AGODA_ICAL_URL }}
         run: node scripts/sync.js
 
       - name: Commit only if bookings changed

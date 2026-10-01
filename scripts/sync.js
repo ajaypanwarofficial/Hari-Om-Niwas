@@ -6,6 +6,7 @@
 //   feed-for-airbnb.ics    everything EXCEPT Airbnb's own bookings
 //   feed-for-booking.ics   everything EXCEPT Booking.com's own bookings
 //   feed-for-mmt.ics       everything EXCEPT MMT/Goibibo's own bookings
+//   feed-for-agoda.ics     everything EXCEPT Agoda's own bookings
 //
 // Each platform imports its own feed-for-*.ics, so it never re-imports
 // its own reservations as blocks.
@@ -24,7 +25,7 @@
 //      other platforms' bookings it imported. Passing those on would send
 //      bookings back to the platform they came from.
 //   4. Booking.com labels everything "CLOSED - Not available", guests and
-//      copies alike. Any Booking.com or MMT entry whose nights are all
+//      copies alike. Any Booking.com, MMT or Agoda entry whose nights are all
 //      already covered by an Airbnb reservation or a date you blocked is
 //      treated as a copy and dropped.
 //
@@ -41,6 +42,7 @@ const FEEDS = [
   // MMT refuses to import a link containing "ingo", "google", "booking", "airbnb"
   // or "agoda" (it takes those for another platform's link), hence feed-for-mmt.
   { name: 'MMT / Goibibo', key: 'ingo', file: 'mmt', url: process.env.INGO_ICAL_URL },
+  { name: 'Agoda', key: 'agoda', url: process.env.AGODA_ICAL_URL },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'dashboard');
@@ -48,7 +50,7 @@ const CAL_PATH = path.join(OUT_DIR, 'calendar.json');
 const BLOCKED_PATH = path.join(__dirname, '..', 'blocked-dates.json');
 const TRUSTED = new Set(['airbnb', 'manual']);
 // Raise this when the feed file layout changes, so the next sync rewrites the feeds even if no booking changed.
-const FEED_FORMAT = 3;
+const FEED_FORMAT = 4;
 
 function addDays(iso, n) {
   const d = new Date(iso + 'T00:00:00Z');
@@ -227,7 +229,7 @@ async function main() {
   all.push(...manual);
   status.push({ name: 'Blocked by you', key: 'manual', ok: true, count: manual.length });
 
-  // Drop Booking.com / MMT entries that are only copies of trusted nights.
+  // Drop Booking.com / MMT / Agoda entries that are only copies of trusted nights.
   const trustedNights = new Set(all.filter((e) => TRUSTED.has(e.source)).flatMap(nightsOf));
   const copies = {};
   for (let i = all.length - 1; i >= 0; i--) {
