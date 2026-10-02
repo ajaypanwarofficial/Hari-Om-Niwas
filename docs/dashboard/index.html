@@ -418,6 +418,15 @@
         ? '<p class="error">' + failed.map((f) => f.name + ' feed failed (' + f.error + ')' +
             (f.carriedForward ? ' — showing its last known ' + f.carriedForward + ' booking' + (f.carriedForward === 1 ? '' : 's') : '')).join(' · ') + '</p>'
         : '';
+      // The Cloudflare timer's GitHub token has an expiry date. Warn a week ahead.
+      if (calRes.tokenExpires) {
+        const days = Math.ceil((new Date(calRes.tokenExpires + 'T00:00:00+05:30') - Date.now()) / 86400000);
+        const on = new Date(calRes.tokenExpires + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+        if (days <= 7) document.getElementById('errors').innerHTML += '<p class="error">' +
+          (days <= 0 ? 'The calendar timer\'s GitHub key expired on ' + on + '. Syncs now run only every few hours and blocking dates won\'t save.'
+                     : 'The calendar timer\'s GitHub key expires on ' + on + ' (in ' + days + (days === 1 ? ' day' : ' days') + ').') +
+          ' Make a new one: README, "The Cloudflare Worker", step 1.</p>';
+      }
     } else {
       line = 'Could not load booking data';
     }

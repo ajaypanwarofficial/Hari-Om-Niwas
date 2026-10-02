@@ -7,7 +7,14 @@ on:
     # cloudflare-worker/sync-timer.js, which starts a run every 15 minutes
     # through workflow_dispatch below.
     - cron: '*/15 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      token_expires:
+        # Filled in by the Cloudflare Worker: when its GitHub token expires,
+        # so the dashboard can warn a week ahead.
+        description: 'Expiry of the Worker GitHub token'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -24,6 +31,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+        with:
+          # The latest main, not the commit the run was started from. Two runs
+          # started seconds apart (dashboard + timer) otherwise both commit the
+          # same change and the second fails on the push.
+          ref: main
 
       - uses: actions/setup-node@v5
         with:
@@ -35,6 +47,7 @@ jobs:
           BOOKING_ICAL_URL: ${{ secrets.BOOKING_ICAL_URL }}
           INGO_ICAL_URL: ${{ secrets.INGO_ICAL_URL }}
           AGODA_ICAL_URL: ${{ secrets.AGODA_ICAL_URL }}
+          TOKEN_EXPIRES: ${{ inputs.token_expires }}
         run: node scripts/sync.js
 
       - name: Commit only if bookings changed

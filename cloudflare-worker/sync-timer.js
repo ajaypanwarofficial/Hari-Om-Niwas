@@ -64,10 +64,22 @@ const GITHUB_HEADERS = (env) => ({
   'User-Agent': 'hon-sync-timer',
 });
 
+// GitHub reports a fine-grained token's expiry in a header on every reply.
+// Passed to the sync so the dashboard can warn a week ahead. "none" means
+// the token never expires; "" means we couldn't tell (keeps the last value).
+async function tokenExpiry(env) {
+  try {
+    const res = await fetch('https://api.github.com/rate_limit', { headers: GITHUB_HEADERS(env) });
+    if (!res.ok) return '';
+    return res.headers.get('github-authentication-token-expiration') || 'none';
+  } catch { return ''; }
+}
+
 async function startSync(env) {
+  const inputs = { token_expires: await tokenExpiry(env) };
   const res = await fetch(
     `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
-    { method: 'POST', headers: GITHUB_HEADERS(env), body: JSON.stringify({ ref: 'main' }) }
+    { method: 'POST', headers: GITHUB_HEADERS(env), body: JSON.stringify({ ref: 'main', inputs }) }
   );
   // GitHub answers 204 on success.
   if (res.status !== 204) throw new Error(`GitHub dispatch failed: ${res.status} ${await res.text()}`);

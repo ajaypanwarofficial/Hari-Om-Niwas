@@ -195,6 +195,17 @@ function buildICS(events, calName, plain = false) {
   return lines.join('\r\n') + '\r\n';
 }
 
+// The Worker passes its GitHub token's expiry on each run it starts:
+// a date, "none" for a token that never expires, or nothing (GitHub's own
+// schedule, or the Worker couldn't tell), which keeps the last known value.
+function tokenExpiry(prev) {
+  const v = (process.env.TOKEN_EXPIRES || '').trim();
+  if (v === 'none') return null;
+  const m = v.match(/^\d{4}-\d{2}-\d{2}/);
+  if (m) return m[0];
+  return (prev && prev.tokenExpires) || null;
+}
+
 function readPrevious() {
   try { return JSON.parse(fs.readFileSync(CAL_PATH, 'utf8')); } catch { return null; }
 }
@@ -256,7 +267,8 @@ async function main() {
   all.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : a.source.localeCompare(b.source)));
 
   const statusForCompare = (s) => (s || []).map(({ key, ok, error }) => ({ key, ok, error: error || null }));
-  const unchanged = prev && prev.feedFormat === FEED_FORMAT &&
+  const tokenExpires = tokenExpiry(prev);
+  const unchanged = prev && prev.feedFormat === FEED_FORMAT && (prev.tokenExpires || null) === tokenExpires &&
     JSON.stringify(prev.bookings) === JSON.stringify(all) &&
     JSON.stringify(statusForCompare(prev.sources)) === JSON.stringify(statusForCompare(status));
 
@@ -266,7 +278,7 @@ async function main() {
     console.log('No change since last sync. Nothing written.');
   } else {
     fs.mkdirSync(OUT_DIR, { recursive: true });
-    fs.writeFileSync(CAL_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), feedFormat: FEED_FORMAT, sources: status, bookings: all }, null, 2) + '\n');
+    fs.writeFileSync(CAL_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), feedFormat: FEED_FORMAT, tokenExpires, sources: status, bookings: all }, null, 2) + '\n');
     // The feeds only need nights that can still be booked; history stays in calendar.json.
     const current = all.filter((e) => e.end.slice(0, 10) > today);
     fs.writeFileSync(path.join(OUT_DIR, 'merged.ics'), buildICS(current, 'Hari Om Niwas - All Platforms'));
