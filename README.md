@@ -50,7 +50,7 @@ one more member of the group, one that can only close or open dates.
 | Airbnb | our `feed-for-airbnb.ics`, Booking.com's link, MMT's link |
 | Booking.com | our `feed-for-booking.ics`, Airbnb's link, MMT's link |
 | MMT/Goibibo | our `feed-for-mmt.ics`, Airbnb's link, Booking.com's link |
-| Agoda | our `feed-for-ag.ics` only (added Oct 2026) |
+| Agoda | Airbnb's, Booking.com's and MMT's links directly. Agoda refuses our link: its server only accepts addresses from platforms it knows (`ImportCalendar` returns `isCalendarAddressUrlValid: false` before reading the file). Direct-booking blocks reach Agoda through Airbnb's export |
 
 The direct links can't cause a double booking, but they have two side effects
 to watch for:
