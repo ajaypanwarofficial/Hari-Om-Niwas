@@ -586,9 +586,11 @@
       else if (start <= todayKey) { when = 'Staying now'; now = true; }
       else {
         const n = dayDiff(todayKey, start);
-        when = n === 1 ? 'Tomorrow' : 'In ' + n + ' days';
+        const months = Math.round(n / 30.44);
+        when = n === 1 ? 'Tomorrow' : n <= 60 ? 'In ' + n + ' days' : 'In ' + months + ' months';
       }
-      const d = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+      // Show the year only for dates outside the current year.
+      const d = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', Object.assign({ weekday: 'short', day: 'numeric', month: 'short' }, k.slice(0, 4) === todayKey.slice(0, 4) ? {} : { year: 'numeric' }));
       const nights = b.nights ? ' · ' + b.nights + (b.nights === 1 ? ' night' : ' nights') : '';
       const own = b.source === 'manual';
       const note = own && b.summary && b.summary !== 'Blocked' && b.summary !== 'Direct booking' ? '<br><span class="note">' + esc(b.summary) + '</span>' : '';
