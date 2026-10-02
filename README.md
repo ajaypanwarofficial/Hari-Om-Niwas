@@ -50,7 +50,7 @@ one more member of the group, one that can only close or open dates.
 | Airbnb | our `feed-for-airbnb.ics`, Booking.com's link, MMT's link |
 | Booking.com | our `feed-for-booking.ics`, Airbnb's link, MMT's link |
 | MMT/Goibibo | our `feed-for-mmt.ics`, Airbnb's link, Booking.com's link |
-| Agoda | Airbnb's, Booking.com's and MMT's links directly. Agoda refuses our link: its server only accepts addresses from platforms it knows (`ImportCalendar` returns `isCalendarAddressUrlValid: false` before reading the file). Direct-booking blocks reach Agoda through Airbnb's export |
+| Agoda | ONLY the Google Calendar "Hari Om Niwas - blocked dates (for Agoda)" (secret iCal address), which Apps Script `AgodaCalendar.js` fills from `calendar.json` every 15 min. Agoda refuses our own link: its import only accepts hosts on its own list (airbnb.com, ical.booking.com, calendar.google.com, …). Airbnb/Booking/MMT links were removed from Agoda on 2 Oct 2026 because duplicate blocks showed as "Overbooked"; re-add them if the bridge ever stops |
 
 The direct links can't cause a double booking, but they have two side effects
 to watch for:
