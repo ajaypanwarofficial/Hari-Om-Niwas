@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:01:01.348Z",
+  "generatedAt": "2026-10-09T18:20:09.996Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -7,7 +7,8 @@
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 0
+      "count": 0,
+      "ignoredBlocks": 1
     },
     {
       "name": "Booking.com",
@@ -31,7 +32,7 @@
       "name": "Blocked by you",
       "key": "manual",
       "ok": true,
-      "count": 1
+      "count": 2
     }
   ],
   "bookings": [
@@ -53,6 +54,17 @@
       "summary": "Direct booking",
       "start": "2026-10-02",
       "end": "2026-10-04",
+      "allDay": true,
+      "nights": 2
+    },
+    {
+      "uid": "manual-2026-10-10-2026-10-11",
+      "source": "manual",
+      "sourceName": "Blocked",
+      "kind": "closed",
+      "summary": "Out of station",
+      "start": "2026-10-10",
+      "end": "2026-10-12",
       "allDay": true,
       "nights": 2
     },
