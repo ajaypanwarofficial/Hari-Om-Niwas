@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T14:11:31.433Z",
+  "generatedAt": "2026-10-15T15:31:20.233Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -8,7 +8,7 @@
       "key": "airbnb",
       "ok": true,
       "count": 1,
-      "ignoredBlocks": 1
+      "ignoredBlocks": 2
     },
     {
       "name": "Booking.com",
@@ -74,9 +74,9 @@
       "sourceName": "Booking.com",
       "summary": "CLOSED - Not available",
       "start": "2026-10-17",
-      "end": "2026-10-18",
+      "end": "2026-10-19",
       "allDay": true,
-      "nights": 1
+      "nights": 2
     },
     {
       "uid": "manual-2026-10-18-2026-10-18",
