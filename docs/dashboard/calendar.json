@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T22:00:22.502Z",
+  "generatedAt": "2026-10-18T14:54:32.439Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -8,7 +8,7 @@
       "key": "airbnb",
       "ok": true,
       "count": 2,
-      "ignoredBlocks": 1
+      "ignoredBlocks": 2
     },
     {
       "name": "Booking.com",
@@ -32,7 +32,7 @@
       "name": "Blocked by you",
       "key": "manual",
       "ok": true,
-      "count": 3
+      "count": 4
     }
   ],
   "bookings": [
@@ -78,6 +78,17 @@
       "end": "2026-10-19",
       "allDay": true,
       "nights": 1
+    },
+    {
+      "uid": "manual-2026-10-22-2026-10-23",
+      "source": "manual",
+      "sourceName": "Blocked",
+      "kind": "direct",
+      "summary": "Via Vishakha Saraf",
+      "start": "2026-10-22",
+      "end": "2026-10-24",
+      "allDay": true,
+      "nights": 2
     },
     {
       "uid": "775dd094ab34327e4183d9d20dc8ae44@booking.com",
