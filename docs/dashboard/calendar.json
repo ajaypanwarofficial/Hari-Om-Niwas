@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T14:54:32.439Z",
+  "generatedAt": "2026-10-18T14:57:27.629Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -32,7 +32,7 @@
       "name": "Blocked by you",
       "key": "manual",
       "ok": true,
-      "count": 4
+      "count": 5
     }
   ],
   "bookings": [
@@ -87,6 +87,17 @@
       "summary": "Via Vishakha Saraf",
       "start": "2026-10-22",
       "end": "2026-10-24",
+      "allDay": true,
+      "nights": 2
+    },
+    {
+      "uid": "manual-2026-10-26-2026-10-27",
+      "source": "manual",
+      "sourceName": "Blocked",
+      "kind": "direct",
+      "summary": "Via Vishaka",
+      "start": "2026-10-26",
+      "end": "2026-10-28",
       "allDay": true,
       "nights": 2
     },
