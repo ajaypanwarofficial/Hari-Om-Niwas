@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T14:45:52.908Z",
+  "generatedAt": "2026-10-21T15:00:53.649Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -25,9 +25,8 @@
     {
       "name": "Agoda",
       "key": "agoda",
-      "ok": false,
-      "error": "HTTP 400",
-      "carriedForward": 0
+      "ok": true,
+      "count": 0
     },
     {
       "name": "Blocked by you",
