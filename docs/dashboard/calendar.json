@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T11:16:50.987Z",
+  "generatedAt": "2026-10-22T11:31:16.895Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -19,9 +19,8 @@
     {
       "name": "MMT / Goibibo",
       "key": "ingo",
-      "ok": false,
-      "error": "Timed out after 20s",
-      "carriedForward": 0
+      "ok": true,
+      "count": 0
     },
     {
       "name": "Agoda",
