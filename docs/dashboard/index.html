@@ -109,6 +109,21 @@
   .bk-row .dates { flex: 1; }
   .bk-row .when { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); text-align: right; white-space: nowrap; }
   .bk-row .when.now { color: var(--terra); font-weight: 600; }
+  .formc { margin: 0 0 28px; border: 1.4px solid var(--sand); background: #faf6ee; padding: 14px 16px 6px; }
+  .formc[hidden] { display: none; }
+  .formc h2 { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--terra); margin: 0 0 4px; }
+  .formc .sub { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--faint); margin: 0 0 6px; }
+  .fc-stay { padding: 10px 0; border-top: 1px dotted var(--sand); }
+  .fc-stay .head { display: flex; justify-content: space-between; gap: 10px; font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .06em; color: var(--faint); }
+  .fc-stay .head .late { color: var(--terra); font-weight: 600; text-transform: uppercase; }
+  .fc-person { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0 2px; font-size: 16px; }
+  .fc-person .nm { flex: 1; min-width: 140px; }
+  .fc-person button { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; border: 1.4px solid var(--terra); background: var(--terra); color: var(--paper); padding: 9px 14px; border-radius: 2px; cursor: pointer; }
+  .fc-person button.plain { background: white; color: var(--ink); border-color: var(--sand); }
+  .fc-person button:disabled { opacity: .5; cursor: default; }
+  .fc-person input { font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px 10px; border: 1.4px solid var(--sand); border-radius: 2px; width: 190px; max-width: 100%; }
+  .fc-person .done { font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); font-weight: 600; }
+  .fc-person .err { flex-basis: 100%; font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--terra); }
   .empty-note { color: var(--faint); font-style: italic; font-size: 15px; padding: 10px 0; margin: 0; }
   .lw-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted var(--sand); font-size: 15px; }
   .lw-row .tag { font-family: 'Work Sans', sans-serif; font-size: 10px; color: var(--faint); text-transform: uppercase; }
@@ -193,6 +208,12 @@
   <div class="arch-mark"></div>
   <h1>Calendar<span class="full-stop">.</span></h1>
   <p class="status-line" id="status-line">Loading…</p>
+
+  <section class="formc" id="formc" hidden>
+    <h2>Form C due</h2>
+    <p class="sub">File on indianfrro.gov.in within 24 hours of arrival, then tap Filed.</p>
+    <div id="formc-list"></div>
+  </section>
 
   <div class="controls">
     <div class="month-nav">
@@ -601,6 +622,61 @@
     }).join('');
   }
 
+  // Form C: one row per foreign guest still to file. Names and dates only;
+  // passport details stay in the private Guest Records sheet.
+  let formcStays = [];
+  async function loadFormC() {
+    try { formcStays = (await callWorker('/formc', { action: 'list' })).stays || []; }
+    catch (e) { if (e.status !== 401) console.warn('Form C list: ' + e.message); return; }
+    renderFormC();
+  }
+  function renderFormC() {
+    const box = document.getElementById('formc');
+    const open = formcStays.filter((s) => s.people.some((p) => !p.filed) || s.justDone);
+    box.hidden = !open.length;
+    const day = (k) => new Date(k + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+    document.getElementById('formc-list').innerHTML = open.map((s, si) => {
+      // Rough deadline: check-in day noon + 24 h. Red from 20 h.
+      const hrs = s.checkIn ? (Date.now() - new Date(s.checkIn + 'T12:00:00+05:30').getTime()) / 3600000 : 0;
+      const when = !s.checkIn ? '' : hrs < -12 ? 'Arrives ' + day(s.checkIn)
+        : hrs >= 24 ? '<span class="late">Overdue</span>' : hrs >= 20 ? '<span class="late">Due now</span>'
+        : 'Arrived ' + day(s.checkIn) + ' · due in 24 h';
+      return '<div class="fc-stay"><div class="head"><span>' + esc(s.ref) + '</span><span>' + when + '</span></div>' +
+        s.people.map((p, pi) => {
+          const id = si + '-' + pi;
+          let right;
+          if (p.filed) right = '<span class="done">✓ Done ' + esc(String(p.note).split(' — ')[0]) + '</span>';
+          else if (p.asking) right = '<input type="text" id="fc-no-' + id + '" maxlength="40" placeholder="Application no. (optional)" autocomplete="off">' +
+            '<button data-fc-save="' + id + '"' + (p.busy ? ' disabled' : '') + '>' + (p.busy ? 'Saving…' : 'Save') + '</button>' +
+            '<button class="plain" data-fc-cancel="' + id + '">Cancel</button>';
+          else right = '<button data-fc-ask="' + id + '">Filed</button>';
+          return '<div class="fc-person"><span class="nm">' + esc(p.name) + '</span>' + right +
+            (p.err ? '<span class="err">' + esc(p.err) + '</span>' : '') + '</div>';
+        }).join('') + '</div>';
+    }).join('');
+  }
+  document.getElementById('formc-list').addEventListener('click', async (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const key = b.dataset.fcAsk || b.dataset.fcSave || b.dataset.fcCancel;
+    const open = formcStays.filter((s) => s.people.some((p) => !p.filed) || s.justDone);
+    const [si, pi] = key.split('-').map(Number);
+    const stay = open[si], person = stay && stay.people[pi];
+    if (!person) return;
+    if (b.dataset.fcAsk) { person.asking = true; person.err = ''; renderFormC(); const i = document.getElementById('fc-no-' + key); if (i) i.focus(); return; }
+    if (b.dataset.fcCancel) { person.asking = false; person.err = ''; renderFormC(); return; }
+    const appNo = (document.getElementById('fc-no-' + key) || {}).value || '';
+    person.busy = true; person.err = ''; renderFormC();
+    try {
+      const r = await callWorker('/formc', { action: 'mark', ref: stay.ref, name: person.name, appNo: appNo.trim() });
+      Object.assign(person, { filed: true, note: r.date, asking: false, busy: false });
+      stay.justDone = true;   // keep the row on screen until the next reload
+    } catch (err) {
+      person.busy = false; person.err = err.message;
+    }
+    renderFormC();
+  });
+
   function addDaysKey(key, n) {
     const d = new Date(key + 'T00:00:00');
     d.setDate(d.getDate() + n);
@@ -832,6 +908,7 @@
     renderMonth();
     renderLongWeekends();
     renderUpcoming();
+    loadFormC();
   }
 
   if (pin) {

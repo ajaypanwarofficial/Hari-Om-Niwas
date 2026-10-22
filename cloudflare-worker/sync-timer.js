@@ -16,6 +16,7 @@
 //      POST /unblock  { from, to }              removes that line
 //      POST /booking  { name, checkIn, checkOut, ... }  records a direct
 //                     booking and sends its voucher (see 3 below)
+//      POST /formc    { action: 'list' | 'mark', ... }  Form C status (Guest Records)
 //    Each change is committed to blocked-dates.json on GitHub and the sync
 //    is started straight away, so the dashboard shows it in about 2 minutes.
 //
@@ -168,7 +169,7 @@ async function handle(request, env) {
       },
     });
   }
-  if (request.method !== 'POST' || !['/check', '/block', '/unblock', '/booking'].includes(url.pathname)) {
+  if (request.method !== 'POST' || !['/check', '/block', '/unblock', '/booking', '/formc'].includes(url.pathname)) {
     return new Response('Not found', { status: 404 });
   }
 
@@ -181,6 +182,7 @@ async function handle(request, env) {
   let body;
   try { body = await request.json(); } catch { return reply(400, { error: 'Bad request.' }); }
   if (url.pathname === '/booking') return relayBooking(body, env);
+  if (url.pathname === '/formc') return relayFormC(body, env);
   const { from, to } = body || {};
   if (!validDate(from) || !validDate(to) || to < from) return reply(400, { error: 'Check the dates: the last night can\'t be before the first.' });
 
@@ -242,6 +244,39 @@ async function relayBooking(body, env) {
       : 'The voucher system gave an unexpected answer (HTTP ' + res.status + ').' });
   }
   if (!data.ok) return reply(422, { error: data.error || 'The booking was not saved.' });
+  return reply(200, data);
+}
+
+// Form C status for the dashboard card. Only names, refs and dates come
+// back; passport details stay in the private sheet.
+//   { action: 'list' }                        stays with a Form C to file
+//   { action: 'mark', ref, name, appNo }      one guest's Form C is filed
+async function relayFormC(body, env) {
+  if (!env.APPS_SCRIPT_URL || !env.BOOKING_SECRET) return reply(503, { error: 'Form C is not set up on the Worker.' });
+  const action = body && body.action;
+  let payload;
+  if (action === 'list') payload = { route: 'formc-list' };
+  else if (action === 'mark' && typeof body.ref === 'string' && typeof body.name === 'string') {
+    payload = { route: 'formc-mark', ref: body.ref.slice(0, 40), name: body.name.slice(0, 120),
+      appNo: typeof body.appNo === 'string' ? body.appNo.slice(0, 40) : '' };
+  } else return reply(400, { error: 'Bad request.' });
+
+  let res;
+  try {
+    res = await fetch(env.APPS_SCRIPT_URL + '?t=' + encodeURIComponent(env.BOOKING_SECRET), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(BOOKING_TIMEOUT_MS),
+    });
+  } catch (err) {
+    console.error('formc relay: ' + (err && err.name));
+    return reply(504, { error: 'Guest Records did not answer in time. Try again.' });
+  }
+  let data;
+  try { data = JSON.parse(await res.text()); } catch { data = null; }
+  if (!data) return reply(502, { error: 'Guest Records gave an unexpected answer (HTTP ' + res.status + ').' });
+  if (!data.ok) return reply(422, { error: data.error || 'Not saved.' });
   return reply(200, data);
 }
 
