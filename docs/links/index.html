@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hari Om Niwas — Links</title>
+<meta name="description" content="Hari Om Niwas, a family home in Jodhpur. See the house, how far it is from the fort, station and airport, or book on Airbnb, Booking.com, Agoda, MakeMyTrip and Goibibo.">
+<meta name="theme-color" content="#F3EDE0">
+<meta property="og:title" content="Hari Om Niwas · Jodhpur">
+<meta property="og:description" content="A family home in Jodhpur. Message us, find us, or book.">
+<meta property="og:image" content="https://hariomniwas.in/gallery/photos/01.jpg">
+<meta property="og:url" content="https://hariomniwas.in/links/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
+<!-- Arimo is used ONLY inside the logo, to match the lockup files. -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
+    --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
+    --ground: var(--paper); --text: var(--ink); --heading: var(--teak); --card: #FBF7EE;
+  }
+  /* Dark mode: the same palette inverted onto #262624, paper as the text. */
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; --olive: #B5B08A; --card: #2F2E2B; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--text);
+    font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.55;
+  }
+  a { color: inherit; }
+  main { max-width: 460px; margin: 0 auto; padding: 0 16px 40px; }
+
+  /* ---- Header ---- */
+  .head { text-align: center; padding-top: 48px; }
+  .logo { width: 132px; height: auto; display: block; margin: 0 auto; }
+  .logo text { font-family: 'Arimo', Arial, Helvetica, sans-serif; }
+  .logo .arch, .logo .word { stroke: var(--heading); fill: var(--heading); }
+  .logo .arch { fill: none; }
+  .logo .city { fill: var(--olive); }
+  .tagline { font-style: italic; color: var(--faint); margin: 14px auto 0; max-width: 320px; font-size: 16px; }
+
+  .label {
+    font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 34px 0 12px; text-align: center;
+  }
+
+  /* ---- Link buttons ---- */
+  .links { display: flex; flex-direction: column; gap: 10px; }
+  .link {
+    display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 16px;
+    background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px;
+    text-decoration: none; cursor: pointer; font: inherit; color: inherit; text-align: left; width: 100%;
+    transition: border-color .15s, transform .1s;
+  }
+  .link:hover { border-color: var(--terra); }
+  .link:active { transform: scale(.985); }
+  .link svg { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .link .t { flex: 1; min-width: 0; }
+  .link b { display: block; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15px; letter-spacing: .01em; }
+  .link small { display: block; font-size: 14px; color: var(--faint); font-style: italic; line-height: 1.35; margin-top: 2px; }
+  .link .go { width: 16px; height: 16px; opacity: .55; }
+
+  .link.main { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  .link.main small { color: var(--paper); opacity: .85; }
+  .link.main:hover { opacity: .93; }
+
+  /* ---- Distances: each row opens directions from the house ---- */
+  .near { background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; padding: 6px 16px 0; }
+  .near ul { list-style: none; margin: 0; padding: 0; }
+  .near li a { display: flex; align-items: baseline; gap: 10px; padding: 11px 0; text-decoration: none; }
+  .near .k { font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 500; }
+  .near .dots { flex: 1; border-bottom: 1.5px dotted var(--sand); transform: translateY(-4px); min-width: 12px; }
+  .near .v { font-style: italic; color: var(--faint); font-size: 15px; white-space: nowrap; }
+  .near li a:hover .k { color: var(--terra); }
+  .near .map { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px -16px 0; padding: 13px 16px;
+               border-top: 1.4px solid var(--sand); text-decoration: none; font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); }
+  .near .map:hover { color: var(--terra); }
+  .near .map svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* OTAs: a compact two-column grid of names. */
+  .otas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .otas .link { min-height: 52px; justify-content: center; text-align: center; padding: 10px; }
+  .otas .link b { font-size: 14px; }
+  .otas .link:last-child:nth-child(odd) { grid-column: span 2; }
+
+  /* ---- MakeMyTrip / Goibibo dates ---- */
+  .dates { margin-top: 10px; padding: 18px 16px; border: 1.4px solid var(--sand); border-radius: 4px; background: var(--card); text-align: center; }
+  .dates[hidden] { display: none; }
+  .dates p { margin: 0 0 14px; }
+  .dates-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .dates label { display: flex; flex-direction: column; gap: 6px; text-align: left; flex: 1 1 120px;
+                 font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); }
+  .dates label.sm { flex: 0 0 70px; }
+  .dates input, .dates select {
+    font-family: 'Work Sans', sans-serif; font-size: 16px; color: var(--text); background: transparent; width: 100%;
+    border: none; border-bottom: 1.5px solid var(--sand); border-radius: 0; padding: 6px 2px;
+  }
+  .dates input:focus, .dates select:focus { outline: none; border-bottom-color: var(--terra); }
+  @media (prefers-color-scheme: dark) { .dates input { color-scheme: dark; } }
+  .btn {
+    display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; border: none; cursor: pointer;
+    letter-spacing: .16em; text-transform: uppercase; line-height: 1; padding: 15px 26px; border-radius: 2px; background: var(--terra); color: var(--paper);
+  }
+  .dates-err { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; margin: 10px 0 0 !important; min-height: 1em; }
+
+  footer { text-align: center; padding: 36px 16px 28px; }
+  footer .arch-mark { width: 22px; height: 27px; margin: 0 auto 12px; border: 1.6px solid var(--sand); border-bottom: none; border-radius: 999px 999px 0 0; }
+  footer p { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin: 0; }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="head">
+    <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
+      <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
+      <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
+      <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
+      <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
+      <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
+      <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
+    </svg>
+    <p class="tagline">Wear light, eat heavy,<br>and smile — you are in Jodhpur.</p>
+  </div>
+
+  <div class="links" style="margin-top:28px">
+    <a class="link main" href="../gallery/">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+      <span class="t"><b>Photos of the house</b><small>Living room, bedroom, the roof at sunset.</small></span>
+      <svg class="go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <p class="label">How far are we</p>
+  <div class="near">
+    <ul>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Mehrangarh+Fort+Jodhpur" target="_blank" rel="noopener"><span class="k">Mehrangarh Fort</span><span class="dots"></span><span class="v">4 km · 12 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jaswant+Thada+Jodhpur" target="_blank" rel="noopener"><span class="k">Jaswant Thada</span><span class="dots"></span><span class="v">4 km · 10 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Ghanta+Ghar+Clock+Tower+Jodhpur" target="_blank" rel="noopener"><span class="k">Clock Tower</span><span class="dots"></span><span class="v">4 km · 15 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Junction+Railway+Station" target="_blank" rel="noopener"><span class="k">Railway station</span><span class="dots"></span><span class="v">5 km · 15 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Airport" target="_blank" rel="noopener"><span class="k">Airport</span><span class="dots"></span><span class="v">8 km · 20 min</span></a></li>
+    </ul>
+    <a class="map" href="https://maps.app.goo.gl/XV8xLP1Rmzg4Cv5o7" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      Badla Road, Mahamandir · Open in Google Maps
+    </a>
+  </div>
+
+  <p class="label">Book on</p>
+  <div class="otas">
+    <a class="link" href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener"><b>Airbnb</b></a>
+    <a class="link" href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener"><b>Booking.com</b></a>
+    <button class="link" type="button" data-dated="mmt"><b>MakeMyTrip</b></button>
+    <button class="link" type="button" data-dated="goibibo"><b>Goibibo</b></button>
+    <a class="link" href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener"><b>Agoda</b></a>
+  </div>
+  <!-- MakeMyTrip and Goibibo have no plain share link: their pages need dates. -->
+  <form class="dates" id="dates" hidden>
+    <p>Your dates, for <span id="dates-site">MakeMyTrip</span></p>
+    <div class="dates-row">
+      <label>Check-in<input type="date" id="d-in" required></label>
+      <label>Check-out<input type="date" id="d-out" required></label>
+      <label class="sm">Adults<select id="d-adults"><option>1</option><option selected>2</option><option>3</option></select></label>
+    </div>
+    <button type="submit" class="btn">See the listing</button>
+    <p class="dates-err" id="d-err"></p>
+  </form>
+
+  <p class="label">Say hello</p>
+  <div class="links">
+    <a class="link" href="https://wa.me/919414195901?text=Hi%2C%20I%20found%20Hari%20Om%20Niwas%20on%20Instagram.%20" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg>
+      <span class="t"><b>Message us on WhatsApp</b><small>Dates, prices, food. The family answers.</small></span>
+    </a>
+
+    <a class="link" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg>
+      <span class="t"><b>Instagram</b><small>@hariomniwas</small></span>
+    </a>
+    <a class="link" href="mailto:stay@hariomniwas.in">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
+      <span class="t"><b>Email</b><small>stay@hariomniwas.in</small></span>
+    </a>
+
+    <a class="link" href="https://hariomniwas.in/">
+      <svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg>
+      <span class="t"><b>Our website</b><small>hariomniwas.in, a new site is on its way.</small></span>
+      <svg class="go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <div class="arch-mark" aria-hidden="true"></div>
+  <p>Hari Om Niwas · Mahamandir, Jodhpur</p>
+</footer>
+
+<script>
+  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them. Same logic as the home page.
+  (function () {
+    var HOTEL = '202609111336168255';
+    var form = document.getElementById('dates'), site = null;
+    var din = document.getElementById('d-in'), dout = document.getElementById('d-out'), err = document.getElementById('d-err');
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    var key = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+    var plus = function (k, n) { var p = k.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2] + n); return key(d); };
+    var today = key(new Date());
+    din.min = today; dout.min = plus(today, 1);
+    din.addEventListener('change', function () {
+      if (!din.value) return;
+      dout.min = plus(din.value, 1);
+      if (!dout.value || dout.value <= din.value) dout.value = dout.min;
+    });
+    document.querySelectorAll('[data-dated]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        site = a.getAttribute('data-dated');
+        document.getElementById('dates-site').textContent = a.textContent;
+        form.hidden = false; err.textContent = '';
+        if (!din.value) { din.value = plus(today, 7); dout.value = plus(today, 8); }
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!din.value || !dout.value || dout.value <= din.value) { err.textContent = 'Check-out has to be after check-in.'; return; }
+      var a = din.value.split('-'), b = dout.value.split('-'), adults = document.getElementById('d-adults').value, url;
+      if (site === 'mmt') {
+        // MakeMyTrip wants MMDDYYYY.
+        url = 'https://www.makemytrip.com/hotels/hotel-details/?hotelId=' + HOTEL +
+              '&checkin=' + a[1] + a[2] + a[0] + '&checkout=' + b[1] + b[2] + b[0] +
+              '&roomStayQualifier=' + adults + 'e0e&city=CTJDH&country=IN&currency=INR';
+      } else {
+        // Goibibo wants YYYYMMDD.
+        var ci = a.join(''), co = b.join('');
+        url = 'https://www.goibibo.com/hotels/Hari-Om-Niwas-hotel-in-Jodhpur-' + HOTEL + '/?hquery=' +
+              encodeURIComponent(JSON.stringify({ ci: ci, co: co })) + '&checkin=' + ci + '&checkout=' + co + '&roomString=1-' + adults + '-0';
+      }
+      window.open(url, '_blank', 'noopener');
+    });
+  })();
+</script>
+</body>
+</html>

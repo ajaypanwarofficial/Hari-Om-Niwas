@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hari Om Niwas — Photos</title>
+<meta name="description" content="A look around Hari Om Niwas, Jodhpur: the living room, bedroom, bathroom, kitchenette and the roof at sunset.">
+<meta name="theme-color" content="#F3EDE0">
+<meta property="og:title" content="Hari Om Niwas · A look around">
+<meta property="og:description" content="The whole upper floor of a family home in Jodhpur.">
+<meta property="og:image" content="https://hariomniwas.in/gallery/photos/01.jpg">
+<meta property="og:url" content="https://hariomniwas.in/gallery/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
+    --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
+    --ground: var(--paper); --text: var(--ink); --heading: var(--teak);
+  }
+  /* Dark mode: the same palette inverted onto #262624, paper as the text. */
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; --olive: #B5B08A; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--ground); color: var(--text); font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.55; }
+  a { color: inherit; }
+  main { max-width: 760px; margin: 0 auto; padding: 0 16px 120px; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 0; }
+  .back { font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: var(--faint); padding: 8px 0; }
+  .back:hover { color: var(--terra); }
+
+  h1 {
+    font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .01em;
+    line-height: 1.02; color: var(--heading); font-size: clamp(34px, 9vw, 52px); margin: 28px 0 0; text-align: center;
+  }
+  h1 .stop, h2 .stop { color: var(--terra); }
+  .lede { font-style: italic; color: var(--faint); text-align: center; margin: 12px auto 0; max-width: 380px; }
+
+  h2 {
+    font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--olive); margin: 44px 0 12px; text-align: center;
+  }
+
+  /* Landscape photos take the full row, portraits sit in pairs. */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid button { all: unset; cursor: zoom-in; display: block; grid-column: span 2; border-radius: 3px; overflow: hidden; background: var(--sand); }
+  .grid button.p { grid-column: span 1; }
+  .grid button.solo { grid-column: span 2; aspect-ratio: 4 / 5; }
+  .grid button:focus-visible { outline: 2px solid var(--terra); outline-offset: 2px; }
+  .grid img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .grid button:hover img { transform: scale(1.02); }
+  .cap { font-style: italic; color: var(--faint); font-size: 15px; text-align: center; margin: 10px 0 0; }
+
+  /* Sticky contact bar. */
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--ground) 60%, transparent); display: flex; justify-content: center; }
+  .btn {
+    display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; text-decoration: none;
+    letter-spacing: .16em; text-transform: uppercase; line-height: 1; padding: 17px 28px; border-radius: 2px; background: var(--terra); color: var(--paper);
+    box-shadow: 0 6px 20px rgba(59, 46, 34, .18); width: 100%; max-width: 428px; text-align: center;
+  }
+
+  /* Full-screen viewer. */
+  .viewer { position: fixed; inset: 0; background: #1A1917; z-index: 10; display: flex; flex-direction: column; touch-action: pan-y; }
+  .viewer[hidden] { display: none; }
+  .viewer .stage { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .viewer img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+  .viewer .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 8px calc(14px + env(safe-area-inset-bottom)); color: #F3EDE0; }
+  .viewer .vcap { flex: 1; text-align: center; font-style: italic; font-size: 15px; padding: 0 8px; }
+  .viewer .vcap span { display: block; font-family: 'Work Sans', sans-serif; font-style: normal; font-size: 10px; letter-spacing: .2em; color: #A89A84; margin-top: 4px; }
+  .viewer button { all: unset; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #F3EDE0; border-radius: 999px; }
+  .viewer button:hover { background: rgba(243, 237, 224, .1); }
+  .viewer svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .viewer .close { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 10px; }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="top">
+    <a class="back" href="../links/">← Links</a>
+    <a class="back" href="../">hariomniwas.in</a>
+  </div>
+
+  <h1>A look around<span class="stop">.</span></h1>
+  <p class="lede">The whole upper floor is yours: living room, bedroom, bath, kitchenette, and the roof at sunset.</p>
+
+  <h2>The living room</h2>
+  <div class="grid">
+    <button data-i="01" data-cap="The living room"><img src="photos/01.jpg" width="1600" height="1200" alt="Living room with a long sofa and wooden table"></button>
+    <button data-i="02" data-cap="Doors out to the balcony"><img src="photos/02.jpg" width="1600" height="1200" alt="Living room with wooden balcony doors" loading="lazy"></button>
+    <button data-i="03" data-cap="The living room in the evening"><img src="photos/03.jpg" width="1600" height="1066" alt="Living room lit in the evening" loading="lazy"></button>
+    <button data-i="04" data-cap="With the daybed"><img src="photos/04.jpg" width="1600" height="1200" alt="Living room with a daybed" loading="lazy"></button>
+  </div>
+
+  <h2>The bedroom</h2>
+  <div class="grid">
+    <button data-i="05" data-cap="The bedroom"><img src="photos/05.jpg" width="1600" height="1200" alt="Bedroom with a double bed" loading="lazy"></button>
+    <button class="p" data-i="06" data-cap="The elephant over the bed"><img src="photos/06.jpg" width="1066" height="1600" alt="Bed with elephant artwork above" loading="lazy"></button>
+    <button class="p" data-i="07" data-cap="Wardrobe and mirror"><img src="photos/07.jpg" width="1066" height="1600" alt="Bedroom mirror and wardrobe" loading="lazy"></button>
+  </div>
+
+  <h2>The bathroom</h2>
+  <div class="grid">
+    <button data-i="08" data-cap="The bathroom"><img src="photos/08.jpg" width="1600" height="1066" alt="Bathroom with a round basin" loading="lazy"></button>
+    <button class="solo" data-i="09" data-cap="The shower"><img src="photos/09.jpg" width="1066" height="1600" alt="Walk-in shower" loading="lazy"></button>
+  </div>
+
+  <h2>The kitchenette</h2>
+  <div class="grid">
+    <button data-i="10" data-cap="The kitchenette"><img src="photos/10.jpg" width="1600" height="1066" alt="Kitchenette under an arched window" loading="lazy"></button>
+  </div>
+
+  <h2>Little things</h2>
+  <div class="grid">
+    <button class="p" data-i="11" data-cap="The shelf and the old radio"><img src="photos/11.jpg" width="1066" height="1600" alt="Shelf with an old radio" loading="lazy"></button>
+    <button class="p" data-i="12" data-cap="A welcome on the table"><img src="photos/12.jpg" width="1066" height="1600" alt="Welcome table" loading="lazy"></button>
+  </div>
+
+  <h2>The roof</h2>
+  <div class="grid">
+    <button data-i="13" data-cap="The roof terrace"><img src="photos/13.jpg" width="1600" height="1200" alt="Rooftop terrace" loading="lazy"></button>
+    <button data-i="14" data-cap="Mehrangarh at sunset, from the roof"><img src="photos/14.jpg" width="1600" height="900" alt="Sun setting behind Mehrangarh Fort" loading="lazy"></button>
+    <button data-i="15" data-cap="Sunset from the roof"><img src="photos/15.jpg" width="1600" height="1066" alt="Sunset behind a domed monument" loading="lazy"></button>
+    <button data-i="16" data-cap="Sunset from the roof"><img src="photos/16.jpg" width="1600" height="1066" alt="Sunset with birds over the city" loading="lazy"></button>
+  </div>
+</main>
+
+<div class="bar">
+  <a class="btn" href="https://wa.me/919414195901?text=Hi%2C%20I%20saw%20the%20photos%20of%20Hari%20Om%20Niwas.%20" target="_blank" rel="noopener">Ask about dates on WhatsApp</a>
+</div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="close" id="v-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="stage"><img id="v-img" alt=""></div>
+  <div class="row">
+    <button id="v-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <p class="vcap" id="v-cap"></p>
+    <button id="v-next" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<script>
+  // Tap a photo to open it full screen; swipe or use the arrows to move through all of them.
+  (function () {
+    var items = [].slice.call(document.querySelectorAll('[data-i]'));
+    var viewer = document.getElementById('viewer'), img = document.getElementById('v-img'), cap = document.getElementById('v-cap');
+    var at = 0, x0 = null;
+    function show(i) {
+      at = (i + items.length) % items.length;
+      var b = items[at];
+      img.src = 'photos/' + b.getAttribute('data-i') + '.jpg';
+      img.alt = b.querySelector('img').alt;
+      cap.innerHTML = '';
+      cap.appendChild(document.createTextNode(b.getAttribute('data-cap')));
+      var n = document.createElement('span'); n.textContent = (at + 1) + ' / ' + items.length; cap.appendChild(n);
+    }
+    function open(i) { show(i); viewer.hidden = false; document.body.style.overflow = 'hidden'; }
+    function close() { viewer.hidden = true; document.body.style.overflow = ''; items[at].focus(); }
+    items.forEach(function (b, i) { b.addEventListener('click', function () { open(i); }); });
+    document.getElementById('v-prev').addEventListener('click', function () { show(at - 1); });
+    document.getElementById('v-next').addEventListener('click', function () { show(at + 1); });
+    document.getElementById('v-close').addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (viewer.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(at - 1);
+      if (e.key === 'ArrowRight') show(at + 1);
+    });
+    viewer.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    viewer.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1));
+    });
+  })();
+</script>
+</body>
+</html>
