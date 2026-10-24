@@ -238,7 +238,9 @@ async function main() {
   }
 
   // Keep finished stays the platforms have stopped listing (rule 5).
-  const today = new Date().toISOString().slice(0, 10);
+  // Today in Jodhpur, not UTC: Booking.com drops a stay at midnight IST on
+  // checkout day, while UTC is still on the day before (5:30 behind).
+  const today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
   const seen = new Set(all.map((e) => e.source + '|' + e.uid));
   for (const b of prevBookings) {
     if (b.source !== 'manual' && !seen.has(b.source + '|' + b.uid) && b.end.slice(0, 10) <= today) all.push(b);
