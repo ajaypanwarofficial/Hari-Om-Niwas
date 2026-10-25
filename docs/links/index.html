@@ -84,7 +84,8 @@
   .otas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .otas .link { min-height: 52px; justify-content: center; text-align: center; padding: 10px; }
   .otas .link b { font-size: 14px; }
-  .otas .link:last-child:nth-child(odd) { grid-column: span 2; }
+  .otas .link.wide { grid-column: span 2; min-height: 60px; }
+  .otas .link.wide b { font-size: 15px; }
 
   /* ---- MakeMyTrip / Goibibo dates ---- */
   .dates { margin-top: 10px; padding: 18px 16px; border: 1.4px solid var(--sand); border-radius: 4px; background: var(--card); text-align: center; }
@@ -151,11 +152,11 @@
 
   <p class="label">Book on</p>
   <div class="otas">
-    <a class="link" href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener"><b>Airbnb</b></a>
+    <a class="link wide" href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener"><b>Airbnb</b></a>
     <a class="link" href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener"><b>Booking.com</b></a>
+    <a class="link" href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener"><b>Agoda</b></a>
     <button class="link" type="button" data-dated="mmt"><b>MakeMyTrip</b></button>
     <button class="link" type="button" data-dated="goibibo"><b>Goibibo</b></button>
-    <a class="link" href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener"><b>Agoda</b></a>
   </div>
   <!-- MakeMyTrip and Goibibo have no plain share link: their pages need dates. -->
   <form class="dates" id="dates" hidden>
@@ -171,9 +172,9 @@
 
   <p class="label">Say hello</p>
   <div class="links">
-    <a class="link" href="https://wa.me/919414195901?text=Hi%2C%20I%20found%20Hari%20Om%20Niwas%20on%20Instagram.%20" target="_blank" rel="noopener">
+    <a class="link" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%28for%20example%3A%2012%20to%2015%20Nov%2C%202%20guests%29%0A%0A" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg>
-      <span class="t"><b>Message us on WhatsApp</b><small>Dates, prices, food. The family answers.</small></span>
+      <span class="t"><b>Message us on WhatsApp</b><small>Tap, type your dates, press send. The family answers.</small></span>
     </a>
 
     <a class="link" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">
