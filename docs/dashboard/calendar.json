@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T07:00:28.353Z",
+  "generatedAt": "2026-10-30T14:30:30.937Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -14,7 +14,7 @@
       "name": "Booking.com",
       "key": "booking",
       "ok": true,
-      "count": 3
+      "count": 4
     },
     {
       "name": "MMT / Goibibo",
@@ -120,6 +120,16 @@
       "end": "2026-10-28",
       "allDay": true,
       "nights": 2
+    },
+    {
+      "uid": "b99e676f772e483c1e0e0355881c4ecb@booking.com",
+      "source": "booking",
+      "sourceName": "Booking.com",
+      "summary": "CLOSED - Not available",
+      "start": "2026-11-01",
+      "end": "2026-11-02",
+      "allDay": true,
+      "nights": 1
     },
     {
       "uid": "775dd094ab34327e4183d9d20dc8ae44@booking.com",
