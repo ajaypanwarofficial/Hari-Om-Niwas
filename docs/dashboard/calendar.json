@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T15:17:22.113Z",
+  "generatedAt": "2026-11-01T23:00:26.419Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -7,14 +7,13 @@
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 3,
-      "ignoredBlocks": 1
+      "count": 3
     },
     {
       "name": "Booking.com",
       "key": "booking",
       "ok": true,
-      "count": 4
+      "count": 3
     },
     {
       "name": "MMT / Goibibo",
@@ -198,9 +197,9 @@
       "sourceName": "Booking.com",
       "summary": "CLOSED - Not available",
       "start": "2028-04-01",
-      "end": "2028-05-01",
+      "end": "2028-05-02",
       "allDay": true,
-      "nights": 30
+      "nights": 31
     }
   ]
 }
