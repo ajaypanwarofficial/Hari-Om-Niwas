@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T11:45:33.983Z",
+  "generatedAt": "2026-11-03T12:00:27.018Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -13,9 +13,8 @@
     {
       "name": "Booking.com",
       "key": "booking",
-      "ok": false,
-      "error": "Timed out after 20s",
-      "carriedForward": 5
+      "ok": true,
+      "count": 3
     },
     {
       "name": "MMT / Goibibo",
