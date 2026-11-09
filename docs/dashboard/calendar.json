@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T16:00:27.619Z",
+  "generatedAt": "2026-11-09T18:31:17.725Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -7,8 +7,7 @@
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 3,
-      "ignoredBlocks": 1
+      "count": 3
     },
     {
       "name": "Booking.com",
@@ -174,7 +173,7 @@
       "nights": 2
     },
     {
-      "uid": "65fdde72-9bb5-44d0-89d9-ad9527ed09c5",
+      "uid": "45e30aed-1d47-4841-aa79-def3fe787fa6",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
@@ -184,7 +183,7 @@
       "nights": 1
     },
     {
-      "uid": "88877553-243b-41f4-b6f3-ce5162322590",
+      "uid": "e01625bf-7b52-453a-ad3e-a8e52210ddcc",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
