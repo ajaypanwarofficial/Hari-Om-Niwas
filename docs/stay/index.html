@@ -95,6 +95,43 @@
   .note h3 { margin: 0 0 4px; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); }
   .note p { margin: 0; }
 
+  /* Switch card: three modular switches; each one flips on and its little LED glows, in turn, on a loop. */
+  .sw-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px 0 12px; }
+  .sw { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
+  .sw > span { font-family: 'Work Sans', sans-serif; font-size: 12px; font-weight: 500; line-height: 1.25; }
+  .plate { width: 70px; height: 84px; border-radius: 9px; background: #FBFAF6; border: 1px solid #E2D9C7;
+           box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(59,46,34,.10); display: grid; place-items: center; }
+  .rocker { position: relative; width: 38px; height: 56px; border-radius: 5px; border: 1px solid #DDD3C0; overflow: hidden;
+            background: linear-gradient(#FFFFFF 0 48%, #E9E2D4 52% 100%); animation: rock 6s infinite; animation-delay: var(--d, 0s); }
+  .led { position: absolute; left: 50%; bottom: 5px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%;
+         background: #CDC3B1; animation: led 6s infinite; animation-delay: var(--d, 0s); }
+  @keyframes rock {
+    0%, 8%   { background: linear-gradient(#FFFFFF 0 48%, #E9E2D4 52% 100%); }
+    12%, 74% { background: linear-gradient(#E9E2D4 0 48%, #FFFFFF 52% 100%); }
+    78%, 100% { background: linear-gradient(#FFFFFF 0 48%, #E9E2D4 52% 100%); }
+  }
+  @keyframes led {
+    0%, 8%   { background: #CDC3B1; box-shadow: none; }
+    12%, 74% { background: #FF5B2B; box-shadow: 0 0 5px 1px rgba(255,91,43,.7), 0 0 14px 5px rgba(255,91,43,.28); }
+    78%, 100% { background: #CDC3B1; box-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rocker, .led { animation: none; }
+    .rocker { background: linear-gradient(#E9E2D4 0 48%, #FFFFFF 52% 100%); }
+    .led { background: #FF5B2B; box-shadow: 0 0 5px 1px rgba(255,91,43,.7); }
+  }
+
+  /* House notes: one line each at a glance, tap to read the rest. */
+  .rules details { border-bottom: 1.4px solid var(--sand); }
+  .rules details:last-child { border-bottom: none; }
+  .rules summary { list-style: none; display: flex; align-items: baseline; gap: 10px; padding: 14px 0; cursor: pointer; }
+  .rules summary::-webkit-details-marker { display: none; }
+  .rules summary b { font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); white-space: nowrap; }
+  .rules summary span { flex: 1; text-align: right; font-style: italic; color: var(--faint); font-size: 15px; }
+  .rules summary::after { content: ''; width: 7px; height: 7px; border-right: 1.6px solid var(--faint); border-bottom: 1.6px solid var(--faint); transform: translateY(-3px) rotate(45deg); transition: transform .2s; flex-shrink: 0; align-self: center; }
+  .rules details[open] summary::after { transform: translateY(1px) rotate(-135deg); }
+  .rules details p { margin: -4px 0 14px; }
+
   .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; padding: 12px 18px; border-radius: 3px; border: none; cursor: pointer;
          background: var(--terra); color: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
   .btn.ghost { background: transparent; color: var(--text); border: 1.4px solid var(--sand); }
@@ -255,19 +292,27 @@
 
     <p class="label">How things work</p>
     <div class="card notes">
-      <div class="note"><h3>AC &amp; geyser switches</h3><p>These two have a small light on the switch, so you can see when they are on. No other switch does. The AC remote sits in this holder.</p></div>
+      <div class="note">
+        <h3>Light on = switched on</h3>
+        <div class="sw-row" aria-label="Living room AC, bedroom AC and geyser switches each have a small light that glows when they are on">
+          <div class="sw"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Living room AC</span></div>
+          <div class="sw" style="--d:.7s"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Bedroom AC</span></div>
+          <div class="sw" style="--d:1.4s"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Geyser</span></div>
+        </div>
+        <p class="muted" style="font-size:14.5px">Only these three switches have the little light. The AC remote sits in this holder.</p>
+      </div>
       <div class="note"><h3>Books &amp; games</h3><p>Help yourself to the books, Jenga, chess and UNO. Some of these things are old and dear to us, so please handle them gently. Anything broken will be charged.</p></div>
     </div>
 
     <p class="label">House notes</p>
-    <p style="margin:0 0 12px">This is a family home before it is a rental. We live on the ground floor, and this flat is yours while you are here. Almost everything below follows from that.</p>
-    <div class="card notes">
-      <div class="note"><h3>Sound</h3><p>Please keep music low, and take conversations indoors after 10 at night. Sound travels faster through solid walls than you would expect.</p></div>
-      <div class="note"><h3>Smoking</h3><p>The balcony and the rooftop, please. Not the hall, not the bedroom. Ashtrays are out there, and the fort looks better from up top anyway.</p></div>
-      <div class="note"><h3>Drinking</h3><p>Allowed, and left to your own judgement. Please mind the floor — it is old Makrana marble and it remembers everything.</p></div>
-      <div class="note"><h3>Visitors</h3><p>Only the guests on the booking come inside. Anyone else, please meet outside.</p></div>
-      <div class="note"><h3>Leaving</h3><p>Check-out by 10 in the morning, and please do keep to it. There is one flat, and it has to be made properly for whoever comes next.</p></div>
-      <div class="note"><h3>Spills &amp; breaks</h3><p>Tell us straight away, whatever it is. Accidents are completely fine — it is the ones left sitting that become a problem.</p></div>
+    <p style="margin:0 0 12px">A family home before it is a rental. We live downstairs. Tap a note to read more.</p>
+    <div class="card rules">
+      <details><summary><b>Sound</b><span>Quiet after 10 pm</span></summary><p>Please keep music low, and take conversations indoors after 10 at night. Sound travels faster through solid walls than you would expect.</p></details>
+      <details><summary><b>Smoking</b><span>Balcony &amp; rooftop only</span></summary><p>The balcony and the rooftop, please. Not the hall, not the bedroom. Ashtrays are out there, and the fort looks better from up top anyway.</p></details>
+      <details><summary><b>Drinking</b><span>Allowed, mind the floor</span></summary><p>Allowed, and left to your own judgement. Please mind the floor — it is old Makrana marble and it remembers everything.</p></details>
+      <details><summary><b>Visitors</b><span>Booked guests only</span></summary><p>Only the guests on the booking come inside. Anyone else, please meet outside.</p></details>
+      <details><summary><b>Leaving</b><span>Check-out by 10 am</span></summary><p>Check-out by 10 in the morning, and please do keep to it. There is one flat, and it has to be made properly for whoever comes next.</p></details>
+      <details><summary><b>Spills &amp; breaks</b><span>Tell us straight away</span></summary><p>Tell us straight away, whatever it is. Accidents are completely fine — it is the ones left sitting that become a problem.</p></details>
     </div>
     <p class="muted" style="text-align:center;margin-top:20px">Thank you for looking after our house.</p>
   </section>
@@ -299,6 +344,9 @@
   <section data-view="guide" hidden>
     <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Not a top-ten list</small><h2>Jodhpur Guide</h2></div></div>
     <p class="lede">Where we actually go. Swipe through each list — every place opens in Google Maps from our door.</p>
+    <div class="card" style="margin-top:18px">
+      <div class="note"><h3>Into the old city? Leave the car</h3><p>For the Clock Tower, Nav Chokia, Brahmpuri or anywhere in the blue city, skip your own car or scooty. The lanes jam and there is nowhere to park. A taxi or an auto drops you right there.</p></div>
+    </div>
     <p class="label">Pick a list</p>
     <div class="cats" id="cats"></div>
   </section>
@@ -318,11 +366,6 @@
 
     <p class="label">Tap for directions</p>
     <div class="card"><ul class="near" id="near"></ul></div>
-
-    <p class="label">Into the old city</p>
-    <div class="card">
-      <div class="note"><h3>Leave the car, take an auto</h3><p>Going to the Clock Tower, Nav Chokia, Brahmpuri or anywhere in the blue city? Don't take your own car or scooty. The lanes jam and there is nowhere to park. A taxi or an auto drops you right there.</p></div>
-    </div>
 
     <p class="label" id="deliveries">Our address</p>
     <div class="card">
