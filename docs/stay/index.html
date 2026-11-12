@@ -162,6 +162,17 @@
   .near .v { font-style: italic; color: var(--faint); font-size: 15px; white-space: nowrap; }
   .near li a:hover .k { color: var(--terra); }
 
+  /* In-page image viewer (map). Tap image = zoom in/out, tap outside or × = close. */
+  .viewer { position: fixed; inset: 0; z-index: 30; background: rgba(28, 25, 22, .95); }
+  .v-scroll { width: 100%; height: 100%; overflow: auto; display: flex; -webkit-overflow-scrolling: touch; }
+  .v-scroll img { display: block; margin: auto; max-width: 100%; max-height: 100%; cursor: zoom-in; }
+  .viewer.zoom .v-scroll img { max-width: none; max-height: none; width: 260%; cursor: zoom-out; }
+  .v-close { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 12px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(243,237,224,.92); color: #3B2E22; display: grid; place-items: center; cursor: pointer; }
+  .v-close svg.i { width: 20px; height: 20px; }
+  .v-hint { position: absolute; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(243,237,224,.7); pointer-events: none; }
+  .viewer.zoom .v-hint { display: none; }
+  body.noscroll { overflow: hidden; }
+
   .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px); opacity: 0; transition: .2s; pointer-events: none;
            background: var(--ink); color: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 13px; padding: 10px 16px; border-radius: 99px; z-index: 20; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -303,31 +314,26 @@
   <section data-view="around" hidden>
     <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>From our door</small><h2>Getting Around</h2></div></div>
     <p class="lede">Jodhpur is a small town. Nothing here is more than twenty minutes away — the traffic is all in the middle.</p>
-    <a href="map.jpg" target="_blank"><img class="map" src="map.jpg" alt="Map of Jodhpur from Hari Om Niwas: Mehrangarh Fort 3.6 km, Jaswant Thada 3.4 km, Ghanta Ghar 5.6 km, Umaid Bhawan 5.6 km, Mandore 5.8 km, station 5.6 km, airport 8.3 km." loading="lazy" width="1600" height="1128"></a>
+    <a href="map.jpg" data-view-img aria-label="Open the map larger"><img class="map" src="map.jpg" alt="Map of Jodhpur from Hari Om Niwas: Mehrangarh Fort 3.6 km, Jaswant Thada 3.4 km, Ghanta Ghar 5.6 km, Umaid Bhawan 5.6 km, Mandore 5.8 km, station 5.6 km, airport 8.3 km." loading="lazy" width="1600" height="1128"></a>
 
     <p class="label">Tap for directions</p>
     <div class="card"><ul class="near" id="near"></ul></div>
 
-    <p class="label">Telling a driver</p>
+    <p class="label">Into the old city</p>
     <div class="card">
-      <div class="note"><h3>Our address</h3><p>Hari Om Niwas, <b>Badla Road</b>, Mahaveer Nagar, Mahamandir. Say “Badla Road, Mahamandir” — we are right on the main road.</p></div>
-      <div class="note"><h3>Fort, Jaswant Thada, Mandore</h3><p>Go via Badasia. Short and simple.</p></div>
-      <div class="note"><h3>Umaid Bhawan</h3><p>Go via Paota.</p></div>
-      <div class="note"><h3>The blue lanes</h3><p>Nav Chokia and Brahmpuri — walk them, or take a scooty. A car fits. You will not enjoy it.</p></div>
+      <div class="note"><h3>Leave the car, take an auto</h3><p>Going to the Clock Tower, Nav Chokia, Brahmpuri or anywhere in the blue city? Don't take your own car or scooty. The lanes jam and there is nowhere to park. A taxi or an auto drops you right there.</p></div>
+    </div>
+
+    <p class="label" id="deliveries">Our address</p>
+    <div class="card">
+      <div class="note"><p>Hari Om Niwas, <b>Badla Road</b>, Mahaveer Nagar, Mahamandir, Jodhpur 342006</p>
+        <p class="muted" style="font-size:15px;margin-top:6px">Use this address and our pin for cabs and for Blinkit, Zomato, Swiggy or Zepto orders.</p></div>
     </div>
     <div class="btns">
       <a class="btn" href="https://maps.app.goo.gl/XV8xLP1Rmzg4Cv5o7" target="_blank" rel="noopener"><svg class="i"><use href="#i-pin"/></svg>Our pin</a>
       <button class="btn ghost" data-copy-text="Hari Om Niwas, Badla Road, Mahaveer Nagar, Mahamandir, Jodhpur 342006">Copy address</button>
     </div>
-
-    <p class="label" id="deliveries">Ordering a delivery?</p>
-    <div class="card">
-      <div class="note"><h3>The house has two sides</h3><p>Your entrance is the guest entrance on the main road, <b>Badla Road</b>. Orders can end up at the other side, so please use the address below.</p></div>
-      <div class="note"><h3>Blinkit</h3><p>One tap adds our guest-entrance address to your Blinkit app, pin and all.</p>
-        <a class="btn" style="margin-top:12px" href="https://link.blinkit.com/bln/3f0f993v" target="_blank" rel="noopener">Add our address to Blinkit</a></div>
-      <div class="note"><h3>Zomato, Swiggy, Zepto, anything else</h3><p>Copy the address, then drag the map pin onto <b>Badla Road</b>, the main road. Riders find the guest entrance much faster that way.</p>
-        <button class="btn ghost" style="margin-top:12px" data-copy-text="Hari Om Niwas, guest entrance on Badla Road (main road), Mahaveer Nagar, Mahamandir, Jodhpur 342006">Copy delivery address</button></div>
-    </div>
+    <a class="btn ghost" style="margin-top:10px" href="https://link.blinkit.com/bln/3f0f993v" target="_blank" rel="noopener">On Blinkit? Add our address in one tap</a>
   </section>
 
   <!-- ================= CONTACT ================= -->
@@ -357,6 +363,12 @@
 
   <footer><a href="#"><div class="arch-mark" aria-hidden="true"></div><p>Hari Om Niwas · Mahamandir, Jodhpur</p></a></footer>
 </main>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Map">
+  <div class="v-scroll" id="v-scroll"><img id="v-img" alt=""></div>
+  <button class="v-close" id="v-close" aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <p class="v-hint">Tap the map to zoom</p>
+</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -636,6 +648,36 @@ var NEAR = [
   // A swipe that ends on a button must not also open it.
   deck.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
   deck.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  // ---- image viewer: opens in the page; the phone's back button closes it ----
+  var viewer = $('#viewer'), vimg = $('#v-img'), vscroll = $('#v-scroll');
+  function openViewer(src, alt) {
+    vimg.src = src; vimg.alt = alt || ''; viewer.classList.remove('zoom'); viewer.hidden = false; document.body.classList.add('noscroll');
+    if (history.pushState) history.pushState({ viewer: 1 }, '');
+    $('#v-close').focus();
+  }
+  function closeViewer(fromPop) {
+    if (viewer.hidden) return;
+    viewer.hidden = true; document.body.classList.remove('noscroll');
+    if (!fromPop && history.state && history.state.viewer) history.back();
+  }
+  $$('[data-view-img]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); var im = a.querySelector('img'); openViewer(a.getAttribute('href'), im ? im.alt : ''); });
+  });
+  vimg.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var r = vimg.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+    viewer.classList.toggle('zoom');
+    if (viewer.classList.contains('zoom')) {
+      // keep the tapped spot under the finger
+      vscroll.scrollLeft = fx * vimg.offsetWidth - vscroll.clientWidth / 2;
+      vscroll.scrollTop = fy * vimg.offsetHeight - vscroll.clientHeight / 2;
+    }
+  });
+  vscroll.addEventListener('click', function () { closeViewer(false); });
+  $('#v-close').addEventListener('click', function () { closeViewer(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeViewer(false); });
+  window.addEventListener('popstate', function () { closeViewer(true); });
 
   // ---- tiny hash router ----
   var views = $$('[data-view]');
