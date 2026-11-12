@@ -156,8 +156,22 @@ function reply(status, body) {
   });
 }
 
+// In-room guide (hariomniwas.in/stay): hands out the Wi-Fi only to someone holding the room tag's key,
+// so the password never sits in the public repo. Secrets: WIFI_NAME, WIFI_PASS, WIFI_KEY.
+async function wifi(url, env) {
+  if (!env.WIFI_KEY || !env.WIFI_NAME || !env.WIFI_PASS) return reply(503, { error: 'Wi-Fi is not set up on the Worker.' });
+  if (!samePin(url.searchParams.get('k') || '', env.WIFI_KEY)) {
+    await new Promise((r) => setTimeout(r, 1000));
+    return reply(403, { error: 'Ask us for the Wi-Fi.' });
+  }
+  const res = reply(200, { name: env.WIFI_NAME, pass: env.WIFI_PASS });
+  res.headers.set('Cache-Control', 'no-store');
+  return res;
+}
+
 async function handle(request, env) {
   const url = new URL(request.url);
+  if (request.method === 'GET' && url.pathname === '/wifi') return wifi(url, env);
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,

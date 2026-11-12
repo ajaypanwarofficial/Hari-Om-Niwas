@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Hari Om Niwas — Your stay</title>
+<meta name="theme-color" content="#F3EDE0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<!--
+  In-room guest guide. Opened by the NFC tag + QR on the remote holders.
+  Living room tag:  https://hariomniwas.in/stay/?r=living
+  Bedroom tag:      https://hariomniwas.in/stay/?r=bedroom
+  Content you will want to edit lives in the CONFIG block in the <script> at the bottom.
+-->
+<style>
+  :root {
+    --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
+    --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
+    --ground: var(--paper); --text: var(--ink); --heading: var(--teak); --card: #FBF7EE; --tint: #EFE6D4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; --olive: #B5B08A; --card: #2F2E2B; --tint: #34322E; --terra: #D9825E; }
+    .pill.done, .when .pill[aria-pressed="true"], .btn, .tile.main, .tile.main svg.i { color: #262624 !important; }
+    .btn.ghost { color: var(--text) !important; }
+    .toast { background: #F3EDE0 !important; color: #262624 !important; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--ground); color: var(--text); font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.55; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  main { max-width: 480px; margin: 0 auto; padding: 0 16px calc(40px + env(safe-area-inset-bottom)); }
+  [hidden] { display: none !important; }
+
+  .sans { font-family: 'Work Sans', sans-serif; }
+  .label { font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 30px 0 12px; }
+  .muted { color: var(--faint); font-style: italic; }
+  svg.i { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Home ---------- */
+  /* Cover: same lockup as the Menu Book cover. */
+  .cover { text-align: center; padding: 44px 0 6px; }
+  .cover .logo { width: 150px; height: auto; display: block; margin: 0 auto; }
+  .cover .logo text { font-family: 'Arimo', Arial, Helvetica, sans-serif; }
+  .cover .logo .arch, .cover .logo .word { stroke: var(--heading); fill: var(--heading); }
+  .cover .logo .arch { fill: none; }
+  .cover .logo .city { fill: var(--olive); }
+  .cover .tagline { font-style: italic; color: var(--faint); margin: 16px auto 0; max-width: 300px; font-size: 16px; line-height: 1.5; }
+  .cover .room { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--olive); margin-top: 18px; }
+
+  .chip { background: var(--tint); border-radius: 4px; padding: 10px 12px; }
+  .chip small { display: block; font-family: 'Work Sans', sans-serif; font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--olive); }
+  .chip b { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-align: left; min-height: 104px; padding: 14px;
+          background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; text-decoration: none; cursor: pointer; transition: border-color .15s, transform .1s; }
+  .tile:hover { border-color: var(--terra); }
+  .tile:active { transform: scale(.98); }
+  .tile svg.i { color: var(--terra); }
+  .tile b { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15px; line-height: 1.25; }
+  .tile small { display: block; font-size: 13.5px; color: var(--faint); font-style: italic; line-height: 1.3; margin-top: 2px; }
+  .tile.wide { grid-column: span 2; flex-direction: row; align-items: center; min-height: 64px; }
+  .tile.main { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  .tile.main svg.i { color: var(--paper); }
+  .tile.main small { color: var(--paper); opacity: .85; }
+
+  /* ---------- Inner views ---------- */
+  .bar { position: sticky; top: 0; z-index: 5; background: var(--ground); display: flex; align-items: center; gap: 12px; padding: 16px 0 12px; border-bottom: 1.4px solid var(--sand); }
+  .back { width: 38px; height: 38px; border-radius: 50%; border: 1.4px solid var(--sand); background: var(--card); display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
+  .back svg.i { width: 18px; height: 18px; }
+  .bar h2 { margin: 0; font-weight: 500; font-size: 24px; color: var(--heading); line-height: 1.1; }
+  .bar small { display: block; font-family: 'Work Sans', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+
+  .card { background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; padding: 4px 16px; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+  .row + .row { border-top: 1.4px solid var(--sand); }
+  .row .k { flex: 1; min-width: 0; }
+  .row .k small { display: block; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--olive); }
+  .row .k b { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 17px; word-break: break-all; }
+  .pill { font-family: 'Work Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: .06em; padding: 8px 14px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 99px; border: 1.4px solid var(--sand); background: transparent; cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .pill:hover { border-color: var(--terra); color: var(--terra); }
+  .pill.done { background: var(--olive); border-color: var(--olive); color: var(--paper); }
+
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles .chip { padding: 12px; background: var(--card); border: 1.4px solid var(--sand); }
+  .tiles .chip b { display: block; margin-top: 2px; }
+  .tiles .chip i { font-size: 13.5px; color: var(--faint); display: block; line-height: 1.3; margin-top: 2px; }
+
+  .notes { counter-reset: n; }
+  .note { padding: 14px 0; border-bottom: 1.4px solid var(--sand); }
+  .note:last-child { border-bottom: none; }
+  .note h3 { margin: 0 0 4px; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); }
+  .note p { margin: 0; }
+
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; padding: 12px 18px; border-radius: 3px; border: none; cursor: pointer;
+         background: var(--terra); color: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+  .btn.ghost { background: transparent; color: var(--text); border: 1.4px solid var(--sand); }
+  .btn.ghost:hover { border-color: var(--terra); }
+  .btn svg.i { width: 18px; height: 18px; }
+  .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+
+  /* ---------- Food ---------- */
+  .lede { margin: 18px 0 0; }
+  .menu h3 { font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 26px 0 6px; }
+  .item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1.4px dotted var(--sand); }
+  .item .k { flex: 1; min-width: 0; }
+  .item b { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15.5px; }
+  .item .p { font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); margin-left: 6px; }
+  .item small { display: block; font-size: 14px; color: var(--faint); font-style: italic; line-height: 1.3; margin-top: 1px; }
+  .step { display: flex; align-items: center; border: 1.4px solid var(--sand); border-radius: 99px; flex-shrink: 0; }
+  .step button { width: 44px; height: 44px; border: none; background: none; cursor: pointer; font-size: 19px; line-height: 1; color: var(--terra); }
+  .step span { min-width: 18px; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 15px; }
+  .item.on .step { border-color: var(--terra); }
+  .tag { display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--terra); border: 1px solid var(--terra); border-radius: 99px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
+
+  .when { display: flex; flex-wrap: wrap; gap: 8px; }
+  .when .pill[aria-pressed="true"] { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  .field { width: 100%; font-family: 'Spectral', Georgia, serif; font-size: 16px; color: var(--text); background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; padding: 10px 12px; margin-top: 10px; }
+  .field:focus { outline: none; border-color: var(--terra); }
+  @media (prefers-color-scheme: dark) { .field { color-scheme: dark; } }
+
+  .basket { position: sticky; bottom: 0; margin: 22px -16px 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--ground); border-top: 1.4px solid var(--sand); }
+  .basket .sum { display: flex; justify-content: space-between; font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); margin-bottom: 8px; }
+  .basket .sum b { color: var(--text); font-weight: 500; }
+  .warn { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12.5px; margin: 0 0 8px; }
+
+  /* ---------- Guide ---------- */
+  .cats { display: flex; flex-direction: column; gap: 10px; }
+  .cat { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; cursor: pointer; text-align: left; width: 100%; }
+  .cat:hover { border-color: var(--terra); }
+  .cat .k { flex: 1; }
+  .cat b { display: block; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 16px; }
+  .cat small { font-size: 14px; color: var(--faint); font-style: italic; }
+  .cat .n { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--faint); }
+
+  /* Carousel: one card per swipe or tap, never resting between cards. */
+  .deck { margin: 18px -16px 0; overflow: hidden; touch-action: pan-y; }
+  .track { display: flex; gap: 12px; padding: 0 16px 6px; transition: transform .32s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+  .track.drag { transition: none; }
+  .place { flex: 0 0 86%; min-width: 0; user-select: none; -webkit-user-select: none; background: var(--card); border: 1.4px solid var(--sand); border-radius: 6px; padding: 22px 20px 18px; display: flex; flex-direction: column; min-height: 250px; }
+  .place .num { font-family: 'Arimo', Arial, sans-serif; font-size: 54px; line-height: 1; color: var(--sand); }
+  .place .sec { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin-top: 18px; }
+  .place h3 { margin: 4px 0 8px; font-weight: 500; font-size: 25px; line-height: 1.15; color: var(--heading); }
+  .place p { margin: 0; flex: 1; }
+  .place .btns { margin-top: 18px; grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .place .btn { min-height: 46px; font-size: 11px; letter-spacing: .08em; padding: 10px 8px; gap: 6px; }
+  @media (max-width: 359px) { .place .btn svg.i { display: none; } }
+  .pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); }
+  .pager button { width: 44px; height: 44px; border-radius: 50%; border: 1.4px solid var(--sand); background: var(--card); cursor: pointer; display: grid; place-items: center; }
+  .pager button:disabled { opacity: .35; cursor: default; }
+  .pager svg.i { width: 16px; height: 16px; }
+
+  /* ---------- Around ---------- */
+  .map { display: block; width: 100%; height: auto; border-radius: 4px; border: 1.4px solid var(--sand); margin-top: 18px; }
+  .near { list-style: none; margin: 0; padding: 0; }
+  .near li a { display: flex; align-items: baseline; gap: 10px; padding: 11px 0; text-decoration: none; }
+  .near .k { font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 500; }
+  .near .dots { flex: 1; border-bottom: 1.5px dotted var(--sand); transform: translateY(-4px); min-width: 12px; }
+  .near .v { font-style: italic; color: var(--faint); font-size: 15px; white-space: nowrap; }
+  .near li a:hover .k { color: var(--terra); }
+
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px); opacity: 0; transition: .2s; pointer-events: none;
+           background: var(--ink); color: var(--paper); font-family: 'Work Sans', sans-serif; font-size: 13px; padding: 10px 16px; border-radius: 99px; z-index: 20; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { text-align: center; padding: 34px 16px 10px; }
+  footer .arch-mark { width: 22px; height: 27px; margin: 0 auto 12px; border: 1.6px solid var(--sand); border-bottom: none; border-radius: 999px 999px 0 0; }
+  footer p { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin: 0; }
+  footer a { text-decoration: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M5.5 12.5a9.5 9.5 0 0 1 13 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.3" r=".9" fill="currentColor"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H16.5"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3"/></symbol>
+  <symbol id="i-guide" viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/><path d="M9.5 21v-5a2.5 2.5 0 0 1 5 0v5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></symbol>
+  <symbol id="i-notes" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section data-view="home">
+    <div class="cover">
+      <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
+        <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
+        <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
+        <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
+        <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
+        <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
+        <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
+      </svg>
+      <p class="tagline">Wear light, eat heavy,<br>and smile — you are in Jodhpur.</p>
+    </div>
+
+    <p class="label">Tap what you need</p>
+    <div class="grid">
+      <a class="tile" href="#wifi"><svg class="i"><use href="#i-wifi"/></svg><span><b>House &amp; Wi-Fi</b><small>Password, timings, house notes</small></span></a>
+      <a class="tile" href="#food"><svg class="i"><use href="#i-cup"/></svg><span><b>Food &amp; Chai</b><small>Order from our kitchen</small></span></a>
+      <a class="tile" href="#guide"><svg class="i"><use href="#i-guide"/></svg><span><b>Jodhpur Guide</b><small>Where we actually go</small></span></a>
+      <a class="tile" href="#around"><svg class="i"><use href="#i-pin"/></svg><span><b>Getting Around</b><small>Map, distances, routes</small></span></a>
+      <a class="tile wide" href="#contact"><svg class="i"><use href="#i-phone"/></svg><span><b>Contact &amp; emergencies</b><small>We are downstairs</small></span></a>
+      <a class="tile wide main" data-wa="Hi! We're staying upstairs at Hari Om Niwas. " href="#"><svg class="i"><use href="#i-chat"/></svg><span><b>Message us on WhatsApp</b><small>A doctor, a taxi, an extra blanket — anything.</small></span></a>
+    </div>
+  </section>
+
+  <!-- ================= HOUSE & WI-FI ================= -->
+  <section data-view="wifi" hidden>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Your stay</small><h2>House &amp; Wi-Fi</h2></div></div>
+
+    <p class="label">Wi-Fi</p>
+    <div class="card" id="wifi-card">
+      <div class="row"><div class="k"><small>Network</small><b id="wifi-name">—</b></div><button class="pill" data-copy="wifi-name">Copy</button></div>
+      <div class="row"><div class="k"><small>Password</small><b id="wifi-pass">—</b></div><button class="pill" data-copy="wifi-pass">Copy</button></div>
+    </div>
+    <p class="muted" id="wifi-tip" style="font-size:14.5px;margin:8px 2px 0">Copy the password, then open Wi-Fi settings and pick the network.</p>
+    <div id="wifi-ask" hidden>
+      <p style="margin:0 0 12px">Tap the tag on the remote holder, or scan its code, and the Wi-Fi details show up here. Or just ask us.</p>
+      <a class="btn" data-wa="Hi! Could you send us the Wi-Fi password, please? " href="#"><svg class="i"><use href="#i-chat"/></svg>Ask on WhatsApp</a>
+    </div>
+
+    <p class="label">Timings</p>
+    <div class="tiles">
+      <div class="chip"><small>Check-in</small><b>12 noon</b><i>Tell us when you will arrive</i></div>
+      <div class="chip"><small>Check-out</small><b>10 am</b><i>One flat, made properly for the next guest</i></div>
+      <div class="chip"><small>Chai &amp; coffee</small><b>Any time</b><i>Whenever we are awake</i></div>
+      <div class="chip"><small>Breakfast</small><b>Night before</b><i>Tell us what and when</i></div>
+      <div class="chip"><small>Thali</small><b>2 hrs' notice</b><i>Cooked from scratch</i></div>
+      <div class="chip"><small>Quiet hours</small><b>After 10 pm</b><i>Sound travels through these walls</i></div>
+    </div>
+
+    <p class="label">How things work</p>
+    <div class="card notes">
+      <div class="note"><h3>AC &amp; geyser switches</h3><p>These two have a small light on the switch, so you can see when they are on. No other switch does. The AC remote sits in this holder.</p></div>
+      <div class="note"><h3>Books &amp; games</h3><p>Help yourself to the books, Jenga, chess and UNO. Some of these things are old and dear to us, so please handle them gently. Anything broken will be charged.</p></div>
+    </div>
+
+    <p class="label">House notes</p>
+    <p style="margin:0 0 12px">This is a family home before it is a rental. We live on the ground floor, and this flat is yours while you are here. Almost everything below follows from that.</p>
+    <div class="card notes">
+      <div class="note"><h3>Sound</h3><p>Please keep music low, and take conversations indoors after 10 at night. Sound travels faster through solid walls than you would expect.</p></div>
+      <div class="note"><h3>Smoking</h3><p>The balcony and the rooftop, please. Not the hall, not the bedroom. Ashtrays are out there, and the fort looks better from up top anyway.</p></div>
+      <div class="note"><h3>Drinking</h3><p>Allowed, and left to your own judgement. Please mind the floor — it is old Makrana marble and it remembers everything.</p></div>
+      <div class="note"><h3>Visitors</h3><p>Only the guests on the booking come inside. Anyone else, please meet outside.</p></div>
+      <div class="note"><h3>Leaving</h3><p>Check-out by 10 in the morning, and please do keep to it. There is one flat, and it has to be made properly for whoever comes next.</p></div>
+      <div class="note"><h3>Spills &amp; breaks</h3><p>Tell us straight away, whatever it is. Accidents are completely fine — it is the ones left sitting that become a problem.</p></div>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:20px">Thank you for looking after our house.</p>
+  </section>
+
+  <!-- ================= FOOD ================= -->
+  <section data-view="food" hidden>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>From our kitchen</small><h2>Food &amp; Chai</h2></div></div>
+    <p class="lede">Everything is made in our own kitchen, nothing sits ready under a lamp. Pick what you'd like, tell us when, and send it — the order comes to us on WhatsApp.</p>
+    <div class="menu" id="menu"></div>
+
+    <p class="label">When would you like it?</p>
+    <div class="when" id="when">
+      <button class="pill" aria-pressed="true" data-when="Now, please">Now</button>
+      <button class="pill" aria-pressed="false" data-when="In about an hour">In 1 hour</button>
+      <button class="pill" aria-pressed="false" data-when="Breakfast tomorrow">Breakfast tomorrow</button>
+      <button class="pill" aria-pressed="false" data-when="time">Pick a time</button>
+    </div>
+    <input class="field" type="time" id="when-time" hidden aria-label="Time">
+    <input class="field" type="text" id="note" maxlength="200" placeholder="Anything else? Less spicy, aloo parantha, no sugar…">
+
+    <div class="basket">
+      <p class="warn" id="warn" hidden></p>
+      <div class="sum"><span id="count">Nothing picked yet</span><b id="total"></b></div>
+      <button class="btn" id="send" disabled><svg class="i"><use href="#i-chat"/></svg>Send order on WhatsApp</button>
+    </div>
+  </section>
+
+  <!-- ================= GUIDE ================= -->
+  <section data-view="guide" hidden>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Not a top-ten list</small><h2>Jodhpur Guide</h2></div></div>
+    <p class="lede">Where we actually go. Swipe through each list — every place opens in Google Maps from our door.</p>
+    <p class="label">Pick a list</p>
+    <div class="cats" id="cats"></div>
+  </section>
+
+  <section data-view="list" hidden>
+    <div class="bar"><a class="back" href="#guide" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small id="list-sub"></small><h2 id="list-title"></h2></div></div>
+    <p class="lede muted" id="list-lede"></p>
+    <div class="deck" id="deck"><div class="track" id="track"></div></div>
+    <div class="pager"><button id="prev" aria-label="Previous"><svg class="i"><use href="#i-back"/></svg></button><span id="pos">01 / 01</span><button id="next" aria-label="Next"><svg class="i"><use href="#i-next"/></svg></button></div>
+  </section>
+
+  <!-- ================= GETTING AROUND ================= -->
+  <section data-view="around" hidden>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>From our door</small><h2>Getting Around</h2></div></div>
+    <p class="lede">Jodhpur is a small town. Nothing here is more than twenty minutes away — the traffic is all in the middle.</p>
+    <a href="map.jpg" target="_blank"><img class="map" src="map.jpg" alt="Map of Jodhpur from Hari Om Niwas: Mehrangarh Fort 3.6 km, Jaswant Thada 3.4 km, Ghanta Ghar 5.6 km, Umaid Bhawan 5.6 km, Mandore 5.8 km, station 5.6 km, airport 8.3 km." loading="lazy" width="1600" height="1128"></a>
+
+    <p class="label">Tap for directions</p>
+    <div class="card"><ul class="near" id="near"></ul></div>
+
+    <p class="label">Telling a driver</p>
+    <div class="card">
+      <div class="note"><h3>Our address</h3><p>Hari Om Niwas, <b>Badla Road</b>, Mahaveer Nagar, Mahamandir. Say “Badla Road, Mahamandir” — we are right on the main road.</p></div>
+      <div class="note"><h3>Fort, Jaswant Thada, Mandore</h3><p>Go via Badasia. Short and simple.</p></div>
+      <div class="note"><h3>Umaid Bhawan</h3><p>Go via Paota.</p></div>
+      <div class="note"><h3>The blue lanes</h3><p>Nav Chokia and Brahmpuri — walk them, or take a scooty. A car fits. You will not enjoy it.</p></div>
+    </div>
+    <div class="btns">
+      <a class="btn" href="https://maps.app.goo.gl/XV8xLP1Rmzg4Cv5o7" target="_blank" rel="noopener"><svg class="i"><use href="#i-pin"/></svg>Our pin</a>
+      <button class="btn ghost" data-copy-text="Hari Om Niwas, Badla Road, Mahaveer Nagar, Mahamandir, Jodhpur 342006">Copy address</button>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section data-view="contact" hidden>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>We are downstairs</small><h2>Contact</h2></div></div>
+    <p class="lede">Directions, a doctor, a taxi, an extra blanket, or where to eat something you would never find online. We would rather you asked.</p>
+    <div class="btns" style="margin-top:18px">
+      <a class="btn" data-wa="Hi! We're staying upstairs at Hari Om Niwas. " href="#"><svg class="i"><use href="#i-chat"/></svg>WhatsApp</a>
+      <a class="btn ghost" id="call" href="#"><svg class="i"><use href="#i-phone"/></svg>Call</a>
+    </div>
+
+    <p class="label">If it's urgent</p>
+    <div class="card">
+      <div class="row"><div class="k"><small>Any emergency</small><b>112</b></div><a class="pill" href="tel:112">Call</a></div>
+      <div class="row"><div class="k"><small>Ambulance</small><b>108</b></div><a class="pill" href="tel:108">Call</a></div>
+      <div class="row"><div class="k"><small>Nearest hospitals</small><b style="font-size:15.5px">Open in Maps</b></div><a class="pill" target="_blank" rel="noopener" href="https://www.google.com/maps/search/hospital/@26.30972,73.04837,14z">Find</a></div>
+      <div class="row"><div class="k"><small>Chemist</small><b style="font-size:15.5px">Open in Maps</b></div><a class="pill" target="_blank" rel="noopener" href="https://www.google.com/maps/search/pharmacy/@26.30972,73.04837,15z">Find</a></div>
+    </div>
+    <p class="muted" style="font-size:14.5px;margin:10px 2px 0">And call us too — we are just downstairs.</p>
+
+    <p class="label">Liked it here?</p>
+    <div class="card">
+      <div class="row"><div class="k"><small>Next time</small><b style="font-size:15.5px">Book direct with us</b></div><a class="pill" href="https://hariomniwas.in/">Website</a></div>
+      <div class="row"><div class="k"><small>Instagram</small><b style="font-size:15.5px">@hariomniwas</b></div><a class="pill" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Follow</a></div>
+    </div>
+  </section>
+
+  <footer><a href="#"><div class="arch-mark" aria-hidden="true"></div><p>Hari Om Niwas · Mahamandir, Jodhpur</p></a></footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ======================= CONFIG — edit here ======================= */
+var PHONE = '919414195901';                 // WhatsApp + call
+// Wi-Fi is NOT stored here (this repo is public). The room tag's link carries a key (?k=…);
+// the page trades it with the Worker for the network name and password.
+var WIFI_API = 'https://hon-sync-timer.panwarajay149.workers.dev/wifi';
+var HOME  = '26.30972,73.04837';            // our pin, used as the start of every Directions link
+
+// Kitchen menu, from the Menu Book. tag:'2h' adds the 2-hour warning.
+var MENU = [
+  { h: 'Nashta · tell us the night before', items: [
+    ['Poha', 100, 'Peanuts, curry leaves, lime on the side'],
+    ['Upma', 120, 'Soft, savoury, better than its reputation'],
+    ['Parantha', 90, 'Aloo, pyaaz or mix — with dahi and ghar ka achaar'],
+    ['Besan Chilla', 100, 'Gram-flour pancakes, green chutney'],
+    ['Butter toast', 40, 'Whole wheat'],
+    ['Plain toast', 35, 'Whole wheat'] ] },
+  { h: 'Lunch & dinner', items: [
+    ['Jodhpur Thali', 600, 'Sabjis of the day, khichdi, dal or kadhi, roti, raita, churma', '2h'],
+    ['Dal Baati Churma', 400, 'Eat until you feel good'],
+    ['Dal Dhokli', 350, 'Wheat ribbons simmered in dal'] ] },
+  { h: 'Not feeling like much', items: [
+    ['Dal Khichdi', 200, 'With dahi and pickle'],
+    ['Dal Chawal', 200, 'The plainest good thing in this house'],
+    ['Masala Khichiya / Papad', 80, 'Onion, tomato, lime'],
+    ['Mix Veg Pakoda', 200, 'Best with rain, chai, or no reason'] ] },
+  { h: 'Chai & coffee', items: [
+    ['Chai', 50, 'Plain, adrak or masala — say which in the note'],
+    ['Kangra tea', 50, 'Green or black leaf, no milk'],
+    ['AeroPress coffee', 220, 'Clean and quick'],
+    ['French Press coffee', 200, 'Full and round'],
+    ['Instant coffee, black', 35, ''],
+    ['Instant coffee, milk', 50, ''] ] }
+];
+
+// City guide, from the Menu Book's “Eat like a local”, “Our Jodhpur” and “Deeper in”.
+// q = what to search in Google Maps (leave out for tours we arrange).
+var GUIDE = [
+  { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', places: [
+    ['Mehrangarh Fort', 'Go at opening time, before the buses. The city is blue from up there.', 'Mehrangarh Fort Jodhpur'],
+    ['Jaswant Thada', 'Ten minutes away, and quiet. Marble that glows in morning light.', 'Jaswant Thada Jodhpur'],
+    ['Ghanta Ghar', 'The clock tower bazaar — spices, saris, and lunch somewhere in it.', 'Ghanta Ghar Clock Tower Jodhpur'],
+    ['Toorji ka Jhalra', 'The stepwell. Coffee around it. Sit longer than you planned.', 'Toorji ka Jhalra Jodhpur'],
+    ['Blue City — Nav Chokia', "Walk, don't drive. The lanes are the point.", 'Navchokiya Jodhpur'],
+    ['Umaid Bhawan', 'Last, for the light. Part palace, part museum, part still-a-home.', 'Umaid Bhawan Palace Museum Jodhpur'] ] },
+  { id: 'eat', t: 'Sit down and eat', s: 'Proper meals', places: [
+    ['Vijay Restaurant', 'Malai roti, kabuli, prem pyala.', 'Vijay Restaurant Jodhpur'],
+    ['Gypsy Restaurant', 'Unlimited thali. Come hungry.', 'Gypsy Restaurant Jodhpur'],
+    ['DPS Dhabba', 'If you are into proper dhabba food.', 'DPS Dhaba Jodhpur'],
+    ['Maa Ki Dhani', 'If you are into proper dhabba food.', 'Maa Ki Dhani Jodhpur'] ] },
+  { id: 'street', t: 'Street & snacks', s: 'Mirchi bada and more', places: [
+    ['Surya Namkeen', 'Known for mirchi bada. Try the kachori too.', 'Surya Namkeen Jodhpur'],
+    ['Choudhary Namkeen', 'The other mirchi bada. Try both, pick a side.', 'Choudhary Namkeen Jodhpur'],
+    ['Bhati Tea Stall', 'Targhar — chai and pakoda.', 'Bhati Tea Stall Jodhpur'],
+    ['Arora Chat, Nai Sadak', 'No reason not to have some chaat.', 'Arora Chat Nai Sadak Jodhpur'],
+    ['Mishrilal', 'Lassi. Sometimes Rajasthan feels hot.', 'Mishrilal Hotel Jodhpur'] ] },
+  { id: 'sweet', t: 'Something sweet', s: 'Ghewar to gelato', places: [
+    ['Chaturbhuj Sweets', 'Gulab jamun — probably the best in the world.', 'Chaturbhuj Sweets Jodhpur'],
+    ['Moolji Sweets', 'Best ghewar, malai rajbhog, tawapuri, boondi laddu.', 'Moolji Sweets Jodhpur'],
+    ['Shekhawati Ice Cream', 'Kulfi and rabdi. Ask us before you go.', 'Shekhawati Ice Cream Jodhpur'],
+    ['Mini Moo', 'Gelato. A monopoly in this town.', 'Mini Moo Jodhpur'],
+    ['Miss Cheesecake', 'Home-grown star.', 'Miss Cheesecake Jodhpur'] ] },
+  { id: 'coffee', t: 'Coffee & slow afternoons', s: 'Sit for a while', places: [
+    ['Ghar Cafe', 'Beautiful space, really good coffee and food.', 'Ghar Cafe Jodhpur'],
+    ['Sparrows Pizzeria', 'Sourdough pizza. Best in daylight, good coffee.', 'Sparrows Pizzeria Jodhpur'] ] },
+  { id: 'occasion', t: 'For an occasion', s: 'With the fort behind you', places: [
+    ['Ajit Bhawan', 'Heritage. Go with the special ones.', 'Ajit Bhawan Jodhpur'],
+    ['Khas Bagh', 'Heritage. Go with the special ones.', 'Khas Bagh Jodhpur'],
+    ['Storica', 'Dinner with the fort behind you.', 'Storica Jodhpur'],
+    ['Pal Haveli', 'Dinner with the fort behind you.', 'Pal Haveli Jodhpur'],
+    ['RAAS', 'Dinner with the fort behind you.', 'RAAS Jodhpur'] ] },
+  { id: 'deeper', t: 'Deeper in town', s: 'For the ones who stay longer', places: [
+    ['Ghanshyam Ji Temple', 'A 510-year-old temple to Lord Krishna.', 'Ghanshyam Ji Temple Jodhpur'],
+    ['Kaga Hill & Kailana Lake', 'Hike it, at sunrise or sunset.', 'Kailana Lake Jodhpur'],
+    ['Pachetiya Hills', 'The sunset point locals keep.', 'Pachetiya Hill Jodhpur'],
+    ['Adhaar Shila', 'Ancient hilltop shrine, a short climb.', 'Adhar Shila Jodhpur'],
+    ['Sidhnath Temple', 'Old Shiva temple above the city.', 'Siddhnath Mahadev Temple Jodhpur'],
+    ['Mandore Garden', 'Royal memorials, gardens, and plenty of monkeys.', 'Mandore Garden Jodhpur'],
+    ['Rao Jodha Park', 'Desert rock park around the fort wall.', 'Rao Jodha Desert Rock Park Jodhpur'],
+    ['Blue City Photography Tour', 'The old lanes, walked with someone who knows them.', null] ] },
+  { id: 'trips', t: 'Day trips', s: 'Half a day or more', lede: 'Tell us the night before and we will help you arrange it properly.', places: [
+    ['Bishnoi Village Tour', 'A community that has protected wildlife for 500 years.', null],
+    ['Osian Desert Safari', 'Dunes, old temples, and a night under the stars.', null],
+    ['Narlai Safari', 'Leopard country around a granite hill.', null],
+    ['Khimsar Village Tour', 'Fort, dunes, and quiet village life.', null],
+    ['Salawas Village Tour', 'Where the dhurrie weavers work.', null] ] }
+];
+
+var NEAR = [
+  ['Mehrangarh Fort', '3.6 km · 14 min', 'Mehrangarh Fort Jodhpur'],
+  ['Jaswant Thada', '3.4 km · 14 min', 'Jaswant Thada Jodhpur'],
+  ['Ghanta Ghar', '5.6 km · 18 min', 'Ghanta Ghar Clock Tower Jodhpur'],
+  ['Umaid Bhawan', '5.6 km · 16 min', 'Umaid Bhawan Palace Jodhpur'],
+  ['Mandore Garden', '5.8 km · 16 min', 'Mandore Garden Jodhpur'],
+  ['Railway station', '5.6 km · 15 min', 'Jodhpur Junction Railway Station'],
+  ['Airport', '8.3 km · 19 min', 'Jodhpur Airport']
+];
+/* ================================================================= */
+
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var wa = function (text) { return 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text); };
+  var dir = function (q) { return 'https://www.google.com/maps/dir/?api=1&origin=' + HOME + '&destination=' + encodeURIComponent(q); };
+  var find = function (q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); };
+  var two = function (n) { return (n < 10 ? '0' : '') + n; };
+  var rupee = function (n) { return '₹' + n.toLocaleString('en-IN'); };
+
+  // Which room's tag opened this (only used to label the message we receive).
+  var room = (new URLSearchParams(location.search).get('r') || '').toLowerCase();
+  var ROOM = room === 'bedroom' ? 'Bedroom' : room === 'living' ? 'Living room' : '';
+
+  // ---- toast + copy ----
+  var toast = $('#toast'), tt;
+  function say(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 1800); }
+  function copy(text, btn) {
+    var done = function () { say('Copied'); if (btn) { var o = btn.textContent; btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(function () { btn.textContent = o; btn.classList.remove('done'); }, 1600); } };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    function fallback() { var t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select(); t.setSelectionRange(0, 9999); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {} if (ok) done(); else say('Long-press to copy'); document.body.removeChild(t); }
+  }
+  // ---- Wi-Fi: key from the tag link, remembered on this phone so the page still works when reopened ----
+  var params = new URLSearchParams(location.search), key = params.get('k') || '';
+  try { if (key) localStorage.setItem('hon-k', key); else key = localStorage.getItem('hon-k') || ''; } catch (e) {}
+  if (params.has('k') && history.replaceState) { params.delete('k'); history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params : '') + location.hash); }
+  function wifiFallback() {
+    $('#wifi-card').hidden = true; $('#wifi-tip').hidden = true; $('#wifi-ask').hidden = false;
+  }
+  if (!key) wifiFallback();
+  else {
+    $('#wifi-name').textContent = 'Loading…'; $('#wifi-pass').textContent = '…';
+    var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(WIFI_API + '?k=' + encodeURIComponent(key), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (w) { clearTimeout(timer); $('#wifi-name').textContent = w.name; $('#wifi-pass').textContent = w.pass; })
+      .catch(function () { clearTimeout(timer); wifiFallback(); });
+  }
+  $$('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copy($('#' + b.getAttribute('data-copy')).textContent, b); }); });
+  $$('[data-copy-text]').forEach(function (b) { b.addEventListener('click', function () { copy(b.getAttribute('data-copy-text'), null); }); });
+
+  // ---- contact links ----
+  $$('[data-wa]').forEach(function (a) { a.href = wa(a.getAttribute('data-wa')); a.target = '_blank'; a.rel = 'noopener'; });
+  $('#call').href = 'tel:+' + PHONE;
+
+  // ---- getting around ----
+  $('#near').innerHTML = NEAR.map(function (n) {
+    return '<li><a href="' + dir(n[2]) + '" target="_blank" rel="noopener"><span class="k">' + esc(n[0]) + '</span><span class="dots"></span><span class="v">' + esc(n[1]) + '</span></a></li>';
+  }).join('');
+
+  // ---- food order ----
+  var qty = {}, flat = [];
+  $('#menu').innerHTML = MENU.map(function (sec) {
+    return '<h3>' + esc(sec.h) + '</h3>' + sec.items.map(function (it) {
+      var i = flat.push(it) - 1;
+      return '<div class="item" data-i="' + i + '"><div class="k"><b>' + esc(it[0]) + '</b><span class="p">' + rupee(it[1]) + '</span>' +
+        (it[3] === '2h' ? '<span class="tag">2 hrs</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>' +
+        '<div class="step"><button aria-label="Remove one ' + esc(it[0]) + '" data-d="-1">−</button><span>0</span><button aria-label="Add one ' + esc(it[0]) + '" data-d="1">+</button></div></div>';
+    }).join('');
+  }).join('');
+  $('#menu').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-d]'); if (!b) return;
+    var row = b.closest('.item'), i = +row.getAttribute('data-i');
+    qty[i] = Math.max(0, Math.min(20, (qty[i] || 0) + +b.getAttribute('data-d')));
+    row.querySelector('.step span').textContent = qty[i];
+    row.classList.toggle('on', qty[i] > 0);
+    sum();
+  });
+  var when = 'Now, please';
+  $('#when').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-when]'); if (!b) return;
+    $$('#when [data-when]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    when = b.getAttribute('data-when');
+    $('#when-time').hidden = when !== 'time';
+    if (when === 'time') $('#when-time').focus();
+    sum();
+  });
+  $('#when-time').addEventListener('input', sum);
+  function whenText() {
+    if (when !== 'time') return when;
+    var v = $('#when-time').value; if (!v) return 'At a time I will tell you';
+    var p = v.split(':'), h = +p[0], ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12;
+    return 'At ' + h + ':' + p[1] + ' ' + ap;
+  }
+  function picked() { return flat.map(function (it, i) { return { it: it, n: qty[i] || 0 }; }).filter(function (x) { return x.n > 0; }); }
+  function sum() {
+    var list = picked(), n = 0, total = 0, thali = false;
+    list.forEach(function (x) { n += x.n; total += x.n * x.it[1]; if (x.it[3] === '2h') thali = true; });
+    $('#count').textContent = n ? n + (n === 1 ? ' item' : ' items') : 'Nothing picked yet';
+    $('#total').textContent = n ? rupee(total) : '';
+    $('#send').disabled = !n;
+    var warn = '';
+    var soon = when === 'Now, please' || when === 'In about an hour';
+    if (when === 'time' && $('#when-time').value) { var tp = $('#when-time').value.split(':'), now = new Date(), at = new Date(); at.setHours(+tp[0], +tp[1], 0, 0); if (at < now) at.setDate(at.getDate() + 1); soon = at - now < 2 * 3600 * 1000; }
+    if (thali && soon) warn = 'Thalis are cooked from scratch and need about 2 hours. We will tell you the time on WhatsApp.';
+    $('#warn').textContent = warn; $('#warn').hidden = !warn;
+  }
+  $('#send').addEventListener('click', function () {
+    var list = picked(); if (!list.length) return;
+    var total = 0, lines = list.map(function (x) { total += x.n * x.it[1]; return '• ' + x.n + ' × ' + x.it[0] + ' — ' + rupee(x.n * x.it[1]); });
+    var note = $('#note').value.trim();
+    var msg = 'Hi! Food order from upstairs' + (ROOM ? ' (' + ROOM + ')' : '') + ':\n\n' + lines.join('\n') + '\n\nTotal: ' + rupee(total) + '\nWhen: ' + whenText() + (note ? '\nNote: ' + note : '');
+    window.open(wa(msg), '_blank', 'noopener');
+  });
+
+  // ---- guide ----
+  $('#cats').innerHTML = GUIDE.map(function (g) {
+    return '<a class="cat" href="#guide/' + g.id + '"><span class="k"><b>' + esc(g.t) + '</b><small>' + esc(g.s) + '</small></span><span class="n">' + g.places.length + '</span><svg class="i" style="width:16px;height:16px;opacity:.55"><use href="#i-next"/></svg></a>';
+  }).join('');
+  var deck = $('#deck'), track = $('#track'), total = 1;
+  function showList(id) {
+    var g = GUIDE.filter(function (x) { return x.id === id; })[0]; if (!g) return false;
+    $('#list-title').textContent = g.t; $('#list-sub').textContent = g.places.length + (g.places.length === 1 ? ' place' : ' places');
+    $('#list-lede').textContent = g.lede || ''; $('#list-lede').hidden = !g.lede;
+    total = g.places.length;
+    track.innerHTML = g.places.map(function (p, i) {
+      var actions = p[2]
+        ? '<a class="btn" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>' +
+          '<a class="btn ghost" href="' + find(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-star"/></svg>Reviews</a>'
+        : '<a class="btn" style="grid-column:span 2" href="' + wa('Hi! We would like to do the ' + p[0] + '. Can you help us arrange it?') + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Ask us to arrange it</a>';
+      return '<article class="place"><div class="num">' + two(i + 1) + '</div><div class="sec">' + esc(g.t) + '</div><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p><div class="btns">' + actions + '</div></article>';
+    }).join('');
+    cur = 0; place(false);
+    return true;
+  }
+  // Carousel: the track moves by exactly one card per swipe or tap; it can never rest between cards.
+  var cur = 0, GAP = 12;
+  function offsetFor(i) {
+    var c = track.children[0]; if (!c) return 0;
+    var step = c.offsetWidth + GAP, x = -i * step;
+    if (i === total - 1 && total > 1) x += deck.clientWidth - 32 - c.offsetWidth; // last card sits right, so the one before peeks in
+    return x;
+  }
+  function place(animate) {
+    track.classList.toggle('drag', animate === false);
+    track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
+    $('#pos').textContent = two(cur + 1) + ' / ' + two(total);
+    $('#prev').disabled = cur <= 0; $('#next').disabled = cur >= total - 1;
+    $$('.place', track).forEach(function (el, i) { el.setAttribute('aria-hidden', i === cur ? 'false' : 'true'); });
+  }
+  function go(d) { cur = Math.max(0, Math.min(total - 1, cur + d)); place(true); }
+  $('#prev').addEventListener('click', function () { go(-1); });
+  $('#next').addEventListener('click', function () { go(1); });
+  window.addEventListener('resize', function () { place(false); });
+
+  // Swipe: horizontal drags move the track, vertical ones scroll the page as usual.
+  var sx = 0, sy = 0, st = 0, dx = 0, mode = null, moved = false;
+  deck.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    sx = e.clientX; sy = e.clientY; st = Date.now(); dx = 0; mode = 'wait'; moved = false;
+  });
+  deck.addEventListener('pointermove', function (e) {
+    if (!mode) return;
+    var mx = e.clientX - sx, my = e.clientY - sy;
+    if (mode === 'wait') {
+      if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+      if (Math.abs(my) > Math.abs(mx)) { mode = null; return; }
+      mode = 'drag'; moved = true; track.classList.add('drag');
+      try { deck.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    dx = mx;
+    if ((cur === 0 && dx > 0) || (cur === total - 1 && dx < 0)) dx = dx / 3; // resist past the ends
+    track.style.transform = 'translateX(' + (offsetFor(cur) + dx) + 'px)';
+  });
+  function end() {
+    if (mode !== 'drag') { mode = null; return; }
+    mode = null;
+    var fast = Math.abs(dx) / Math.max(1, Date.now() - st) > 0.35;
+    if (dx < -50 || (fast && dx < -15)) cur = Math.min(total - 1, cur + 1);
+    else if (dx > 50 || (fast && dx > 15)) cur = Math.max(0, cur - 1);
+    place(true);
+  }
+  deck.addEventListener('pointerup', end);
+  deck.addEventListener('pointercancel', end);
+  // A swipe that ends on a button must not also open it.
+  deck.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  deck.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  // ---- tiny hash router ----
+  var views = $$('[data-view]');
+  function route() {
+    var h = location.hash.replace(/^#\/?/, ''), name = h.split('/')[0] || 'home';
+    if (name === 'list') name = 'home';
+    if (name === 'guide' && h.split('/')[1]) { name = showList(h.split('/')[1]) ? 'list' : 'guide'; }
+    if (!views.some(function (v) { return v.getAttribute('data-view') === name; })) name = 'home';
+    views.forEach(function (v) { v.hidden = v.getAttribute('data-view') !== name; });
+    if (name === 'list') place(false);
+    window.scrollTo(0, 0);
+  }
+  // Back buttons step back in history when we came from inside the page, so the phone's back button doesn't need two taps.
+  var depth = 0;
+  window.addEventListener('hashchange', function () { depth++; });
+  $$('[data-back]').forEach(function (a) { a.addEventListener('click', function (e) { if (depth > 0) { e.preventDefault(); depth = Math.max(0, depth - 2); history.back(); } }); });
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
