@@ -399,8 +399,8 @@
 
     <p class="label">Liked it here?</p>
     <div class="card">
-      <div class="row"><div class="k"><small>Next time</small><b style="font-size:15.5px">Book direct with us</b></div><a class="pill" href="https://hariomniwas.in/">Website</a></div>
       <div class="row"><div class="k"><small>Instagram</small><b style="font-size:15.5px">@hariomniwas</b></div><a class="pill" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Follow</a></div>
+      <div class="row"><div class="k"><small>Google</small><b style="font-size:15.5px">Leave us a review</b></div><a class="pill" href="https://g.page/r/CchzUS4GFyaOEBM/review" target="_blank" rel="noopener">Review</a></div>
     </div>
   </section>
 
@@ -453,7 +453,7 @@ var MENU = [
 // City guide, from the Menu Book's “Eat like a local”, “Our Jodhpur” and “Deeper in”.
 // q = what to search in Google Maps (leave out for tours we arrange).
 var GUIDE = [
-  { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', places: [
+  { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', noReviews: true, places: [
     ['Mehrangarh Fort', 'Go at opening time, before the buses. The city is blue from up there.', 'Mehrangarh Fort Jodhpur'],
     ['Jaswant Thada', 'Ten minutes away, and quiet. Marble that glows in morning light.', 'Jaswant Thada Jodhpur'],
     ['Ghanta Ghar', 'The clock tower bazaar — spices, saris, and lunch somewhere in it.', 'Ghanta Ghar Clock Tower Jodhpur'],
@@ -630,9 +630,12 @@ var NEAR = [
     $('#list-lede').textContent = g.lede || ''; $('#list-lede').hidden = !g.lede;
     total = g.places.length;
     track.innerHTML = g.places.map(function (p, i) {
+      // Landmarks (noReviews lists) only need Directions; places to eat also get Reviews.
       var actions = p[2]
-        ? '<a class="btn" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>' +
-          '<a class="btn ghost" href="' + find(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-star"/></svg>Reviews</a>'
+        ? (g.noReviews
+          ? '<a class="btn" style="grid-column:span 2" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>'
+          : '<a class="btn" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>' +
+            '<a class="btn ghost" href="' + find(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-star"/></svg>Reviews</a>')
         : '<a class="btn" style="grid-column:span 2" href="' + wa('Hi! We would like to do the ' + p[0] + '. Can you help us arrange it?') + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Ask us to arrange it</a>';
       return '<article class="place"><div class="num">' + two(i + 1) + '</div><div class="sec">' + esc(g.t) + '</div><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p><div class="btns">' + actions + '</div></article>';
     }).join('');
