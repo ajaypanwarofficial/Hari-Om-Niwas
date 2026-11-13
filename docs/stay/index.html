@@ -96,9 +96,14 @@
   .note p { margin: 0; }
 
   /* Switch card: three modular switches; each one flips on and its little LED glows, in turn, on a loop. */
-  .sw-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px 0 12px; }
-  .sw { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
-  .sw > span { font-family: 'Work Sans', sans-serif; font-size: 12px; font-weight: 500; line-height: 1.25; }
+  .sw-one { display: grid; grid-template-columns: 70px 1fr; gap: 18px; align-items: center; padding: 14px 0 4px; }
+  .sw-one ul { list-style: none; margin: 0 0 6px; padding: 0; }
+  .sw-one li { font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 3px 0; }
+  .sw-one li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF5B2B; margin: 0 9px 2px 0; vertical-align: middle; }
+  .sw-one p { margin: 0; font-size: 14.5px; line-height: 1.35; }
+  /* Amenities: name + a short line, with an Ask/Order pill for things we bring on request. */
+  .am .k b { font-size: 16px; word-break: normal; }
+  .am .k i { display: block; font-size: 14px; color: var(--faint); line-height: 1.3; margin-top: 2px; }
   .plate { width: 70px; height: 84px; border-radius: 9px; background: #FBFAF6; border: 1px solid #E2D9C7;
            box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(59,46,34,.10); display: grid; place-items: center; }
   .rocker { position: relative; width: 38px; height: 56px; border-radius: 5px; border: 1px solid #DDD3C0; overflow: hidden;
@@ -256,7 +261,7 @@
 
     <p class="label">Tap what you need</p>
     <div class="grid">
-      <a class="tile" href="#wifi"><svg class="i"><use href="#i-wifi"/></svg><span><b>House &amp; Wi-Fi</b><small>Password, timings, house notes</small></span></a>
+      <a class="tile" href="#wifi"><svg class="i"><use href="#i-wifi"/></svg><span><b>Amenities</b><small>Wi-Fi, switches, what's here, house notes</small></span></a>
       <a class="tile" href="#food"><svg class="i"><use href="#i-cup"/></svg><span><b>Food &amp; Chai</b><small>Order from our kitchen</small></span></a>
       <a class="tile" href="#guide"><svg class="i"><use href="#i-guide"/></svg><span><b>Jodhpur Guide</b><small>Where we actually go</small></span></a>
       <a class="tile" href="#around"><svg class="i"><use href="#i-pin"/></svg><span><b>Getting Around</b><small>Map, routes, deliveries</small></span></a>
@@ -265,9 +270,9 @@
     </div>
   </section>
 
-  <!-- ================= HOUSE & WI-FI ================= -->
+  <!-- ================= AMENITIES (Wi-Fi, switches, what's in the house, timings, notes) ================= -->
   <section data-view="wifi" hidden>
-    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Your stay</small><h2>House &amp; Wi-Fi</h2></div></div>
+    <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Your stay</small><h2>Amenities</h2></div></div>
 
     <p class="label">Wi-Fi</p>
     <div class="card" id="wifi-card">
@@ -280,6 +285,32 @@
       <a class="btn" data-wa="Hi! Could you send us the Wi-Fi password, please? " href="#"><svg class="i"><use href="#i-chat"/></svg>Ask on WhatsApp</a>
     </div>
 
+    <p class="label">Light on = switched on</p>
+    <div class="card">
+      <div class="sw-one">
+        <div class="plate" aria-hidden="true"><div class="rocker"><span class="led"></span></div></div>
+        <div>
+          <ul><li>Living room AC</li><li>Bedroom AC</li><li>Geyser</li></ul>
+          <p class="muted">These switches have a small light at the bottom. Look for it to find them easily.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="label">In the house</p>
+    <div class="card am">
+      <div class="row"><div class="k"><b>Fridge</b><i>Ice in the freezer, most of the time</i></div></div>
+      <div class="row"><div class="k"><b>Carvaan speaker</b><i>Old songs, help yourself</i></div></div>
+      <div class="row"><div class="k"><b>Foot lights</b><i>Low lights for finding your way at night</i></div></div>
+      <div class="row"><div class="k"><b>Books &amp; games</b><i>Jenga, chess, UNO and a shelf of books. Some are old and dear to us, so gently please. Anything broken is charged.</i></div></div>
+    </div>
+
+    <p class="label">On request</p>
+    <div class="card am">
+      <div class="row"><div class="k"><b>Hair dryer</b><i>We bring it up, and collect it at check-out</i></div><a class="pill" data-wa="Hi! Could we have the hair dryer, please? " href="#">Ask</a></div>
+      <div class="row"><div class="k"><b>Cooking essentials</b><i>Induction and a few utensils</i></div><a class="pill" data-wa="Hi! Could we have the induction and some utensils, please? " href="#">Ask</a></div>
+      <div class="row"><div class="k"><b>Fresh-bean coffee</b><i>Ground and brewed when you order</i></div><a class="pill" href="#food">Order</a></div>
+    </div>
+
     <p class="label">Timings</p>
     <div class="tiles">
       <div class="chip"><small>Check-in</small><b>12 noon</b><i>Tell us when you will arrive</i></div>
@@ -288,20 +319,6 @@
       <div class="chip"><small>Breakfast</small><b>Night before</b><i>Tell us what and when</i></div>
       <div class="chip"><small>Thali</small><b>2 hrs' notice</b><i>Cooked from scratch</i></div>
       <div class="chip"><small>Quiet hours</small><b>After 10 pm</b><i>Sound travels through these walls</i></div>
-    </div>
-
-    <p class="label">How things work</p>
-    <div class="card notes">
-      <div class="note">
-        <h3>Light on = switched on</h3>
-        <div class="sw-row" aria-label="Living room AC, bedroom AC and geyser switches each have a small light that glows when they are on">
-          <div class="sw"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Living room AC</span></div>
-          <div class="sw" style="--d:.7s"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Bedroom AC</span></div>
-          <div class="sw" style="--d:1.4s"><div class="plate"><div class="rocker"><span class="led"></span></div></div><span>Geyser</span></div>
-        </div>
-        <p class="muted" style="font-size:14.5px">Only these three switches have the little light. The AC remote sits in this holder.</p>
-      </div>
-      <div class="note"><h3>Books &amp; games</h3><p>Help yourself to the books, Jenga, chess and UNO. Some of these things are old and dear to us, so please handle them gently. Anything broken will be charged.</p></div>
     </div>
 
     <p class="label">House notes</p>
