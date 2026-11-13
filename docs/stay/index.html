@@ -438,29 +438,30 @@ var PHONE = '919414195901';                 // WhatsApp + call
 var WIFI_API = 'https://hon-sync-timer.panwarajay149.workers.dev/wifi';
 var HOME  = '26.30972,73.04837';            // our pin, used as the start of every Directions link
 
-// Kitchen menu, from the Menu Book. tag:'2h' adds the 2-hour warning.
+// Kitchen menu, from the Menu Book. 4th field '1h' / '2h' = hours of notice; shows a tag and a warning if ordered too soon.
 var MENU = [
   { h: 'Nashta · tell us the night before', items: [
     ['Poha', 100, 'Peanuts, curry leaves, lime on the side'],
     ['Upma', 120, 'Soft, savoury, better than its reputation'],
-    ['Parantha', 90, 'Aloo, pyaaz or mix — with dahi and ghar ka achaar'],
-    ['Besan Chilla', 100, 'Gram-flour pancakes, green chutney'],
-    ['Butter toast', 40, 'Whole wheat'],
-    ['Plain toast', 35, 'Whole wheat'] ] },
+    ['Parantha · per piece', 120, 'Aloo, pyaaz or mix — with dahi and ghar ka achaar'],
+    ['Besan Chilla', 130, 'Gram-flour pancakes, green chutney'],
+    ['Butter toast', 60, 'Whole wheat'],
+    ['Plain toast', 50, 'Whole wheat'] ] },
   { h: 'Lunch & dinner', items: [
-    ['Jodhpur Thali', 600, 'Sabjis of the day, khichdi, dal or kadhi, roti, raita, churma', '2h'],
+    ['Ghar ki Thali', 300, 'Sabji of the day, mixed dal, chawal, 4 roti, salad, achaar, papad', '1h'],
+    ['Jodhpur Thali', 550, 'Sabjis of the day, khichdi, dal or kadhi, roti, raita, churma', '2h'],
     ['Dal Baati Churma', 400, 'Eat until you feel good'],
-    ['Dal Dhokli', 350, 'Wheat ribbons simmered in dal'] ] },
+    ['Dal Dhokli', 300, 'Wheat ribbons simmered in dal'] ] },
   { h: 'Not feeling like much', items: [
-    ['Dal Khichdi', 200, 'With dahi and pickle'],
-    ['Dal Chawal', 200, 'The plainest good thing in this house'],
+    ['Dal Khichdi', 220, 'With dahi and pickle'],
+    ['Dal Chawal', 220, 'The plainest good thing in this house'],
     ['Masala Khichiya / Papad', 80, 'Onion, tomato, lime'],
-    ['Mix Veg Pakoda', 200, 'Best with rain, chai, or no reason'] ] },
+    ['Mix Veg Pakoda', 180, 'Best with rain, chai, or no reason'] ] },
   { h: 'Chai & coffee', items: [
     ['Chai', 50, 'Plain, adrak or masala — say which in the note'],
     ['Kangra tea', 50, 'Green or black leaf, no milk'],
-    ['AeroPress coffee', 220, 'Clean and quick'],
-    ['French Press coffee', 200, 'Full and round'],
+    ['AeroPress coffee', 180, 'Clean and quick'],
+    ['French Press coffee', 180, 'Full and round'],
     ['Instant coffee, black', 35, ''],
     ['Instant coffee, milk', 50, ''] ] }
 ];
@@ -469,7 +470,7 @@ var MENU = [
 // q = what to search in Google Maps (leave out for tours we arrange).
 var GUIDE = [
   { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', noReviews: true, places: [
-    ['Mehrangarh Fort', 'Go at opening time, before the buses. The city is blue from up there.', 'Mehrangarh Fort Jodhpur'],
+    ['Mehrangarh Fort', 'Go at opening time, before the buses. The city is blue from up there. Walk on to Chamunda Mata temple at the far end.', 'Mehrangarh Fort Jodhpur'],
     ['Jaswant Thada', 'Ten minutes away, and quiet. Marble that glows in morning light.', 'Jaswant Thada Jodhpur'],
     ['Ghanta Ghar', 'The clock tower bazaar — spices, saris, and lunch somewhere in it.', 'Ghanta Ghar Clock Tower Jodhpur'],
     ['Toorji ka Jhalra', 'The stepwell. Coffee around it. Sit longer than you planned.', 'Toorji ka Jhalra Jodhpur'],
@@ -478,27 +479,29 @@ var GUIDE = [
   { id: 'eat', t: 'Sit down and eat', s: 'Proper meals', places: [
     ['Vijay Restaurant', 'Malai roti, kabuli, prem pyala.', 'Vijay Restaurant Jodhpur'],
     ['Gypsy Restaurant', 'Unlimited thali. Come hungry.', 'Gypsy Restaurant Jodhpur'],
-    ['DPS Dhabba', 'If you are into proper dhabba food.', 'DPS Dhaba Jodhpur'],
-    ['Maa Ki Dhani', 'If you are into proper dhabba food.', 'Maa Ki Dhani Jodhpur'] ] },
+    ['Janta Sweet Home', 'Mawa kachori, pyaaz kachori, and a long counter of sweets.', 'Janta Sweet Home Nai Sarak Jodhpur'] ] },
   { id: 'street', t: 'Street & snacks', s: 'Mirchi bada and more', places: [
     ['Surya Namkeen', 'Known for mirchi bada. Try the kachori too.', 'Surya Namkeen Jodhpur'],
     ['Choudhary Namkeen', 'The other mirchi bada. Try both, pick a side.', 'Choudhary Namkeen Jodhpur'],
     ['Bhati Tea Stall', 'Targhar — chai and pakoda.', 'Bhati Tea Stall Jodhpur'],
     ['Arora Chat, Nai Sadak', 'No reason not to have some chaat.', 'Arora Chat Nai Sadak Jodhpur'],
-    ['Mishrilal', 'Lassi. Sometimes Rajasthan feels hot.', 'Mishrilal Hotel Jodhpur'] ] },
-  { id: 'sweet', t: 'Something sweet', s: 'Ghewar to gelato', places: [
+    ['Mishrilal', 'Lassi. Sometimes Rajasthan feels hot.', 'Mishrilal Hotel Jodhpur'],
+    ['Shahi Samosa', 'The samosa people queue for on Nai Sadak.', 'Shahi Samosa Nai Sarak Jodhpur'],
+    ['Narayan Sweets, Lal Bhatti', 'Ghee kachori, mornings only — get there before 10.', 'Narayan Sweets Lal Bhatti Jodhpur'] ] },
+  { id: 'sweet', t: 'Something sweet', s: 'Ghewar to cheesecake', places: [
     ['Chaturbhuj Sweets', 'Gulab jamun — probably the best in the world.', 'Chaturbhuj Sweets Jodhpur'],
     ['Moolji Sweets', 'Best ghewar, malai rajbhog, tawapuri, boondi laddu.', 'Moolji Sweets Jodhpur'],
     ['Shekhawati Ice Cream', 'Kulfi and rabdi. Ask us before you go.', 'Shekhawati Ice Cream Jodhpur'],
-    ['Mini Moo', 'Gelato. A monopoly in this town.', 'Mini Moo Jodhpur'],
-    ['Miss Cheesecake', 'Home-grown star.', 'Miss Cheesecake Jodhpur'] ] },
+    ['Mohan Ji Sweets', 'Best ghewar, laddu and tawa puri.', 'Mohan Ji Sweets Jodhpur'],
+    ['Miss Cheesecake', 'Home-grown star. The cheesecakes of the town.', 'Miss Cheesecake Jodhpur'] ] },
   { id: 'coffee', t: 'Coffee & slow afternoons', s: 'Sit for a while', places: [
     ['Ghar Cafe', 'Beautiful space, really good coffee and food.', 'Ghar Cafe Jodhpur'],
-    ['Sparrows Pizzeria', 'Sourdough pizza. Best in daylight, good coffee.', 'Sparrows Pizzeria Jodhpur'] ] },
+    ['Sparrows Pizzeria', 'Sourdough pizza. Best in daylight, good coffee.', 'Sparrows Pizzeria Jodhpur'],
+    ['Cafe Sheesh Mahal', 'A small, good coffee stop while you roam around Ghanta Ghar.', 'Cafe Sheesh Mahal Jodhpur'] ] },
   { id: 'occasion', t: 'For an occasion', s: 'With the fort behind you', places: [
     ['Ajit Bhawan', 'Heritage. Go with the special ones.', 'Ajit Bhawan Jodhpur'],
     ['Khas Bagh', 'Heritage. Go with the special ones.', 'Khas Bagh Jodhpur'],
-    ['Storica', 'Dinner with the fort behind you.', 'Storica Jodhpur'],
+    ['Storica Stays, rooftop', 'Dinner with the fort behind you.', 'Storica Jodhpur'],
     ['Pal Haveli', 'Dinner with the fort behind you.', 'Pal Haveli Jodhpur'],
     ['RAAS', 'Dinner with the fort behind you.', 'RAAS Jodhpur'] ] },
   { id: 'deeper', t: 'Deeper in town', s: 'For the ones who stay longer', places: [
@@ -509,7 +512,19 @@ var GUIDE = [
     ['Sidhnath Temple', 'Old Shiva temple above the city.', 'Siddhnath Mahadev Temple Jodhpur'],
     ['Mandore Garden', 'Royal memorials, gardens, and plenty of monkeys.', 'Mandore Garden Jodhpur'],
     ['Rao Jodha Park', 'Desert rock park around the fort wall.', 'Rao Jodha Desert Rock Park Jodhpur'],
+    ['Mahamandir Temple', 'The 84-pillar temple. Open 5 am–12 noon and 4–9 pm.', 'Mahamandir Temple Jodhpur'],
+    ['Kunj Bihari Temple', 'Old Krishna temple, tucked into the old city.', 'Kunj Bihari Temple Jodhpur'],
+    ['Ganesh Mandir, Ratanada', 'A hilltop temple with a good view over the city.', 'Ganesh Mandir Ratanada Jodhpur'],
+    ['Gulab Sagar', 'Old city lake, a short walk from Ghanta Ghar.', 'Gulab Sagar Jodhpur'],
+    ['Ranisar & Padamsar', 'Twin lakes right below the fort.', 'Ranisar Lake Jodhpur'],
+    ['Balsamand Lake & Palace', 'Garden lake near Mandore. Quiet, green, old.', 'Balsamand Lake Palace Jodhpur'],
+    ['Umaid Garden & Government Museum', 'Big public park with the old city museum inside.', 'Umaid Garden Government Museum Jodhpur'],
+    ['Machia Biological Park', 'Safari park on the Kailana road.', 'Machia Biological Park Jodhpur'],
     ['Blue City Photography Tour', 'The old lanes, walked with someone who knows them.', null] ] },
+  { id: 'shop', t: 'Shopping', s: 'Bazaars of the old city', places: [
+    ['Tripolia Bazaar', 'Textiles, bangles and lac work.', 'Tripolia Bazaar Jodhpur'],
+    ['Nai Sadak', 'Bandhej, saris and clothes.', 'Nai Sarak Jodhpur'],
+    ['Mochi Bazaar', 'Jootis — hand-stitched leather slippers.', 'Mochi Bazaar Jodhpur'] ] },
   { id: 'trips', t: 'Day trips', s: 'Half a day or more', lede: 'Tell us the night before and we will help you arrange it properly.', places: [
     ['Bishnoi Village Tour', 'A community that has protected wildlife for 500 years.', null],
     ['Osian Desert Safari', 'Dunes, old temples, and a night under the stars.', null],
@@ -585,7 +600,7 @@ var NEAR = [
     return '<h3>' + esc(sec.h) + '</h3>' + sec.items.map(function (it) {
       var i = flat.push(it) - 1;
       return '<div class="item" data-i="' + i + '"><div class="k"><b>' + esc(it[0]) + '</b><span class="p">' + rupee(it[1]) + '</span>' +
-        (it[3] === '2h' ? '<span class="tag">2 hrs</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>' +
+        (it[3] ? '<span class="tag">' + (it[3] === '1h' ? '1 hr' : parseInt(it[3], 10) + ' hrs') + '</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>' +
         '<div class="step"><button aria-label="Remove one ' + esc(it[0]) + '" data-d="-1">−</button><span>0</span><button aria-label="Add one ' + esc(it[0]) + '" data-d="1">+</button></div></div>';
     }).join('');
   }).join('');
@@ -615,15 +630,15 @@ var NEAR = [
   }
   function picked() { return flat.map(function (it, i) { return { it: it, n: qty[i] || 0 }; }).filter(function (x) { return x.n > 0; }); }
   function sum() {
-    var list = picked(), n = 0, total = 0, thali = false;
-    list.forEach(function (x) { n += x.n; total += x.n * x.it[1]; if (x.it[3] === '2h') thali = true; });
+    var list = picked(), n = 0, total = 0, need = 0;  // need = most hours of notice among picked dishes
+    list.forEach(function (x) { n += x.n; total += x.n * x.it[1]; if (x.it[3]) need = Math.max(need, parseInt(x.it[3], 10)); });
     $('#count').textContent = n ? n + (n === 1 ? ' item' : ' items') : 'Nothing picked yet';
     $('#total').textContent = n ? rupee(total) : '';
     $('#send').disabled = !n;
     var warn = '';
-    var soon = when === 'Now, please' || when === 'In about an hour';
-    if (when === 'time' && $('#when-time').value) { var tp = $('#when-time').value.split(':'), now = new Date(), at = new Date(); at.setHours(+tp[0], +tp[1], 0, 0); if (at < now) at.setDate(at.getDate() + 1); soon = at - now < 2 * 3600 * 1000; }
-    if (thali && soon) warn = 'Thalis are cooked from scratch and need about 2 hours. We will tell you the time on WhatsApp.';
+    var soon = when === 'Now, please' || (when === 'In about an hour' && need > 1);
+    if (when === 'time' && $('#when-time').value) { var tp = $('#when-time').value.split(':'), now = new Date(), at = new Date(); at.setHours(+tp[0], +tp[1], 0, 0); if (at < now) at.setDate(at.getDate() + 1); soon = at - now < need * 3600 * 1000; }
+    if (need && soon) warn = 'Thalis are cooked from scratch and need about ' + (need === 1 ? 'an hour' : need + ' hours') + '. We will tell you the time on WhatsApp.';
     $('#warn').textContent = warn; $('#warn').hidden = !warn;
   }
   $('#send').addEventListener('click', function () {
