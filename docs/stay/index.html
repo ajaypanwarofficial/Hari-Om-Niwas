@@ -146,7 +146,11 @@
 
   /* ---------- Food ---------- */
   .lede { margin: 18px 0 0; }
-  .menu h3 { font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 26px 0 6px; }
+  /* Menu sections read like the Menu Book: a big title, then a small line under it. */
+  .msec { margin: 34px 0 4px; padding-bottom: 8px; border-bottom: 1.4px solid var(--sand); }
+  .msec h3 { margin: 0; font-weight: 500; font-size: 26px; line-height: 1.1; color: var(--heading); }
+  .msec small { display: block; margin-top: 4px; font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--olive); }
+  .item:last-of-type { border-bottom: none; }
   .item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1.4px dotted var(--sand); }
   .item .k { flex: 1; min-width: 0; }
   .item b { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15.5px; }
@@ -178,22 +182,15 @@
   .cat small { font-size: 14px; color: var(--faint); font-style: italic; }
   .cat .n { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--faint); }
 
-  /* Carousel: one card per swipe or tap, never resting between cards. */
-  .deck { margin: 18px -16px 0; overflow: hidden; touch-action: pan-y; }
-  .track { display: flex; gap: 12px; padding: 0 16px 6px; transition: transform .32s cubic-bezier(.2,.7,.2,1); will-change: transform; }
-  .track.drag { transition: none; }
-  .place { flex: 0 0 86%; min-width: 0; user-select: none; -webkit-user-select: none; background: var(--card); border: 1.4px solid var(--sand); border-radius: 6px; padding: 22px 20px 18px; display: flex; flex-direction: column; min-height: 250px; }
-  .place .num { font-family: 'Arimo', Arial, sans-serif; font-size: 54px; line-height: 1; color: var(--sand); }
-  .place .sec { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin-top: 18px; }
-  .place h3 { margin: 4px 0 8px; font-weight: 500; font-size: 25px; line-height: 1.15; color: var(--heading); }
-  .place p { margin: 0; flex: 1; }
-  .place .btns { margin-top: 18px; grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-  .place .btn { min-height: 46px; font-size: 11px; letter-spacing: .08em; padding: 10px 8px; gap: 6px; }
-  @media (max-width: 359px) { .place .btn svg.i { display: none; } }
-  .pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); }
-  .pager button { width: 44px; height: 44px; border-radius: 50%; border: 1.4px solid var(--sand); background: var(--card); cursor: pointer; display: grid; place-items: center; }
-  .pager button:disabled { opacity: .35; cursor: default; }
-  .pager svg.i { width: 16px; height: 16px; }
+  /* Place list: numbered, scroll down; each row has one Directions (or Ask us) button. */
+  .plist { list-style: none; margin: 14px 0 0; padding: 0; }
+  .plist li { display: grid; grid-template-columns: 30px 1fr auto; gap: 4px 12px; align-items: center; padding: 14px 0; border-bottom: 1.4px dotted var(--sand); }
+  .plist li:last-child { border-bottom: none; }
+  .plist .num { font-family: 'Arimo', Arial, sans-serif; font-size: 15px; color: var(--terra); align-self: start; padding-top: 3px; }
+  .plist h3 { margin: 0; font-weight: 500; font-size: 18.5px; line-height: 1.2; color: var(--heading); }
+  .plist p { margin: 2px 0 0; font-size: 15px; line-height: 1.35; color: var(--faint); font-style: italic; }
+  .plist .pill { gap: 6px; }
+  .plist .pill svg.i { width: 15px; height: 15px; }
 
   /* ---------- Around ---------- */
   .map { display: block; width: 100%; height: auto; border-radius: 4px; border: 1.4px solid var(--sand); margin-top: 18px; }
@@ -239,7 +236,6 @@
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
   <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
   <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 </svg>
 
@@ -315,8 +311,7 @@
     <div class="tiles">
       <div class="chip"><small>Check-in</small><b>12 noon</b><i>Tell us when you will arrive</i></div>
       <div class="chip"><small>Check-out</small><b>10 am</b><i>One flat, made properly for the next guest</i></div>
-      <div class="chip"><small>Chai &amp; coffee</small><b>Any time</b><i>Whenever we are awake</i></div>
-      <div class="chip"><small>Quiet hours</small><b>After 10 pm</b><i>Sound travels through these walls</i></div>
+      <div class="chip" style="grid-column:span 2"><small>Chai &amp; coffee</small><b>Any time</b><i>Whenever we are awake</i></div>
     </div>
 
     <p class="label">House notes</p>
@@ -358,7 +353,7 @@
   <!-- ================= GUIDE ================= -->
   <section data-view="guide" hidden>
     <div class="bar"><a class="back" href="#" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small>Not a top-ten list</small><h2>Jodhpur Guide</h2></div></div>
-    <p class="lede">Where we actually go. Swipe through each list — every place opens in Google Maps from our door.</p>
+    <p class="lede">Where we actually go. Every place opens in Google Maps with directions from our door.</p>
     <div class="card" style="margin-top:18px">
       <div class="note"><h3>Into the old city? Leave the car</h3><p>For the Clock Tower, Nav Chokia, Brahmpuri or anywhere in the blue city, skip your own car or scooty. The lanes jam and there is nowhere to park. A taxi or an auto drops you right there.</p></div>
     </div>
@@ -369,8 +364,7 @@
   <section data-view="list" hidden>
     <div class="bar"><a class="back" href="#guide" data-back aria-label="Back"><svg class="i"><use href="#i-back"/></svg></a><div><small id="list-sub"></small><h2 id="list-title"></h2></div></div>
     <p class="lede muted" id="list-lede"></p>
-    <div class="deck" id="deck"><div class="track" id="track"></div></div>
-    <div class="pager"><button id="prev" aria-label="Previous"><svg class="i"><use href="#i-back"/></svg></button><span id="pos">01 / 01</span><button id="next" aria-label="Next"><svg class="i"><use href="#i-next"/></svg></button></div>
+    <ol class="plist" id="plist"></ol>
   </section>
 
   <!-- ================= GETTING AROUND ================= -->
@@ -440,36 +434,36 @@ var HOME  = '26.30972,73.04837';            // our pin, used as the start of eve
 
 // Kitchen menu, from the Menu Book. 4th field '1h' / '2h' = hours of notice; shows a tag and a warning if ordered too soon.
 var MENU = [
-  { h: 'Nashta · tell us the night before', items: [
-    ['Poha', 100, 'Peanuts, curry leaves, lime on the side'],
-    ['Upma', 120, 'Soft, savoury, better than its reputation'],
-    ['Parantha · per piece', 120, 'Aloo, pyaaz or mix — with dahi and ghar ka achaar'],
-    ['Besan Chilla', 130, 'Gram-flour pancakes, green chutney'],
-    ['Butter toast', 60, 'Whole wheat'],
-    ['Plain toast', 50, 'Whole wheat'] ] },
-  { h: 'Lunch & dinner', items: [
-    ['Ghar ki Thali', 300, 'Sabji of the day, mixed dal, chawal, 4 roti, salad, achaar, papad', '1h'],
-    ['Jodhpur Thali', 550, 'Sabjis of the day, khichdi, dal or kadhi, roti, raita, churma', '2h'],
-    ['Dal Baati Churma', 400, 'Eat until you feel good'],
-    ['Dal Dhokli', 300, 'Wheat ribbons simmered in dal'] ] },
-  { h: 'Not feeling like much', items: [
-    ['Dal Khichdi', 220, 'With dahi and pickle'],
-    ['Dal Chawal', 220, 'The plainest good thing in this house'],
-    ['Masala Khichiya / Papad', 80, 'Onion, tomato, lime'],
-    ['Mix Veg Pakoda', 180, 'Best with rain, chai, or no reason'] ] },
-  { h: 'Chai & coffee', items: [
-    ['Chai', 50, 'Plain, adrak or masala — say which in the note'],
-    ['Kangra tea', 50, 'Green or black leaf, no milk'],
-    ['AeroPress coffee', 180, 'Clean and quick'],
-    ['French Press coffee', 180, 'Full and round'],
-    ['Instant coffee, black', 35, ''],
-    ['Instant coffee, milk', 50, ''] ] }
+  { t: 'Chai & coffee', h: 'Any time we are awake', items: [
+    ['Chai', 50, 'Plain, adrak or masala. Boiled the proper way, never dipped.'],
+    ['Kangra tea', 50, 'Green or black leaf from the old gardens of Himachal. No milk needed.'],
+    ['Instant coffee, black', 35, 'No judgement. Sometimes coffee is just coffee.'],
+    ['Instant coffee, milk', 50, 'No judgement. Sometimes coffee is just coffee.'],
+    ['AeroPress coffee', 180, 'Freshly ground Indian beans. Clean and quick.'],
+    ['French Press coffee', 180, 'Freshly ground Indian beans. Full and round.'] ] },
+  { t: 'Nashta', h: 'Morning, slowly · tell us the night before', items: [
+    ['Parantha', 120, 'Per piece. Aloo, pyaaz or mix, with dahi and ghar ka achaar.'],
+    ['Poha', 100, 'Flattened rice, peanuts, curry leaves, lime on the side.'],
+    ['Upma', 120, 'Soft, savoury, and better than its reputation.'],
+    ['Besan Chilla', 130, 'Gram-flour pancakes with green chutney.'],
+    ['Butter toast', 60, 'Whole wheat bread only.'],
+    ['Plain toast', 50, 'Whole wheat bread only.'] ] },
+  { t: 'Jeeman', h: 'Lunch & dinner', items: [
+    ['Ghar ki Thali', 300, 'Sabji of the day, mixed dal, chawal, 4 roti, salad, achaar and papad.', '1h'],
+    ['Jodhpur Thali', 550, 'Sabjis of the day (gatta, rabodi, what the market gave us), Jodhpuri khichdi or rice, dal or kadhi, roti, papad or khichiya, boondi raita, ghar ka achaar, ghee gur churma.', '2h'],
+    ['Dal Baati Churma', 400, 'Eat until you feel good. That is the only correct portion.'],
+    ['Dal Dhokli', 300, 'The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.'] ] },
+  { t: 'Not feeling like much?', h: 'Small things, any hour', items: [
+    ['Dal Khichdi', 220, 'Rice, dal, ghee, and not much else on purpose. With dahi and pickle.'],
+    ['Masala Khichiya / Papad', 80, 'Roasted, with onion, tomato and a squeeze of lime.'],
+    ['Dal Chawal', 220, 'The plainest good thing in this house.'],
+    ['Mix Veg Pakoda', 180, 'Best with rain, chai, or no reason at all.'] ] }
 ];
 
 // City guide, from the Menu Book's “Eat like a local”, “Our Jodhpur” and “Deeper in”.
 // q = what to search in Google Maps (leave out for tours we arrange).
 var GUIDE = [
-  { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', noReviews: true, places: [
+  { id: 'day', t: 'One day, done properly', s: 'In this order, start early', lede: 'In this order, if you can. Start early.', places: [
     ['Mehrangarh Fort', 'Go at opening time, before the buses. The city is blue from up there. Walk on to Chamunda Mata temple at the far end.', 'Mehrangarh Fort Jodhpur'],
     ['Jaswant Thada', 'Ten minutes away, and quiet. Marble that glows in morning light.', 'Jaswant Thada Jodhpur'],
     ['Ghanta Ghar', 'The clock tower bazaar — spices, saris, and lunch somewhere in it.', 'Ghanta Ghar Clock Tower Jodhpur'],
@@ -487,12 +481,12 @@ var GUIDE = [
     ['Arora Chat, Nai Sadak', 'No reason not to have some chaat.', 'Arora Chat Nai Sadak Jodhpur'],
     ['Mishrilal', 'Lassi. Sometimes Rajasthan feels hot.', 'Mishrilal Hotel Jodhpur'],
     ['Shahi Samosa', 'The samosa people queue for on Nai Sadak.', 'Shahi Samosa Nai Sarak Jodhpur'],
-    ['Narayan Sweets, Lal Bhatti', 'Ghee kachori, mornings only — get there before 10.', 'Narayan Sweets Lal Bhatti Jodhpur'] ] },
+    ['Narayan Misthan Bhandar (Lal Bhatti Wale)', 'Ghee kachori, mornings only — get there before 10.', 'Narayan Misthan Bhandar Lal Bhatti Jodhpur'] ] },
   { id: 'sweet', t: 'Something sweet', s: 'Ghewar to cheesecake', places: [
     ['Chaturbhuj Sweets', 'Gulab jamun — probably the best in the world.', 'Chaturbhuj Sweets Jodhpur'],
     ['Moolji Sweets', 'Best ghewar, malai rajbhog, tawapuri, boondi laddu.', 'Moolji Sweets Jodhpur'],
-    ['Shekhawati Ice Cream', 'Kulfi and rabdi. Ask us before you go.', 'Shekhawati Ice Cream Jodhpur'],
     ['Mohan Ji Sweets', 'Best ghewar, laddu and tawa puri.', 'Mohan Ji Sweets Jodhpur'],
+    ['Shekhawati Ice Cream', 'Kulfi and rabdi. Ask us before you go.', 'Shekhawati Ice Cream Jodhpur'],
     ['Miss Cheesecake', 'Home-grown star. The cheesecakes of the town.', 'Miss Cheesecake Jodhpur'] ] },
   { id: 'coffee', t: 'Coffee & slow afternoons', s: 'Sit for a while', places: [
     ['Ghar Cafe', 'Beautiful space, really good coffee and food.', 'Ghar Cafe Jodhpur'],
@@ -550,7 +544,6 @@ var NEAR = [
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var wa = function (text) { return 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text); };
   var dir = function (q) { return 'https://www.google.com/maps/dir/?api=1&origin=' + HOME + '&destination=' + encodeURIComponent(q); };
-  var find = function (q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); };
   var two = function (n) { return (n < 10 ? '0' : '') + n; };
   var rupee = function (n) { return '₹' + n.toLocaleString('en-IN'); };
 
@@ -597,7 +590,7 @@ var NEAR = [
   // ---- food order ----
   var qty = {}, flat = [];
   $('#menu').innerHTML = MENU.map(function (sec) {
-    return '<h3>' + esc(sec.h) + '</h3>' + sec.items.map(function (it) {
+    return '<div class="msec"><h3>' + esc(sec.t) + '</h3><small>' + esc(sec.h) + '</small></div>' + sec.items.map(function (it) {
       var i = flat.push(it) - 1;
       return '<div class="item" data-i="' + i + '"><div class="k"><b>' + esc(it[0]) + '</b><span class="p">' + rupee(it[1]) + '</span>' +
         (it[3] ? '<span class="tag">' + (it[3] === '1h' ? '1 hr' : parseInt(it[3], 10) + ' hrs') + '</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>' +
@@ -653,77 +646,19 @@ var NEAR = [
   $('#cats').innerHTML = GUIDE.map(function (g) {
     return '<a class="cat" href="#guide/' + g.id + '"><span class="k"><b>' + esc(g.t) + '</b><small>' + esc(g.s) + '</small></span><span class="n">' + g.places.length + '</span><svg class="i" style="width:16px;height:16px;opacity:.55"><use href="#i-next"/></svg></a>';
   }).join('');
-  var deck = $('#deck'), track = $('#track'), total = 1;
+  // Each list is a plain numbered list: scroll down, one button per place.
   function showList(id) {
     var g = GUIDE.filter(function (x) { return x.id === id; })[0]; if (!g) return false;
     $('#list-title').textContent = g.t; $('#list-sub').textContent = g.places.length + (g.places.length === 1 ? ' place' : ' places');
     $('#list-lede').textContent = g.lede || ''; $('#list-lede').hidden = !g.lede;
-    total = g.places.length;
-    track.innerHTML = g.places.map(function (p, i) {
-      // Landmarks (noReviews lists) only need Directions; places to eat also get Reviews.
-      var actions = p[2]
-        ? (g.noReviews
-          ? '<a class="btn" style="grid-column:span 2" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>'
-          : '<a class="btn" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>' +
-            '<a class="btn ghost" href="' + find(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-star"/></svg>Reviews</a>')
-        : '<a class="btn" style="grid-column:span 2" href="' + wa('Hi! We would like to do the ' + p[0] + '. Can you help us arrange it?') + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Ask us to arrange it</a>';
-      return '<article class="place"><div class="num">' + two(i + 1) + '</div><div class="sec">' + esc(g.t) + '</div><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p><div class="btns">' + actions + '</div></article>';
+    $('#plist').innerHTML = g.places.map(function (p, i) {
+      var btn = p[2]
+        ? '<a class="pill" href="' + dir(p[2]) + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-nav"/></svg>Directions</a>'
+        : '<a class="pill" href="' + wa('Hi! We would like to do the ' + p[0] + '. Can you help us arrange it?') + '" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Ask us</a>';
+      return '<li><span class="num">' + two(i + 1) + '</span><div><h3>' + esc(p[0]) + '</h3>' + (p[1] ? '<p>' + esc(p[1]) + '</p>' : '') + '</div>' + btn + '</li>';
     }).join('');
-    cur = 0; place(false);
     return true;
   }
-  // Carousel: the track moves by exactly one card per swipe or tap; it can never rest between cards.
-  var cur = 0, GAP = 12;
-  function offsetFor(i) {
-    var c = track.children[0]; if (!c) return 0;
-    var step = c.offsetWidth + GAP, x = -i * step;
-    if (i === total - 1 && total > 1) x += deck.clientWidth - 32 - c.offsetWidth; // last card sits right, so the one before peeks in
-    return x;
-  }
-  function place(animate) {
-    track.classList.toggle('drag', animate === false);
-    track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
-    $('#pos').textContent = two(cur + 1) + ' / ' + two(total);
-    $('#prev').disabled = cur <= 0; $('#next').disabled = cur >= total - 1;
-    $$('.place', track).forEach(function (el, i) { el.setAttribute('aria-hidden', i === cur ? 'false' : 'true'); });
-  }
-  function go(d) { cur = Math.max(0, Math.min(total - 1, cur + d)); place(true); }
-  $('#prev').addEventListener('click', function () { go(-1); });
-  $('#next').addEventListener('click', function () { go(1); });
-  window.addEventListener('resize', function () { place(false); });
-
-  // Swipe: horizontal drags move the track, vertical ones scroll the page as usual.
-  var sx = 0, sy = 0, st = 0, dx = 0, mode = null, moved = false;
-  deck.addEventListener('pointerdown', function (e) {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    sx = e.clientX; sy = e.clientY; st = Date.now(); dx = 0; mode = 'wait'; moved = false;
-  });
-  deck.addEventListener('pointermove', function (e) {
-    if (!mode) return;
-    var mx = e.clientX - sx, my = e.clientY - sy;
-    if (mode === 'wait') {
-      if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
-      if (Math.abs(my) > Math.abs(mx)) { mode = null; return; }
-      mode = 'drag'; moved = true; track.classList.add('drag');
-      try { deck.setPointerCapture(e.pointerId); } catch (_) {}
-    }
-    dx = mx;
-    if ((cur === 0 && dx > 0) || (cur === total - 1 && dx < 0)) dx = dx / 3; // resist past the ends
-    track.style.transform = 'translateX(' + (offsetFor(cur) + dx) + 'px)';
-  });
-  function end() {
-    if (mode !== 'drag') { mode = null; return; }
-    mode = null;
-    var fast = Math.abs(dx) / Math.max(1, Date.now() - st) > 0.35;
-    if (dx < -50 || (fast && dx < -15)) cur = Math.min(total - 1, cur + 1);
-    else if (dx > 50 || (fast && dx > 15)) cur = Math.max(0, cur - 1);
-    place(true);
-  }
-  deck.addEventListener('pointerup', end);
-  deck.addEventListener('pointercancel', end);
-  // A swipe that ends on a button must not also open it.
-  deck.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
-  deck.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
   // ---- image viewer: opens in the page; the phone's back button closes it ----
   var viewer = $('#viewer'), vimg = $('#v-img'), vscroll = $('#v-scroll');
@@ -763,7 +698,6 @@ var NEAR = [
     if (name === 'guide' && h.split('/')[1]) { name = showList(h.split('/')[1]) ? 'list' : 'guide'; }
     if (!views.some(function (v) { return v.getAttribute('data-view') === name; })) name = 'home';
     views.forEach(function (v) { v.hidden = v.getAttribute('data-view') !== name; });
-    if (name === 'list') place(false);
     window.scrollTo(0, 0);
   }
   // Back buttons step back in history when we came from inside the page, so the phone's back button doesn't need two taps.
