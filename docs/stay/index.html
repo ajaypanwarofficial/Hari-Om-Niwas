@@ -445,13 +445,13 @@ var MENU = [
     ['Poha', 100, 'Flattened rice, peanuts, curry leaves, lime on the side.'],
     ['Upma', 120, 'Soft, savoury, and better than its reputation.'],
     ['Besan Chilla', 130, 'Gram-flour pancakes with green chutney.'],
-    ['Butter toast', 60, 'Whole wheat bread only.'],
-    ['Plain toast', 50, 'Whole wheat bread only.'] ] },
+    ['Butter toast', 60, 'Two slices, whole wheat bread only.'],
+    ['Plain toast', 50, 'Two slices, whole wheat bread only.'] ] },
   { t: 'Jeeman', h: 'Lunch & dinner', items: [
     ['Ghar ki Thali', 300, 'Sabji of the day, mixed dal, chawal, 4 roti, salad, achaar and papad.', '1h'],
     ['Jodhpur Thali', 550, 'Sabjis of the day (gatta, rabodi, what the market gave us), Jodhpuri khichdi or rice, dal or kadhi, roti, papad or khichiya, boondi raita, ghar ka achaar, ghee gur churma.', '2h'],
-    ['Dal Baati Churma', 400, 'Eat until you feel good. That is the only correct portion.'],
-    ['Dal Dhokli', 300, 'The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.'] ] },
+    ['Dal Baati Churma', 400, 'Eat until you feel good. That is the only correct portion.', '1h'],
+    ['Dal Dhokli', 300, 'The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.', '1h'] ] },
   { t: 'Not feeling like much?', h: 'Small things, any hour', items: [
     ['Dal Khichdi', 220, 'Rice, dal, ghee, and not much else on purpose. With dahi and pickle.'],
     ['Masala Khichiya / Papad', 80, 'Roasted, with onion, tomato and a squeeze of lime.'],
@@ -625,7 +625,7 @@ var NEAR = [
     var warn = '';
     var soon = when === 'Now, please' || (when === 'In about an hour' && need > 1);
     if (when === 'time' && $('#when-time').value) { var tp = $('#when-time').value.split(':'), now = new Date(), at = new Date(); at.setHours(+tp[0], +tp[1], 0, 0); if (at < now) at.setDate(at.getDate() + 1); soon = at - now < need * 3600 * 1000; }
-    if (need && soon) warn = 'Thalis are cooked from scratch and need about ' + (need === 1 ? 'an hour' : need + ' hours') + '. We will tell you the time on WhatsApp.';
+    if (need && soon) warn = 'Some of this is cooked from scratch and needs about ' + (need === 1 ? 'an hour' : need + ' hours') + '. We will tell you the time on WhatsApp.';
     $('#warn').textContent = warn; $('#warn').hidden = !warn;
   }
   $('#send').addEventListener('click', function () {
