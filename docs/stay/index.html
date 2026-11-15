@@ -29,7 +29,7 @@
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body { margin: 0; background: var(--ground); color: var(--text); font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.55; }
-  a { color: inherit; }
+  a { color: inherit; text-decoration: none; }
   button { font: inherit; color: inherit; }
   main { max-width: 480px; margin: 0 auto; padding: 0 16px calc(40px + env(safe-area-inset-bottom)); }
   [hidden] { display: none !important; }
@@ -351,8 +351,7 @@
     <div class="card" style="margin-top:18px">
       <div class="note"><h3>Into the old city? Leave the car</h3><p>For the Clock Tower, Nav Chokia, Brahmpuri or anywhere in the blue city, skip your own car or scooty. The lanes jam and there is nowhere to park. A taxi or an auto drops you right there.</p></div>
     </div>
-    <p class="label">Pick a list</p>
-    <div class="cats" id="cats"></div>
+    <div id="cats"></div>
   </section>
 
   <section data-view="list" hidden>
@@ -514,7 +513,7 @@ var GUIDE = [
     ['Umaid Garden & Government Museum', 'Big public park with the old city museum inside.', 'Umaid Garden Government Museum Jodhpur'],
     ['Machia Biological Park', 'Safari park on the Kailana road.', 'Machia Biological Park Jodhpur'],
     ['Blue City Photography Tour', 'The old lanes, walked with someone who knows them.', null] ] },
-  { id: 'shop', t: 'Shopping', s: 'Bazaars of the old city', places: [
+  { id: 'shop', t: 'Old city bazaars', s: 'Textiles, bangles, jootis', places: [
     ['Tripolia Bazaar', 'Textiles, bangles and lac work.', 'Tripolia Bazaar Jodhpur'],
     ['Nai Sadak', 'Bandhej, saris and clothes.', 'Nai Sarak Jodhpur'],
     ['Mochi Bazaar', 'Jootis — hand-stitched leather slippers.', 'Mochi Bazaar Jodhpur'] ] },
@@ -637,8 +636,17 @@ var NEAR = [
   });
 
   // ---- guide ----
-  $('#cats').innerHTML = GUIDE.map(function (g) {
-    return '<a class="cat" href="#guide/' + g.id + '"><span class="k"><b>' + esc(g.t) + '</b><small>' + esc(g.s) + '</small></span><span class="n">' + g.places.length + '</span><svg class="i" style="width:16px;height:16px;opacity:.55"><use href="#i-next"/></svg></a>';
+  // The guide index is grouped by what you want to do; each group lists its GUIDE lists by id.
+  var GROUPS = [
+    ['Places to see', ['day', 'deeper', 'trips']],
+    ['Food & drink', ['eat', 'street', 'sweet', 'coffee', 'occasion']],
+    ['Shopping', ['shop']]
+  ];
+  $('#cats').innerHTML = GROUPS.map(function (gr) {
+    return '<p class="label">' + esc(gr[0]) + '</p><div class="cats">' + gr[1].map(function (id) {
+      var g = GUIDE.filter(function (x) { return x.id === id; })[0]; if (!g) return '';
+      return '<a class="cat" href="#guide/' + g.id + '"><span class="k"><b>' + esc(g.t) + '</b><small>' + esc(g.s) + '</small></span><span class="n">' + g.places.length + '</span><svg class="i" style="width:16px;height:16px;opacity:.55"><use href="#i-next"/></svg></a>';
+    }).join('') + '</div>';
   }).join('');
   // Each list is a plain numbered list: scroll down, one button per place.
   function showList(id) {
