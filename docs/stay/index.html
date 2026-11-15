@@ -158,6 +158,10 @@
   .step button { width: 44px; height: 44px; border: none; background: none; cursor: pointer; font-size: 19px; line-height: 1; color: var(--terra); }
   .step span { min-width: 18px; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 15px; }
   .item.on .step { border-color: var(--terra); }
+  .item.has-v { border-bottom: none; padding-bottom: 2px; }
+  .item.sub { padding: 3px 0 3px 16px; border-bottom: none; }
+  .item.sub.last { padding-bottom: 12px; border-bottom: 1.4px dotted var(--sand); }
+  .item.sub b { font-weight: 400; font-size: 15px; }
   .tag { display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--terra); border: 1px solid var(--terra); border-radius: 99px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
 
   .when { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -434,13 +438,13 @@ var HOME  = '26.30972,73.04837';            // our pin, used as the start of eve
 var MENU = [
   { t: 'Chai & coffee', h: 'Any time we are awake', items: [
     ['Chai', 50, 'Plain, adrak or masala. Boiled the proper way, never dipped.'],
-    ['Kangra tea', 50, 'Green or black leaf from the old gardens of Himachal. No milk needed.'],
+    ['Kangra tea', 50, 'Leaf from the old gardens of Himachal. No milk needed.', null, ['Green', 'Black']],
     ['Instant coffee, black', 35, 'No judgement. Sometimes coffee is just coffee.'],
     ['Instant coffee, milk', 50, 'No judgement. Sometimes coffee is just coffee.'],
     ['AeroPress coffee', 180, 'Freshly ground Indian beans. Clean and quick.'],
     ['French Press coffee', 180, 'Freshly ground Indian beans. Full and round.'] ] },
   { t: 'Nashta', h: 'Morning, slowly · tell us the night before', items: [
-    ['Parantha', 120, 'Per piece. Aloo, pyaaz or mix, with dahi and ghar ka achaar.'],
+    ['Parantha', 120, 'Per piece, with dahi and ghar ka achaar.', null, ['Aloo', 'Pyaaz', 'Mix']],
     ['Poha', 100, 'Flattened rice, peanuts, curry leaves, lime on the side.'],
     ['Upma', 120, 'Soft, savoury, and better than its reputation.'],
     ['Besan Chilla', 130, 'Gram-flour pancakes with green chutney.'],
@@ -453,7 +457,8 @@ var MENU = [
     ['Dal Dhokli', 300, 'The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.', '1h'] ] },
   { t: 'Not feeling like much?', h: 'Small things, any hour', items: [
     ['Dal Khichdi', 220, 'Rice, dal, ghee, and not much else on purpose. With dahi and pickle.'],
-    ['Masala Khichiya / Papad', 80, 'Roasted, with onion, tomato and a squeeze of lime.'],
+    ['Masala Khichiya', 80, 'Roasted, with onion, tomato and a squeeze of lime.'],
+    ['Masala Papad', 80, 'Roasted, with onion, tomato and a squeeze of lime.'],
     ['Dal Chawal', 220, 'The plainest good thing in this house.'],
     ['Mix Veg Pakoda', 180, 'Best with rain, chai, or no reason at all.'] ] }
 ];
@@ -584,10 +589,15 @@ var NEAR = [
   var qty = {}, flat = [];
   $('#menu').innerHTML = MENU.map(function (sec) {
     return '<div class="msec"><h3>' + esc(sec.t) + '</h3><small>' + esc(sec.h) + '</small></div>' + sec.items.map(function (it) {
-      var i = flat.push(it) - 1;
-      return '<div class="item" data-i="' + i + '"><div class="k"><b>' + esc(it[0]) + '</b><span class="p">' + rupee(it[1]) + '</span>' +
-        (it[3] ? '<span class="tag">' + (it[3] === '1h' ? '1 hr' : parseInt(it[3], 10) + ' hrs') + '</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>' +
-        '<div class="step"><button aria-label="Remove one ' + esc(it[0]) + '" data-d="-1">−</button><span>0</span><button aria-label="Add one ' + esc(it[0]) + '" data-d="1">+</button></div></div>';
+      var head = '<div class="k"><b>' + esc(it[0]) + '</b><span class="p">' + rupee(it[1]) + '</span>' +
+        (it[3] ? '<span class="tag">' + (it[3] === '1h' ? '1 hr' : parseInt(it[3], 10) + ' hrs') + '</span>' : '') + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '') + '</div>';
+      function step(name) { return '<div class="step"><button aria-label="Remove one ' + esc(name) + '" data-d="-1">−</button><span>0</span><button aria-label="Add one ' + esc(name) + '" data-d="1">+</button></div>'; }
+      if (!it[4]) { var i = flat.push(it) - 1; return '<div class="item" data-i="' + i + '">' + head + step(it[0]) + '</div>'; }
+      // one dish, several fillings or leaves: a counter for each
+      return '<div class="item has-v">' + head + '</div>' + it[4].map(function (v, n) {
+        var name = it[0] + ' (' + v + ')', j = flat.push([name, it[1], '', it[3]]) - 1;
+        return '<div class="item sub' + (n === it[4].length - 1 ? ' last' : '') + '" data-i="' + j + '"><div class="k"><b>' + esc(v) + '</b></div>' + step(name) + '</div>';
+      }).join('');
     }).join('');
   }).join('');
   $('#menu').addEventListener('click', function (e) {
