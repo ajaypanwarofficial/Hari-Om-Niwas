@@ -4,207 +4,231 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hari Om Niwas — Jodhpur</title>
-<meta name="description" content="A family home in Jodhpur, not a hotel. The whole upper floor, specialty coffee, and Rajasthani food cooked in the house. A new website is on its way.">
+<meta name="description" content="Hari Om Niwas, a family home in Jodhpur: the whole upper floor, home-cooked Rajasthani food and fresh-bean coffee. See the house, what's in it, how far it is from the fort, station and airport, or book on Airbnb, Booking.com, Agoda, MakeMyTrip and Goibibo.">
 <meta name="theme-color" content="#F3EDE0">
+<meta property="og:title" content="Hari Om Niwas · Jodhpur">
+<meta property="og:description" content="A family home in Jodhpur. Message us, find us, or book.">
+<meta property="og:image" content="https://hariomniwas.in/gallery/photos/01.jpg">
+<meta property="og:url" content="https://hariomniwas.in/">
+<link rel="canonical" href="https://hariomniwas.in/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3EDE0'/%3E%3Cpath d='M8 29V14a8 8 0 0 1 16 0v15' fill='none' stroke='%235C3A28' stroke-width='3'/%3E%3C/svg%3E">
-<!-- Arimo is used ONLY inside the logo, to match the lockup files (lock_ivory.png / lock_terra.png). -->
+<!-- Arimo is used ONLY inside the logo, to match the lockup files. -->
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Arimo&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #F3EDE0; --ink: #3B2E22; --terra: #B85C38;
     --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68;
-    --ground: var(--paper); --text: var(--ink); --heading: var(--teak);
+    --ground: var(--paper); --text: var(--ink); --heading: var(--teak); --card: #FBF7EE;
   }
   /* Dark mode: the same palette inverted onto #262624, paper as the text. */
   @media (prefers-color-scheme: dark) {
-    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; }
+    :root { --ground: #262624; --text: var(--paper); --heading: var(--paper); --faint: #A89A84; --sand: #5A5044; --olive: #B5B08A; --card: #2F2E2B; }
   }
 
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0; background: var(--ground); color: var(--text);
-    font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.6;
-    min-height: 100vh; display: flex; flex-direction: column;
+    font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.55;
   }
   a { color: inherit; }
-  img { display: block; max-width: 100%; }
+  main { max-width: 460px; margin: 0 auto; padding: 0 16px 40px; }
 
-  .label {
-    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500;
-    letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 0;
-  }
-  @media (prefers-color-scheme: dark) { .label { color: #B5B08A; } }
-
-  main { flex: 1; width: 100%; max-width: 680px; margin: 0 auto; padding: 64px 24px 40px; text-align: center; }
-
-  /* ---- The lockup ---- */
-  .logo { width: clamp(170px, 42vw, 230px); height: auto; margin: 0 auto; }
+  /* ---- Header ---- */
+  .head { text-align: center; padding-top: 48px; }
+  .logo { width: 132px; height: auto; display: block; margin: 0 auto; }
   .logo text { font-family: 'Arimo', Arial, Helvetica, sans-serif; }
   .logo .arch, .logo .word { stroke: var(--heading); fill: var(--heading); }
   .logo .arch { fill: none; }
   .logo .city { fill: var(--olive); }
-  @media (prefers-color-scheme: dark) { .logo .city { fill: #B5B08A; } }
+  .tagline { font-style: italic; color: var(--faint); margin: 14px auto 0; max-width: 320px; font-size: 16px; }
 
-  h1 {
-    font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase;
-    letter-spacing: .01em; line-height: 1.02; color: var(--heading);
-    font-size: clamp(38px, 9vw, 58px); margin: 56px 0 0;
+  .label {
+    font-family: 'Work Sans', sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: .2em; text-transform: uppercase; color: var(--olive); margin: 34px 0 12px; text-align: center;
   }
-  h1 .stop { color: var(--terra); }
 
-  .lede { font-size: 19px; line-height: 1.65; margin: 22px auto 0; max-width: 520px; }
-  .tagline { font-style: italic; color: var(--faint); margin: 18px auto 0; max-width: 440px; }
-
-
-  /* ---- Enquiries ---- */
-  .contact { max-width: 680px; margin: 0 auto; padding: 56px 24px 8px; text-align: center; }
-  .rule { border: none; border-top: 1.5px solid var(--sand); margin: 0 auto 36px; width: 100%; max-width: 520px; }
-  .contact h2, .book h2 {
-    font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .01em;
-    line-height: 1; color: var(--heading); font-size: 28px; margin: 12px 0 0;
+  /* ---- Link buttons ---- */
+  .links { display: flex; flex-direction: column; gap: 10px; }
+  .link {
+    display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 16px;
+    background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px;
+    text-decoration: none; cursor: pointer; font: inherit; color: inherit; text-align: left; width: 100%;
+    transition: border-color .15s, transform .1s;
   }
-  .contact h2 .stop, .book h2 .stop { color: var(--terra); }
-  .contact p.note { margin: 14px auto 28px; max-width: 460px; }
+  .link:hover { border-color: var(--terra); }
+  .link:active { transform: scale(.985); }
+  .link svg { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .link .t { flex: 1; min-width: 0; }
+  .link b { display: block; font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 15px; letter-spacing: .01em; }
+  .link small { display: block; font-size: 14px; color: var(--faint); font-style: italic; line-height: 1.35; margin-top: 2px; }
+  .link .go { width: 16px; height: 16px; opacity: .55; }
 
-  .btn {
-    display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500;
-    letter-spacing: .16em; text-transform: uppercase; text-decoration: none; line-height: 1;
-    padding: 16px 28px; border-radius: 2px; background: var(--terra); color: var(--paper);
-    transition: opacity .15s;
-  }
-  .btn:hover { opacity: .9; }
+  .link.main { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+  .link.main small { color: var(--paper); opacity: .85; }
+  .link.main:hover { opacity: .93; }
 
-  .lines { list-style: none; padding: 0; margin: 28px auto 0; max-width: 420px; text-align: left; }
-  .lines li { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; }
-  .lines .k { font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em;
-              text-transform: uppercase; color: var(--olive); flex-shrink: 0; }
-  @media (prefers-color-scheme: dark) { .lines .k { color: #B5B08A; } }
-  .lines .dots { flex: 1; border-bottom: 1.5px dotted var(--sand); transform: translateY(-4px); min-width: 16px; }
-  .lines a { text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s; white-space: nowrap; }
-  .lines a:hover { border-color: var(--terra); }
+  /* ---- Distances: each row opens directions from the house ---- */
+  .near { background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; padding: 6px 16px 0; }
+  .near ul { list-style: none; margin: 0; padding: 0; }
+  .near li a { display: flex; align-items: baseline; gap: 10px; padding: 11px 0; text-decoration: none; }
+  .near .k { font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 500; }
+  .near .dots { flex: 1; border-bottom: 1.5px dotted var(--sand); transform: translateY(-4px); min-width: 12px; }
+  .near .v { font-style: italic; color: var(--faint); font-size: 15px; white-space: nowrap; }
+  .near li a:hover .k { color: var(--terra); }
+  .near .map { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px -16px 0; padding: 13px 16px;
+               border-top: 1.4px solid var(--sand); text-decoration: none; font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--faint); }
+  .near .map:hover { color: var(--terra); }
+  .near .map svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* ---- Where to book ---- */
-  .book { max-width: 680px; margin: 0 auto; padding: 48px 24px 0; text-align: center; }
-  .book[hidden] { display: none; }
-  .book p:not(.label) { margin: 14px auto 22px; color: var(--faint); font-style: italic; }
-  .otas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-  .otas a {
-    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .16em;
-    text-transform: uppercase; text-decoration: none; padding: 14px 20px; border: 1.4px solid var(--sand);
-    border-radius: 2px; transition: border-color .15s, color .15s;
-  }
-  .otas a:hover { border-color: var(--terra); color: var(--terra); }
+  /* ---- Amenities: icon tiles, three across. Just what we have, no buttons. ---- */
+  .am-lede { text-align: center; font-style: italic; color: var(--faint); margin: -4px 0 14px; font-size: 16px; }
+  .am-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .am-t { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 8px; text-align: center;
+          background: var(--card); border: 1.4px solid var(--sand); border-radius: 4px; padding: 14px 6px 12px; min-height: 92px; }
+  .am-t svg { width: 26px; height: 26px; stroke: var(--terra); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .am-t span { font-family: 'Work Sans', sans-serif; font-size: 12.5px; font-weight: 500; line-height: 1.25; }
+  .am-sub { font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); text-align: center; margin: 16px 0 0; }
 
-  .dates { max-width: 460px; margin: 22px auto 0; padding: 20px 18px; border: 1.4px solid var(--sand); border-radius: 2px; }
+  /* OTAs: a compact two-column grid of names. */
+  .otas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .otas .link { min-height: 52px; justify-content: center; text-align: center; padding: 10px; }
+  .otas .link b { font-size: 14px; }
+  .otas .link.wide { grid-column: span 2; min-height: 60px; }
+  .otas .link.wide b { font-size: 15px; }
+
+  /* ---- MakeMyTrip / Goibibo dates ---- */
+  .dates { margin-top: 10px; padding: 18px 16px; border: 1.4px solid var(--sand); border-radius: 4px; background: var(--card); text-align: center; }
   .dates[hidden] { display: none; }
-  .dates-for { margin: 0 0 14px !important; font-style: normal !important; color: var(--text) !important; }
-  .dates-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
-  .dates label { display: flex; flex-direction: column; gap: 6px; text-align: left;
+  .dates p { margin: 0 0 14px; }
+  .dates-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .dates label { display: flex; flex-direction: column; gap: 6px; text-align: left; flex: 1 1 120px;
                  font-family: 'Work Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); }
+  .dates label.sm { flex: 0 0 70px; }
   .dates input, .dates select {
-    font-family: 'Work Sans', sans-serif; font-size: 15px; color: var(--text); background: transparent;
-    border: none; border-bottom: 1.5px solid var(--sand); border-radius: 0; padding: 6px 2px; min-width: 130px;
+    font-family: 'Work Sans', sans-serif; font-size: 16px; color: var(--text); background: transparent; width: 100%;
+    border: none; border-bottom: 1.5px solid var(--sand); border-radius: 0; padding: 6px 2px;
   }
-  .dates select { min-width: 70px; }
   .dates input:focus, .dates select:focus { outline: none; border-bottom-color: var(--terra); }
-  .dates button { border: none; cursor: pointer; }
-  .dates-err { color: var(--terra) !important; font-style: normal !important; font-family: 'Work Sans', sans-serif; font-size: 12px; margin: 10px 0 0 !important; min-height: 1em; }
-  @media (prefers-color-scheme: dark) { .dates label { color: #B5B08A; } .dates input { color-scheme: dark; } }
+  @media (prefers-color-scheme: dark) { .dates input { color-scheme: dark; } }
+  .btn {
+    display: inline-block; font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; border: none; cursor: pointer;
+    letter-spacing: .16em; text-transform: uppercase; line-height: 1; padding: 15px 26px; border-radius: 2px; background: var(--terra); color: var(--paper);
+  }
+  .dates-err { color: var(--terra); font-family: 'Work Sans', sans-serif; font-size: 12px; margin: 10px 0 0 !important; min-height: 1em; }
 
-  footer {
-    width: 100%; max-width: 980px; margin: 0 auto; padding: 64px 24px 32px;
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
-  }
-  footer .arch-mark {
-    width: 26px; height: 32px; border: 1.6px solid var(--sand); border-bottom: none;
-    border-top-left-radius: 999px; border-top-right-radius: 999px; flex-shrink: 0;
-  }
-  footer .label { font-size: 10px; color: var(--faint); text-align: right; }
-
-  @media (max-width: 520px) {
-    main { padding-top: 48px; }
-    h1 { margin-top: 44px; }
-    .lede { font-size: 18px; }
-    .lines li { flex-wrap: wrap; gap: 2px 10px; }
-    .lines .dots { display: none; }
-    .lines { text-align: center; }
-    .lines li { justify-content: center; }
-    .lines .k { width: 100%; }
-  }
+  footer { text-align: center; padding: 36px 16px 28px; }
+  footer .arch-mark { width: 22px; height: 27px; margin: 0 auto 12px; border: 1.6px solid var(--sand); border-bottom: none; border-radius: 999px 999px 0 0; }
+  footer p { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin: 0; }
 </style>
 </head>
 <body>
 
 <main>
-  <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
-    <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
-    <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
-    <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
-    <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
-    <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
-    <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
-  </svg>
-
-  <h1>A new site is<br>being built<span class="stop">.</span></h1>
-  <p class="lede">We are taking our time with it. The house is open in the meantime, and the kitchen is cooking.</p>
-  <p class="tagline">Wear light, eat heavy, and smile — you are in Jodhpur.</p>
-</main>
-
-
-<section class="contact" id="enquiries">
-  <hr class="rule">
-  <p class="label">Enquiries</p>
-  <h2>Ask us anything<span class="stop">.</span></h2>
-  <p class="note">Dates, prices, whether the kitchen can make a thali for four. The family answers, not a desk.</p>
-  <a class="btn" href="https://wa.me/919414195901?text=Hi%21%20I%20have%20a%20question%20about%20Hari%20Om%20Niwas.%0A%F0%9F%91%87%20Please%20type%20your%20dates%2C%20number%20of%20guests%2C%20and%20your%20question%20below%0A%28for%20example%3A%2012%20to%2015%20Nov%2C%202%20guests%2C%20can%20you%20make%20thali%3F%29%0A%0A" target="_blank" rel="noopener">Message on WhatsApp</a>
-  <ul class="lines">
-    <li><span class="k">Call</span><span class="dots"></span><a href="tel:+919414195901">+91 94141 95901</a></li>
-    <li><span class="k">Email</span><span class="dots"></span><a href="mailto:stay@hariomniwas.in">stay@hariomniwas.in</a></li>
-    <li><span class="k">Instagram</span><span class="dots"></span><a href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">@hariomniwas</a></li>
-  </ul>
-</section>
-
-<!-- Listing links. The section stays hidden until at least one link is filled in. -->
-<section class="book" id="book" hidden>
-  <p class="label" style="margin-top:8px">Or book on</p>
-  <h2>Find us listed<span class="stop">.</span></h2>
-  <p>Same house, same family. Book wherever you are comfortable.</p>
-  <div class="otas">
-    <a data-ota href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener">Airbnb</a>
-    <a data-ota href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener">Booking.com</a>
-    <a data-ota href="#dates" data-dated="mmt" role="button">MakeMyTrip</a>
-    <a data-ota href="#dates" data-dated="goibibo" role="button">Goibibo</a>
-    <a data-ota href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener">Agoda</a>
+  <div class="head">
+    <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
+      <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
+      <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
+      <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
+      <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
+      <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
+      <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
+    </svg>
+    <p class="tagline">Wear light, eat heavy,<br>and smile — you are in Jodhpur.</p>
   </div>
-  <!-- MakeMyTrip and Goibibo have no plain share link: their pages need dates,
-       so we ask for them here and open the listing on those dates. -->
+
+  <div class="links" style="margin-top:28px">
+    <a class="link main" href="/gallery/">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+      <span class="t"><b>Photos of the house</b><small>Living room, bedroom, the roof at sunset.</small></span>
+      <svg class="go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <p class="label">Amenities</p>
+  <p class="am-lede">The whole upper floor, just for you. Sleeps 4.</p>
+  <div class="am-grid">
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="9" rx="2"/><path d="M6 10.5h12M8 17.5v2M12 17.5v3M16 17.5v2"/></svg><span>Air conditioning</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.3" r=".9" fill="currentColor"/></svg><span>Wi-Fi</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg><span>Hot water</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V4h10v7M3 11h18M3 21h18M5 11v10M9 11v10M15 11v10M19 11v10"/></svg><span>Balcony</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3.5h12V21M3 21h18"/><circle cx="15" cy="12.5" r=".9" fill="currentColor"/></svg><span>Private entrance</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 8V5.5M5.6 11.6 4 10M18.4 11.6 20 10"/></svg><span>Rooftop sunsets</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M6 9.5h12M9 5.5v2M9 12.5v3"/></svg><span>Fridge</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20h11l-1.3-9H7.3z"/><path d="M9 11c0-3 1.3-5 2.5-5S14 8 14 11"/><path d="M7 13.5 3.5 11"/></svg><span>Kettle</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h13v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 3c0 1.5 1.5 1.5 1.5 3.5M12 3c0 1.5 1.5 1.5 1.5 3.5"/></svg><span>Tea &amp; coffee</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5h6V6l2 3v12.5H7V9l2-3z"/><path d="M7 13h10"/></svg><span>Dairy creamer</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="9" width="10" height="12.5" rx="2"/><path d="M10 9V6h4v3M12 6V3h4"/></svg><span>Shampoo &amp; shower gel</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="9" cy="9" r="1.5"/><path d="M14 6.5h7v5h-7M8 14l-1 7h3l1.2-6.5"/></svg><span>Hair dryer</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h17v-2a6 6 0 0 0-6-6H9c-3 0-5 3-6 8z"/><path d="M11 10V7h8"/></svg><span>Iron</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h2M20 10h2M9 7V5M12 7V4M15 7V5"/></svg><span>Kitchen essentials</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="12.5" rx="2"/><circle cx="8.5" cy="14.3" r="3"/><path d="M14 12.5h4M14 16h4M7 8l9-5"/></svg><span>Carvaan speaker</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0 0 4h13"/></svg><span>Books &amp; games</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="2"/><circle cx="15" cy="10" r="2"/><circle cx="12" cy="15.5" r="2"/></svg><span>Home-cooked food</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 17V8h3a2.5 2.5 0 0 1 0 5h-3"/></svg><span>Parking nearby</span></div>
+  </div>
+  <p class="am-sub">Check-in 12 noon · Check-out 10 am</p>
+
+  <p class="label">How far are we</p>
+  <div class="near">
+    <ul>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Mehrangarh+Fort+Jodhpur" target="_blank" rel="noopener"><span class="k">Mehrangarh Fort</span><span class="dots"></span><span class="v">4 km · 12 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jaswant+Thada+Jodhpur" target="_blank" rel="noopener"><span class="k">Jaswant Thada</span><span class="dots"></span><span class="v">4 km · 10 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Ghanta+Ghar+Clock+Tower+Jodhpur" target="_blank" rel="noopener"><span class="k">Clock Tower</span><span class="dots"></span><span class="v">4 km · 15 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Junction+Railway+Station" target="_blank" rel="noopener"><span class="k">Railway station</span><span class="dots"></span><span class="v">5 km · 15 min</span></a></li>
+      <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Airport" target="_blank" rel="noopener"><span class="k">Airport</span><span class="dots"></span><span class="v">8 km · 20 min</span></a></li>
+    </ul>
+    <a class="map" href="https://maps.app.goo.gl/XV8xLP1Rmzg4Cv5o7" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      Badla Road, Mahamandir · Open in Google Maps
+    </a>
+  </div>
+
+  <p class="label">Book on</p>
+  <div class="otas">
+    <a class="link wide" href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener"><b>Airbnb</b></a>
+    <a class="link" href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener"><b>Booking.com</b></a>
+    <a class="link" href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener"><b>Agoda</b></a>
+    <button class="link" type="button" data-dated="mmt"><b>MakeMyTrip</b></button>
+    <button class="link" type="button" data-dated="goibibo"><b>Goibibo</b></button>
+  </div>
+  <!-- MakeMyTrip and Goibibo have no plain share link: their pages need dates. -->
   <form class="dates" id="dates" hidden>
-    <p class="dates-for">Your dates, for <span id="dates-site">MakeMyTrip</span></p>
+    <p>Your dates, for <span id="dates-site">MakeMyTrip</span></p>
     <div class="dates-row">
       <label>Check-in<input type="date" id="d-in" required></label>
       <label>Check-out<input type="date" id="d-out" required></label>
-      <label>Adults<select id="d-adults"><option>1</option><option selected>2</option><option>3</option></select></label>
+      <label class="sm">Adults<select id="d-adults"><option>1</option><option selected>2</option><option>3</option></select></label>
     </div>
-    <button type="submit" class="btn" id="d-go">See the listing</button>
+    <button type="submit" class="btn">See the listing</button>
     <p class="dates-err" id="d-err"></p>
   </form>
-</section>
+
+  <p class="label">Say hello</p>
+  <div class="links">
+    <a class="link" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%28for%20example%3A%2012%20to%2015%20Nov%2C%202%20guests%29%0A%0A" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg>
+      <span class="t"><b>Message us on WhatsApp</b><small>Tap, type your dates, press send. The family answers.</small></span>
+    </a>
+
+    <a class="link" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg>
+      <span class="t"><b>Instagram</b><small>@hariomniwas</small></span>
+    </a>
+    <a class="link" href="mailto:stay@hariomniwas.in">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
+      <span class="t"><b>Email</b><small>stay@hariomniwas.in</small></span>
+    </a>
+  </div>
+</main>
 
 <footer>
   <div class="arch-mark" aria-hidden="true"></div>
-  <p class="label">Hari Om Niwas · Mahamandir, Jodhpur</p>
+  <p>Hari Om Niwas · Mahamandir, Jodhpur</p>
 </footer>
 
 <script>
-  // Show only the listings that have a link; hide the section if none do.
-  (function () {
-    var links = document.querySelectorAll('[data-ota]'), any = false;
-    links.forEach(function (a) { if (a.getAttribute('href')) any = true; else a.remove(); });
-    if (any) document.getElementById('book').hidden = false;
-  })();
-
-  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them.
+  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them. Same logic as the home page.
   (function () {
     var HOTEL = '202609111336168255';
     var form = document.getElementById('dates'), site = null;
@@ -220,8 +244,7 @@
       if (!dout.value || dout.value <= din.value) dout.value = dout.min;
     });
     document.querySelectorAll('[data-dated]').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
+      a.addEventListener('click', function () {
         site = a.getAttribute('data-dated');
         document.getElementById('dates-site').textContent = a.textContent;
         form.hidden = false; err.textContent = '';
