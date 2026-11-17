@@ -58,10 +58,16 @@
 
   /* ---------- facts strip ---------- */
   .facts { background: var(--teak); color: var(--paper); }
-  .facts ul { list-style: none; margin: 0; padding: 22px 0; display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .facts li { font-family: var(--sans); font-size: 13.5px; line-height: 1.35; }
-  .facts li b { display: block; font-family: var(--serif); font-weight: 400; font-size: 22px; margin-bottom: 2px; }
-  @media (min-width: 760px) { .facts ul { grid-template-columns: repeat(3, 1fr); } }
+  .facts ul { list-style: none; margin: 0; padding: 6px 0; display: grid; grid-template-columns: 1fr; }
+  .facts li { font-family: var(--sans); font-size: 13.5px; line-height: 1.4; padding: 16px 0; opacity: .92; }
+  .facts li + li { border-top: 1px solid rgba(243,236,225,.16); }
+  .facts li b { display: block; font-family: var(--serif); font-weight: 400; font-size: 22px; margin-bottom: 3px; opacity: 1; }
+  @media (min-width: 760px) {
+    .facts ul { grid-template-columns: 1.35fr 1fr 1fr; padding: 30px 0; }
+    .facts li { padding: 2px 20px; text-align: center; }
+    .facts li + li { border-top: 0; border-left: 1px solid rgba(243,236,225,.2); }
+    .facts li b { font-size: 24px; }
+  }
 
   /* ---------- intro ---------- */
   .intro .wrap { display: grid; gap: 34px; }
