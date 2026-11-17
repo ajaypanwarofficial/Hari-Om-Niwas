@@ -172,10 +172,15 @@
   .near a:hover .k { color: var(--terra); }
   .addr { margin-top: 22px; font-size: 16px; color: #5b4c3d; }
   .intro .side img.life { aspect-ratio: auto; }
-  .loc .wrap.aerial { display: block; margin: 0 auto 44px; }
-  .aerial img { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center 52%; border-radius: 6px; display: block; }
-  .loc .aerial figcaption { font-size: 15px; line-height: 1.4; color: #5b4c3d; margin-top: 12px; }
-  @media (min-width: 760px) { .aerial img { aspect-ratio: 16/9; } }
+  .lmedia { position: relative; margin: 0; }
+  .lmedia img { width: 100%; aspect-ratio: 1800/1268; border-radius: 8px; display: block; }
+  .lmedia img.v-view { object-fit: cover; object-position: center 52%; }
+  .lmedia img.v-map { object-fit: contain; background: #F3EDE0; border: 1.4px solid var(--sand); }
+  .lmedia[data-v="view"] .v-map, .lmedia[data-v="map"] .v-view { display: none; }
+  .lmedia figcaption { font-size: 15px; line-height: 1.4; color: #5b4c3d; margin-top: 12px; }
+  .lswitch { position: absolute; top: 14px; left: 14px; display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(243,236,225,.92); box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+  .lswitch button { border: 0; background: none; font: 500 12.5px var(--sans); letter-spacing: .04em; padding: 7px 14px; border-radius: 999px; color: var(--ink, #3b2a1e); cursor: pointer; }
+  .lswitch button[aria-selected="true"] { background: var(--teak); color: var(--paper); }
   @media (min-width: 900px) { .loc .wrap { grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; } }
 
   /* ---------- book ---------- */
@@ -292,10 +297,10 @@
     </div>
     <div class="reveal">
       <ul class="dishes">
-        <li><span class="k">Aloo parantha<small>The one guests ask for again. With dahi and ghar ka achaar.</small></span></li>
-        <li><span class="k">Dal Dhokli<small>The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.</small></span></li>
-        <li><span class="k">Dal Baati Churma<small>Eat until you feel good. That is the only correct portion.</small></span></li>
         <li><span class="k">Jodhpur Thali<small>Gatta, rabodi and what the market gave us, with khichdi, kadhi and ghee gur churma.</small></span></li>
+        <li><span class="k">Dal Baati Churma<small>Eat until you feel good. That is the only correct portion.</small></span></li>
+        <li><span class="k">Dal Dhokli<small>The underrated gem of Jodhpur. Soft wheat ribbons simmered in the dal.</small></span></li>
+        <li><span class="k">Aloo parantha<small>The one guests ask for again. With dahi and ghar ka achaar.</small></span></li>
         <li><span class="k">Chai &amp; fresh-bean coffee<small>Chai boiled the proper way. Coffee ground when you order.</small></span></li>
       </ul>
     </div>
@@ -394,9 +399,13 @@
 </section>
 
 <section class="loc" id="where" style="padding-top:20px">
-  <figure class="wrap aerial reveal"><img src="jaswant.jpg" alt="Jaswant Thada and Mehrangarh Fort at sunset, from the air" loading="lazy"><figcaption>Jaswant Thada and Mehrangarh at sunset, 3.3 km from home.</figcaption></figure>
   <div class="wrap">
-    <div class="map reveal"><img src="map.jpg" alt="Map of Jodhpur showing Hari Om Niwas in Mahamandir, the fort, the old city, the station and the airport" loading="lazy"></div>
+    <figure class="lmedia reveal" data-v="view">
+      <img class="v-view" src="jaswant.jpg" alt="Jaswant Thada and Mehrangarh Fort at sunset, from the air" loading="lazy">
+      <img class="v-map" src="map.jpg" alt="Map of Jodhpur showing Hari Om Niwas in Mahamandir, the fort, the old city, the station and the airport" loading="lazy">
+      <div class="lswitch" role="tablist"><button type="button" data-s="view" aria-selected="true">The view</button><button type="button" data-s="map" aria-selected="false">Map</button></div>
+      <figcaption class="v-view">Jaswant Thada and Mehrangarh at sunset, 3.3 km from home.</figcaption>
+    </figure>
     <div class="reveal">
       <p class="eyebrow">Where we are</p>
       <h2>Close to the old city, <em>out of its traffic</em><span class="dot">.</span></h2>
@@ -445,6 +454,14 @@
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   })();
+  document.querySelectorAll('.lmedia').forEach(function (f) {
+    f.querySelectorAll('.lswitch button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        f.dataset.v = b.dataset.s;
+        f.querySelectorAll('.lswitch button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+      });
+    });
+  });
 </script>
 </body>
 </html>
