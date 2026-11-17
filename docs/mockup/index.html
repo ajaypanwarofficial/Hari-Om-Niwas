@@ -67,10 +67,11 @@
   .intro .wrap { display: grid; gap: 34px; }
   .intro .lede { font-size: clamp(22px, 3vw, 30px); line-height: 1.4; font-weight: 300; margin: 0; }
   .intro .lede em { color: var(--terra); }
-  .intro .side { font-size: 17px; color: #5b4c3d; }
+  .intro .side { margin: 0; font-size: 17px; color: #5b4c3d; }
+  .intro .side img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 6px; margin-bottom: 16px; }
   .intro .side p { margin: 0 0 14px; }
   .sig { font-style: italic; color: var(--faint); }
-  @media (min-width: 900px) { .intro .wrap { grid-template-columns: 1.5fr 1fr; gap: 80px; align-items: end; } }
+  @media (min-width: 900px) { .intro .wrap { grid-template-columns: 1.5fr 1fr; gap: 80px; align-items: center; } }
 
   /* ---------- the home: photo mosaic ---------- */
   .home-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
@@ -236,12 +237,12 @@
     <div>
       <p class="eyebrow">Not just a stay</p>
       <h2>It’s not just a stay, <em>it’s a lifestyle</em><span class="dot">.</span></h2>
-      <p class="lede">Chai on the roof while the fort turns gold. A hot parantha from our kitchen in the morning. Old songs on the Carvaan, a slow afternoon with a book. We made this suite for people who want to <em>live</em> Jodhpur for a few days, not just tick it off, with the family one flight of stairs away.</p>
+      <p class="lede">Chai on the roof while the fort turns gold. A hot parantha from our kitchen in the morning. Old songs on the Carvaan, a slow afternoon with a book. We made this suite for people who want to <em>live</em> Jodhpur for a few days, not just see it, with real Jodhpuri hospitality from a local family.</p>
     </div>
-    <div class="side">
-      <p>Wear light, eat heavy, and smile — you are in Jodhpur.</p>
-      <p class="sig">— Ajay and family</p>
-    </div>
+    <figure class="side">
+      <img src="/gallery/photos/06.jpg" alt="The bed, with elephant artwork above it" loading="lazy">
+      <figcaption><p>Wear light, eat heavy, and smile — you are in Jodhpur.</p><p class="sig">— Ajay and family</p></figcaption>
+    </figure>
   </div>
 </section>
 
@@ -414,7 +415,6 @@
       <a href="#" onclick="return false">Goibibo</a>
       <a href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener">Agoda</a>
     </div>
-    <p class="small-note">MakeMyTrip and Goibibo would keep today's "pick your dates" step.</p>
   </div>
 </section>
 
