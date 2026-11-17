@@ -171,6 +171,11 @@
   .near .v { font-style: italic; color: var(--faint); white-space: nowrap; }
   .near a:hover .k { color: var(--terra); }
   .addr { margin-top: 22px; font-size: 16px; color: #5b4c3d; }
+  .intro .side img.life { aspect-ratio: auto; }
+  .loc .wrap.aerial { display: block; margin: 0 auto 44px; }
+  .aerial img { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center 52%; border-radius: 6px; display: block; }
+  .loc .aerial figcaption { font-size: 15px; line-height: 1.4; color: #5b4c3d; margin-top: 12px; }
+  @media (min-width: 760px) { .aerial img { aspect-ratio: 16/9; } }
   @media (min-width: 900px) { .loc .wrap { grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; } }
 
   /* ---------- book ---------- */
@@ -244,7 +249,7 @@
       <p class="lede">Chai on the roof while the fort turns gold. A hot parantha from our kitchen in the morning. Old songs on the Carvaan, a slow afternoon with a book. We made this suite for people who want to <em>live</em> Jodhpur for a few days, not just see it, with real Jodhpuri hospitality from a local family.</p>
     </div>
     <figure class="side">
-      <img src="jaswant.jpg" alt="Jaswant Thada and Mehrangarh Fort at sunset, from the air" loading="lazy">
+      <img class="life" src="life.jpg" alt="Pouring coffee on the sofa on a slow afternoon in the living room" loading="lazy">
       <figcaption><p>Wear light, eat heavy, and smile — you are in Jodhpur.</p><p class="sig">— Ajay and family</p></figcaption>
     </figure>
   </div>
@@ -389,6 +394,7 @@
 </section>
 
 <section class="loc" id="where" style="padding-top:20px">
+  <figure class="wrap aerial reveal"><img src="jaswant.jpg" alt="Jaswant Thada and Mehrangarh Fort at sunset, from the air" loading="lazy"><figcaption>Jaswant Thada and Mehrangarh at sunset, 3.3 km from home.</figcaption></figure>
   <div class="wrap">
     <div class="map reveal"><img src="map.jpg" alt="Map of Jodhpur showing Hari Om Niwas in Mahamandir, the fort, the old city, the station and the airport" loading="lazy"></div>
     <div class="reveal">
