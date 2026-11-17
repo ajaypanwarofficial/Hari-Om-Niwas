@@ -88,7 +88,7 @@ function readManualBlocks() {
     return [{
       uid: `manual-${b.from}-${b.to}`, source: 'manual', sourceName: 'Blocked',
       kind: b.kind === 'direct' ? 'direct' : 'closed',
-      summary: b.note || (b.kind === 'direct' ? 'Direct booking' : 'Blocked'), start: b.from, end, allDay: true,
+      summary: b.kind === 'direct' ? 'Direct booking' : 'Blocked', start  /* notes never go public */: b.from, end, allDay: true,
       nights: nightsOf({ start: b.from, end }).length,
     }];
   });

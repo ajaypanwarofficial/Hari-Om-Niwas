@@ -235,10 +235,7 @@
       <label class="choice"><input type="radio" name="bf-kind" value="direct" checked>Direct booking</label>
       <label class="choice"><input type="radio" name="bf-kind" value="closed">Closed (family, repairs)</label>
     </div>
-    <div class="row">
-      <label class="note-label">Calendar note (optional)<input type="text" id="bf-note" maxlength="60" placeholder="e.g. 2 guests, via Instagram"></label>
-    </div>
-    <p class="hint">Airbnb, Booking.com, MMT and Agoda only see "Blocked", never the note. But anyone who knows the right link can read notes, so no phone numbers or full names.</p>
+    <p class="hint">Airbnb, Booking.com, MMT and Agoda only see "Blocked". No notes are saved: this calendar's data is public.</p>
 
     <fieldset id="bf-guest">
       <legend>Guest — for the confirmation voucher</legend>
@@ -866,7 +863,6 @@
         from: checkIn,
         to: addDaysKey(checkOut, -1),
         kind: kindNow(),
-        note: document.getElementById('bf-note').value,
       });
       setMsg('Saved. The calendar updates in about 2 minutes; the platforms usually within the hour.');
       scheduleRefresh();
