@@ -58,6 +58,7 @@
   .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,10,.55) 0%, rgba(20,14,10,.18) 24%, rgba(20,14,10,.45) 52%, rgba(20,14,10,.88) 100%); }
   .hero img { object-position: 38% center; }
   .hero .wrap { position: relative; z-index: 2; width: 100%; padding-bottom: 56px; }
+  @media (max-width: 759px) { .hero { padding-bottom: 0; } .hero .wrap { padding-bottom: 34px; } }
   .hero .eyebrow { color: #EBDDC4; }
   .hero h1 { font-weight: 300; font-size: clamp(44px, 9vw, 96px); line-height: .98; letter-spacing: -.02em; margin: 0 0 22px; max-width: 11ch; }
   .hero h1 em { font-style: italic; }
@@ -184,9 +185,8 @@
   .addr { margin-top: 22px; font-size: 16px; color: #5b4c3d; }
   .intro .side img.life { aspect-ratio: auto; }
   .lgrid { display: grid; gap: 28px; }
-  .lmap { margin: 0 -20px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .lmap::-webkit-scrollbar { display: none; }
-  .cmap { display: block; width: 100%; min-width: 640px; height: auto; }
+  .lmap { margin: 0 -12px; }
+  .cmap { display: block; width: 100%; height: auto; }
   .cmap .ps { font-family: var(--serif); font-style: italic; font-size: 21px; fill: #5b4c3d; }
   .cmap .pn, .cmap .pk, .cmap .ps { paint-order: stroke; stroke: var(--paper); stroke-width: 6px; stroke-linejoin: round; }
   .cmap .pn { font-family: var(--serif); font-size: 30px; fill: var(--ink); }
@@ -201,7 +201,11 @@
   .cmap .pin:focus-visible .pd { r: 11; }
   .cmap .pin:hover .pn, .cmap .pin.on .pn { fill: var(--terra); }
   .cmap .pin:hover .pd, .cmap .pin.on .pd { r: 11; }
-  .lhint { font-family: var(--sans); font-size: 12.5px; color: var(--faint); margin: 6px 20px 0; }
+  @media (max-width: 899px) {
+    .cmap .pin .pn { font-size: 37px; } .cmap .pin .ps { font-size: 26px; } .cmap .pin .pk { font-size: 26px; } .cmap .pin .pc { font-size: 23px; letter-spacing: 2px; }
+    .cmap .pn, .cmap .pk, .cmap .pin .ps { stroke-width: 9px; }
+  }
+  .lhint { font-family: var(--sans); font-size: 12.5px; color: var(--faint); margin: 6px 12px 0; }
   .lsub { font-size: 17px; font-style: italic; color: #5b4c3d; margin: 0 0 22px; }
   .two { border: 1.4px dashed rgba(184,92,56,.6); border-radius: 6px; padding: 16px 18px 4px; margin: 0 0 20px; }
   .two-h { font-family: var(--sans); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); margin: 0 0 12px; }
@@ -210,7 +214,7 @@
   .two .sw { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 2px; }
   @media (min-width: 900px) {
     .loc { padding: 56px 0; } .loc .lgrid { max-width: 1320px; grid-template-columns: 1.85fr 1fr; gap: 40px; align-items: center; }
-    .lmap { margin: 0; overflow: visible; } .cmap { min-width: 0; } .lhint { margin-left: 0; }
+    .lmap { margin: 0; } .lhint { margin-left: 0; }
     .loc h2 { font-size: clamp(34px, 3.6vw, 48px); }
   }
   @media (min-width: 900px) { .loc .wrap { grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; } }
@@ -480,13 +484,14 @@
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   })();
+  // Phones: widen the map's frame a little so the left-hand labels (fort, station) are not cut off.
+  var cm = document.querySelector('.cmap'); if (cm && innerWidth < 900) cm.setAttribute('viewBox', '120 236 1080 870');
   document.querySelectorAll('.cmap .pin').forEach(function (p) {
     var rt = document.querySelector('.cmap .rt[data-r="' + p.dataset.r + '"]');
     function on(v) { p.classList.toggle('on', v); if (rt) rt.classList.toggle('on', v); }
     p.addEventListener('mouseenter', function () { on(true); }); p.addEventListener('mouseleave', function () { on(false); });
     p.addEventListener('focus', function () { on(true); }); p.addEventListener('blur', function () { on(false); });
   });
-  var lm = document.querySelector('.lmap'); if (lm && lm.scrollWidth > lm.clientWidth) lm.scrollLeft = (lm.scrollWidth - lm.clientWidth) * .6;
 </script>
 </body>
 </html>
