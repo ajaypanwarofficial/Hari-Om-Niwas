@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Hari Om Niwas — a family home in Jodhpur (mockup)</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EDE0; --card: #FBF7EE; --ink: #3B2E22; --terra: #B85C38; --terra-d: #9E4A2A;
+    --olive: #6B6B44; --sand: #D9C9AC; --teak: #5C3A28; --faint: #8B7D68; --night: #1F1A15;
+    --sans: 'Work Sans', system-ui, sans-serif; --serif: 'Spectral', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 18px; line-height: 1.6; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+  .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--olive); margin: 0 0 14px; }
+  h2 { font-weight: 300; font-size: clamp(34px, 6vw, 56px); line-height: 1.05; letter-spacing: -.01em; color: var(--teak); margin: 0 0 18px; }
+  h2 em { font-style: italic; }
+  .dot { color: var(--terra); }
+  section { padding: 88px 0; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+         padding: 16px 24px; border-radius: 999px; background: var(--terra); color: #fff; transition: background .2s, transform .15s; }
+  .btn:hover { background: var(--terra-d); }
+  .btn:active { transform: scale(.98); }
+  .btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .btn.ghost { background: transparent; color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
+  .btn.ghost:hover { background: rgba(255,255,255,.08); }
+
+  /* ---------- nav ---------- */
+  .nav { position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 76px; color: #fff; }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: 'Arimo', sans-serif; font-size: 14px; letter-spacing: .18em; }
+  .brand svg { width: 22px; height: 28px; }
+  .nav-links { display: none; gap: 30px; font-family: var(--sans); font-size: 13px; letter-spacing: .04em; }
+  .nav-links a { opacity: .85; } .nav-links a:hover { opacity: 1; }
+  .nav .btn { padding: 11px 18px; font-size: 11.5px; }
+  @media (min-width: 900px) { .nav-links { display: flex; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: var(--night); }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,10,.55) 0%, rgba(20,14,10,.18) 24%, rgba(20,14,10,.45) 52%, rgba(20,14,10,.88) 100%); }
+  .hero img { object-position: 38% center; }
+  .hero .wrap { position: relative; z-index: 2; width: 100%; padding-bottom: 56px; }
+  .hero .eyebrow { color: #EBDDC4; }
+  .hero h1 { font-weight: 300; font-size: clamp(44px, 9vw, 96px); line-height: .98; letter-spacing: -.02em; margin: 0 0 22px; max-width: 11ch; }
+  .hero h1 em { font-style: italic; }
+  .hero p.sub { font-size: clamp(18px, 2.2vw, 21px); max-width: 34ch; margin: 0 0 30px; color: #F1E7D6; }
+  .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .rating { display: inline-flex; align-items: center; gap: 10px; font-family: var(--sans); font-size: 13.5px; margin-top: 26px;
+            padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .rating b { font-weight: 600; } .rating .st { color: #F2B544; letter-spacing: 1px; }
+
+  /* ---------- facts strip ---------- */
+  .facts { background: var(--teak); color: var(--paper); }
+  .facts ul { list-style: none; margin: 0; padding: 22px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 12px; }
+  .facts li { font-family: var(--sans); font-size: 13.5px; line-height: 1.35; }
+  .facts li b { display: block; font-family: var(--serif); font-weight: 400; font-size: 22px; margin-bottom: 2px; }
+  @media (min-width: 760px) { .facts ul { grid-template-columns: repeat(4, 1fr); } }
+
+  /* ---------- intro ---------- */
+  .intro .wrap { display: grid; gap: 34px; }
+  .intro .lede { font-size: clamp(22px, 3vw, 30px); line-height: 1.4; font-weight: 300; margin: 0; }
+  .intro .lede em { color: var(--terra); }
+  .intro .side { font-size: 17px; color: #5b4c3d; }
+  .intro .side p { margin: 0 0 14px; }
+  .sig { font-style: italic; color: var(--faint); }
+  @media (min-width: 900px) { .intro .wrap { grid-template-columns: 1.5fr 1fr; gap: 80px; align-items: end; } }
+
+  /* ---------- the home: photo mosaic ---------- */
+  .home-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+  .more { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: .06em; border-bottom: 1.5px solid var(--terra); padding-bottom: 3px; color: var(--terra); }
+  .mosaic { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  .mosaic figure { margin: 0; position: relative; overflow: hidden; border-radius: 6px; background: var(--sand); }
+  .mosaic img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .mosaic figure:hover img { transform: scale(1.04); }
+  .mosaic figcaption { position: absolute; left: 12px; bottom: 10px; font-family: var(--sans); font-size: 12px; letter-spacing: .04em; color: #fff;
+                       text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+  .m1 { grid-column: span 2; aspect-ratio: 4/3; } .m2, .m3 { aspect-ratio: 3/4; } .m4 { grid-column: span 2; aspect-ratio: 16/10; } .m5, .m6 { aspect-ratio: 3/4; }
+  @media (min-width: 900px) {
+    .mosaic { grid-template-columns: repeat(12, 1fr); grid-auto-rows: 120px; gap: 14px; }
+    .m1 { grid-column: 1 / 8; grid-row: span 4; aspect-ratio: auto; }
+    .m2 { grid-column: 8 / 13; grid-row: span 2; aspect-ratio: auto; }
+    .m3 { grid-column: 8 / 13; grid-row: span 2; aspect-ratio: auto; }
+    .m4 { grid-column: 1 / 6; grid-row: span 3; aspect-ratio: auto; }
+    .m5 { grid-column: 6 / 9; grid-row: span 3; aspect-ratio: auto; }
+    .m6 { grid-column: 9 / 13; grid-row: span 3; aspect-ratio: auto; }
+  }
+
+  /* ---------- roof ---------- */
+  .roof { position: relative; padding: 0; color: #fff; background: var(--night); }
+  .roof > img { width: 100%; height: 78svh; min-height: 520px; object-fit: cover; object-position: 42% 40%; }
+  @media (min-width: 900px) { .roof > img { height: 92svh; object-position: center; } }
+  .roof::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,10,0) 40%, rgba(20,14,10,.75) 100%); }
+  .roof .wrap { position: absolute; left: 0; right: 0; bottom: 56px; z-index: 2; }
+  .roof .eyebrow { color: #EBDDC4; }
+  .roof h2 { color: #fff; max-width: 14ch; }
+  .roof p { max-width: 40ch; color: #F1E7D6; margin: 0; }
+  .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .strip img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+
+  /* ---------- kitchen ---------- */
+  .kitchen .wrap { display: grid; gap: 40px; }
+  .dishes { list-style: none; margin: 0; padding: 0; border-top: 1.4px solid var(--sand); }
+  .dishes li { display: flex; align-items: baseline; gap: 12px; padding: 16px 0; border-bottom: 1.4px dotted var(--sand); }
+  .dishes .k { font-size: 21px; }
+  .dishes .k small { display: block; font-size: 15px; font-style: italic; color: var(--faint); }
+  .dishes .dots { flex: 1; }
+  .dishes .v { font-family: var(--sans); font-size: 14px; color: var(--terra); white-space: nowrap; }
+  .kitchen .note { font-size: 16px; color: var(--faint); font-style: italic; margin-top: 14px; }
+  @media (min-width: 900px) { .kitchen .wrap { grid-template-columns: 1fr 1.1fr; gap: 90px; align-items: start; } }
+
+  /* ---------- amenities ---------- */
+  .amen { background: var(--card); border-top: 1.4px solid var(--sand); border-bottom: 1.4px solid var(--sand); }
+  .am-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--sand); border: 1px solid var(--sand); border-radius: 6px; overflow: hidden; margin-top: 28px; }
+  .am-t { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: var(--card); padding: 22px 8px 18px; }
+  .am-t svg { width: 28px; height: 28px; stroke: var(--terra); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .am-t span { font-family: var(--sans); font-size: 12.5px; font-weight: 500; line-height: 1.25; }
+  @media (min-width: 760px) { .am-grid { grid-template-columns: repeat(6, 1fr); } .am-t span { font-size: 13px; } }
+
+  /* ---------- reviews ---------- */
+  .score { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin: 6px 0 34px; }
+  .score .big { font-size: 76px; font-weight: 300; line-height: 1; color: var(--teak); }
+  .score .st { color: #E0A030; font-size: 20px; letter-spacing: 2px; }
+  .score small { display: block; font-family: var(--sans); font-size: 13.5px; color: var(--faint); margin-top: 4px; }
+  .split { display: flex; gap: 8px; flex-wrap: wrap; }
+  .split span { display: inline-flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 12.5px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: var(--card); border: 1.4px solid var(--sand); }
+  .split svg { width: 15px; height: 15px; }
+  .reviews { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
+  .reviews::-webkit-scrollbar { display: none; }
+  .rv { scroll-snap-align: start; margin: 0; background: var(--card); border: 1.4px solid var(--sand); border-radius: 8px; padding: 22px 22px 20px; display: flex; flex-direction: column; }
+  .rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .rv .stars { color: #E0A030; letter-spacing: 1.5px; font-size: 14px; }
+  .rv .src { display: inline-flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 11.5px; font-weight: 500; color: var(--faint); }
+  .rv .src svg { width: 14px; height: 14px; }
+  .rv blockquote { margin: 0 0 16px; font-size: 17px; line-height: 1.5; flex: 1; }
+  .rv figcaption { font-family: var(--sans); font-size: 13px; color: var(--faint); }
+  .rv figcaption b { color: var(--ink); font-weight: 600; }
+  .hint { font-family: var(--sans); font-size: 12px; color: var(--faint); margin-top: 6px; }
+  @media (min-width: 900px) {
+    .reviews { display: block; columns: 3; column-gap: 16px; overflow: visible; margin: 0; padding: 0; }
+    .rv { break-inside: avoid; margin-bottom: 16px; }
+    .hint { display: none; }
+  }
+
+  /* ---------- location ---------- */
+  .loc .wrap { display: grid; gap: 34px; }
+  .map { border-radius: 8px; overflow: hidden; border: 1.4px solid var(--sand); background: #F3EDE0; }
+  .near { list-style: none; margin: 0; padding: 0; }
+  .near a { display: flex; align-items: baseline; gap: 10px; padding: 14px 0; border-bottom: 1.4px dotted var(--sand); }
+  .near .k { font-family: var(--sans); font-size: 15.5px; font-weight: 500; }
+  .near .dots { flex: 1; }
+  .near .v { font-style: italic; color: var(--faint); white-space: nowrap; }
+  .near a:hover .k { color: var(--terra); }
+  .addr { margin-top: 22px; font-size: 16px; color: #5b4c3d; }
+  @media (min-width: 900px) { .loc .wrap { grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; } }
+
+  /* ---------- book ---------- */
+  .book { background: var(--night); color: var(--paper); text-align: center; }
+  .book h2 { color: var(--paper); }
+  .book p.lead { max-width: 46ch; margin: 0 auto 30px; color: #CDBFA8; }
+  .otas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 34px; }
+  .otas a { font-family: var(--sans); font-size: 14px; font-weight: 500; padding: 13px 20px; border-radius: 999px; box-shadow: inset 0 0 0 1.4px #5A5044; color: var(--paper); }
+  .otas a:hover { box-shadow: inset 0 0 0 1.4px var(--terra); }
+  .small-note { font-family: var(--sans); font-size: 12px; color: #8F826D; margin-top: 18px; }
+
+  footer { background: var(--night); color: #8F826D; text-align: center; padding: 10px 20px 110px; font-family: var(--sans); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; border-top: 1px solid #2E2720; }
+  footer .wrap { padding-top: 30px; display: grid; gap: 14px; justify-items: center; }
+  footer .links { display: flex; gap: 22px; letter-spacing: .08em; text-transform: none; font-size: 13px; }
+  @media (min-width: 900px) { footer { padding-bottom: 40px; } }
+
+  /* ---------- sticky mobile CTA ---------- */
+  .dock { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 20; display: flex; gap: 8px; align-items: center;
+          background: rgba(31,26,21,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 999px; padding: 6px 6px 6px 18px; color: var(--paper);
+          transform: translateY(140%); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+  .dock.show { transform: none; }
+  .dock span { flex: 1; font-family: var(--sans); font-size: 12.5px; line-height: 1.25; }
+  .dock span b { display: block; font-size: 13.5px; }
+  .dock .btn { padding: 12px 16px; font-size: 11.5px; }
+  @media (min-width: 900px) { .dock { display: none; } }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  /* ?shot: fixed heights for full-page screenshots */
+  .shot .hero { min-height: 840px; } .shot .roof > img { height: 720px; min-height: 0; } .shot .reveal { opacity: 1; transform: none; } .shot .dock { display: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<script>if (/shot/.test(location.search)) document.documentElement.classList.add('shot');</script>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><svg viewBox="0 0 22 28" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 28V11a9 9 0 0 1 18 0v17"/></svg>HARI OM NIWAS</a>
+    <nav class="nav-links"><a href="#home">The home</a><a href="#roof">The roof</a><a href="#kitchen">Kitchen</a><a href="#reviews">Reviews</a><a href="#where">Where</a></nav>
+    <a class="btn" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%0A" target="_blank" rel="noopener">Check dates</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <img src="/gallery/photos/01.jpg" alt="The living room at Hari Om Niwas: a long sofa, a wooden table and a Jodhpur rug">
+  <div class="wrap">
+    <p class="eyebrow">Mahamandir · Jodhpur</p>
+    <h1>A family home <em>in the Blue City</em><span class="dot">.</span></h1>
+    <p class="sub">The whole upper floor of our house, food from our kitchen, and Mehrangarh Fort from the roof at sunset.</p>
+    <div class="ctas">
+      <a class="btn" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%0A" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>Ask for your dates</a>
+      <a class="btn ghost" href="#home">See the home</a>
+    </div>
+    <a class="rating" href="#reviews"><span class="st">★★★★★</span><span><b>5.0</b> from 10 guest reviews · Google &amp; Airbnb</span></a>
+  </div>
+</section>
+
+<div class="facts">
+  <div class="wrap"><ul>
+    <li><b>The whole floor</b>Bedroom, living room, bath, balcony</li>
+    <li><b>Sleeps 4</b>Double, single and a sofa bed</li>
+    <li><b>3.5 km</b>to Mehrangarh Fort</li>
+    <li><b>Home kitchen</b>Thalis, parantha, chai, real coffee</li>
+  </ul></div>
+</div>
+
+<section class="intro">
+  <div class="wrap reveal">
+    <div>
+      <p class="eyebrow">Not a hotel</p>
+      <p class="lede">We built the floor above ours for travellers who would rather stay <em>with a family</em> than at a front desk. You get the whole place and your own door. We are one flight of stairs away.</p>
+    </div>
+    <div class="side">
+      <p>Wear light, eat heavy, and smile — you are in Jodhpur.</p>
+      <p class="sig">— Ajay and family</p>
+    </div>
+  </div>
+</section>
+
+<section id="home" style="padding-top:0">
+  <div class="wrap">
+    <div class="home-head reveal">
+      <div><p class="eyebrow">The home</p><h2>Built slowly, <em>by hand</em><span class="dot">.</span></h2></div>
+      <a class="more" href="https://hariomniwas.in/gallery/">All 16 photos →</a>
+    </div>
+    <div class="mosaic reveal">
+      <figure class="m1"><img src="/gallery/photos/02.jpg" alt="Living room with wooden balcony doors" loading="lazy"><figcaption>Living room</figcaption></figure>
+      <figure class="m2"><img src="/gallery/photos/05.jpg" alt="Bedroom with a double bed" loading="lazy"><figcaption>Bedroom</figcaption></figure>
+      <figure class="m3"><img src="/gallery/photos/08.jpg" alt="Bathroom with a round basin" loading="lazy"><figcaption>Bathroom</figcaption></figure>
+      <figure class="m4"><img src="/gallery/photos/10.jpg" alt="Kitchenette under an arched window" loading="lazy"><figcaption>Kitchenette</figcaption></figure>
+      <figure class="m5"><img src="/gallery/photos/11.jpg" alt="Shelf with an old Carvaan radio" loading="lazy"><figcaption>Old songs, old books</figcaption></figure>
+      <figure class="m6"><img src="/gallery/photos/12.jpg" alt="Welcome table with the house book" loading="lazy"><figcaption>Welcome table</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="roof" id="roof">
+  <img src="/gallery/photos/14.jpg" alt="The sun setting behind Mehrangarh Fort, seen from our roof" loading="lazy">
+  <div class="wrap">
+    <p class="eyebrow">From our roof</p>
+    <h2>The fort, every evening<span class="dot">.</span></h2>
+    <p>Take your chai up before sunset. Mehrangarh sits on the skyline, Jaswant Thada catches the last light, and the birds do the rest.</p>
+  </div>
+</section>
+<div class="strip"><img src="/gallery/photos/13.jpg" alt="Rooftop terrace" loading="lazy"><img src="/gallery/photos/15.jpg" alt="Sunset behind Jaswant Thada" loading="lazy"><img src="/gallery/photos/16.jpg" alt="Birds over the city at sunset" loading="lazy"></div>
+
+<section class="kitchen" id="kitchen">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">From our kitchen</p>
+      <h2>Cooked downstairs, <em>at home</em><span class="dot">.</span></h2>
+      <p>The food guests write about most. Pick from the menu, send it on WhatsApp, and it comes up hot. Fresh-bean coffee too, ground when you order.</p>
+    </div>
+    <div class="reveal">
+      <ul class="dishes">
+        <li><span class="k">Jodhpur Thali<small>Gatta, rabodi, khichdi, kadhi, churma</small></span><span class="dots"></span><span class="v">₹550</span></li>
+        <li><span class="k">Dal Baati Churma<small>Eat until you feel good</small></span><span class="dots"></span><span class="v">₹400</span></li>
+        <li><span class="k">Dal Dhokli<small>The underrated gem of Jodhpur</small></span><span class="dots"></span><span class="v">₹300</span></li>
+        <li><span class="k">Aloo parantha<small>With dahi and ghar ka achaar</small></span><span class="dots"></span><span class="v">₹120</span></li>
+        <li><span class="k">Chai<small>Adrak, a little masala, sugar on the side</small></span><span class="dots"></span><span class="v">₹50</span></li>
+      </ul>
+      <p class="note">The full menu is in the room.</p>
+    </div>
+  </div>
+</section>
+
+<section class="amen" id="amenities">
+  <div class="wrap">
+    <p class="eyebrow">Amenities</p>
+    <h2>Everything you would <em>pack</em>, already here<span class="dot">.</span></h2>
+    <div class="am-grid">
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="9" rx="2"/><path d="M6 10.5h12M8 17.5v2M12 17.5v3M16 17.5v2"/></svg><span>Air conditioning</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.3" r=".9" fill="currentColor"/></svg><span>Wi-Fi</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg><span>Hot water</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V4h10v7M3 11h18M3 21h18M5 11v10M9 11v10M15 11v10M19 11v10"/></svg><span>Balcony</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3.5h12V21M3 21h18"/><circle cx="15" cy="12.5" r=".9" fill="currentColor"/></svg><span>Private entrance</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 8V5.5M5.6 11.6 4 10M18.4 11.6 20 10"/></svg><span>Rooftop sunsets</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M6 9.5h12M9 5.5v2M9 12.5v3"/></svg><span>Fridge</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h13v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 3c0 1.5 1.5 1.5 1.5 3.5M12 3c0 1.5 1.5 1.5 1.5 3.5"/></svg><span>Tea, coffee &amp; kettle</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="6" ry="9" transform="rotate(35 12 12)"/><path d="M8.2 5.6c3.2 2.4 1.2 7.4 4.4 9.6 1 .7 2.2 1 3.2 1.2"/></svg><span>Fresh-bean coffee</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v3H4z"/><path d="M6 8v11h12V8"/><path d="M6 14h12M9 17h6"/></svg><span>Towels &amp; linen</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="9" width="10" height="12.5" rx="2"/><path d="M10 9V6h4v3M12 6V3h4"/></svg><span>Shampoo &amp; shower gel</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="9" cy="9" r="1.5"/><path d="M14 6.5h7v5h-7M8 14l-1 7h3l1.2-6.5"/></svg><span>Hair dryer</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h17v-2a6 6 0 0 0-6-6H9c-3 0-5 3-6 8z"/><path d="M11 10V7h8"/></svg><span>Iron</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h2M20 10h2M9 7V5M12 7V4M15 7V5"/></svg><span>Kitchen essentials</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="12.5" rx="2"/><circle cx="8.5" cy="14.3" r="3"/><path d="M14 12.5h4M14 16h4M7 8l9-5"/></svg><span>Carvaan speaker</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0 0 4h13"/></svg><span>Books &amp; games</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="2"/><circle cx="15" cy="10" r="2"/><circle cx="12" cy="15.5" r="2"/></svg><span>Home-cooked food</span></div>
+    <div class="am-t"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 17V8h3a2.5 2.5 0 0 1 0 5h-3"/></svg><span>Parking nearby</span></div>
+
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <p class="eyebrow">Guests say</p>
+    <h2>In their words<span class="dot">.</span></h2>
+    <div class="score">
+      <div class="big">5.0</div>
+      <div><span class="st">★★★★★</span><small>10 reviews, every one five stars</small></div>
+      <div class="split">
+        <span><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google · 7</span>
+        <span><svg viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb · 3</span>
+      </div>
+    </div>
+    <div class="reviews">
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>You can feel that whoever built this place put their heart into it. Everything was neat and clean and even the handwash and bodywash were good quality. … They especially loved the rooftop, which had a crazy view of Mehrangarh Fort and a really nice vibe in the evening.</blockquote>
+      <figcaption><b>Geeteshwar C.</b> · Booked for his brother and sister-in-law</figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
+      <blockquote>The place itself is lovely, beautifully maintained and comfortable, but what really made it memorable was the people. … It felt less like staying at an Airbnb and more like being welcomed into someone’s home.</blockquote>
+      <figcaption><b>Esha</b> · Mumbai</figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>Lovely property with amazing hosts. One of the very few places in the hospitality industry where the photos resemble the actual house (and not some random AI slop).</blockquote>
+      <figcaption><b>Umang R.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>Rooms are exactly as in the pictures, lovely, cosy, cute. The owner takes care of every decorating detail … You can order home made food at very good prices from the available menu.</blockquote>
+      <figcaption><b>Aleksandra M.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>Loved every nooks and corner of home. Ajay’s hospitality felt like home. Homemade dal dhokli made this stay even more special.</blockquote>
+      <figcaption><b>Kushal P.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>Very well-maintained, clean, and beautifully managed. The availability of parking was an added advantage. The best part was the stunning rooftop view of the Blue City.</blockquote>
+      <figcaption><b>Sudarshan C.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
+      <blockquote>Ajay was a very good host, very friendly. Homely food, best Ram Khichdi by Aunty ji.</blockquote>
+      <figcaption><b>Suraj</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
+      <blockquote>It’s newly renovated and fresh. … Good homely vibe. Loved the food Aunty made 😍</blockquote>
+      <figcaption><b>Suraj P.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" aria-label="5 out of 5">★★★★★</span><span class="src"><svg viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
+      <blockquote>Felt like home.</blockquote>
+      <figcaption><b>Adarsh</b></figcaption>
+    </figure>
+    </div>
+    <p class="hint">Swipe for more →</p>
+  </div>
+</section>
+
+<section class="loc" id="where" style="padding-top:20px">
+  <div class="wrap">
+    <div class="map reveal"><img src="map.jpg" alt="Map of Jodhpur showing Hari Om Niwas in Mahamandir, the fort, the old city, the station and the airport" loading="lazy"></div>
+    <div class="reveal">
+      <p class="eyebrow">Where we are</p>
+      <h2>Close to the old city, <em>out of its traffic</em><span class="dot">.</span></h2>
+      <ul class="near">
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Mehrangarh+Fort+Jodhpur" target="_blank" rel="noopener"><span class="k">Mehrangarh Fort</span><span class="dots"></span><span class="v">3.5 km · 12 min</span></a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jaswant+Thada+Jodhpur" target="_blank" rel="noopener"><span class="k">Jaswant Thada</span><span class="dots"></span><span class="v">3.3 km · 10 min</span></a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Ghanta+Ghar+Clock+Tower+Jodhpur" target="_blank" rel="noopener"><span class="k">Clock Tower</span><span class="dots"></span><span class="v">4.9 km · 15 min</span></a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Junction+Railway+Station" target="_blank" rel="noopener"><span class="k">Railway station</span><span class="dots"></span><span class="v">5.5 km · 15 min</span></a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;origin=26.30972,73.04837&amp;destination=Jodhpur+Airport" target="_blank" rel="noopener"><span class="k">Airport</span><span class="dots"></span><span class="v">8.3 km · 20 min</span></a></li>
+      </ul>
+      <p class="addr">Badla Road, Mahaveer Nagar, Mahamandir · <a class="more" href="https://maps.app.goo.gl/XV8xLP1Rmzg4Cv5o7" target="_blank" rel="noopener">Open in Maps</a><br>Check-in 12 noon · Check-out 10 am · Parking under a 50 m walk</p>
+    </div>
+  </div>
+</section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#B5B08A">Stay with us</p>
+    <h2>Tell us your dates<span class="dot">.</span></h2>
+    <p class="lead">Message us on WhatsApp and the family answers. Or book on the site you already use. Same home, same family.</p>
+    <a class="btn" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%0A" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>Message on WhatsApp</a>
+    <div class="otas">
+      <a href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener">Airbnb</a>
+      <a href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener">Booking.com</a>
+      <a href="#" onclick="return false">MakeMyTrip</a>
+      <a href="#" onclick="return false">Goibibo</a>
+      <a href="https://www.agoda.com/hari-om-niwas-h97589031/hotel/jodhpur-in.html" target="_blank" rel="noopener">Agoda</a>
+    </div>
+    <p class="small-note">MakeMyTrip and Goibibo would keep today's "pick your dates" step.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="links"><a href="https://instagram.com/hariomniwas">Instagram</a><a href="mailto:stay@hariomniwas.in">stay@hariomniwas.in</a><a href="tel:+919414195901">+91 94141 95901</a></div>
+    <div>Hari Om Niwas · Mahamandir, Jodhpur</div>
+  </div>
+</footer>
+
+<div class="dock" id="dock"><span><b>★ 5.0 · 10 reviews</b>The whole upper floor, Jodhpur</span><a class="btn" href="https://wa.me/919414195901?text=Hi%21%20Is%20Hari%20Om%20Niwas%20available%3F%0A%F0%9F%91%87%20Please%20type%20your%20dates%20and%20number%20of%20guests%20below%0A%0A" target="_blank" rel="noopener">Check dates</a></div>
+
+<script>
+  // Show the bottom bar once the hero has scrolled away; fade sections in as they arrive.
+  (function () {
+    var dock = document.getElementById('dock'), hero = document.querySelector('.hero');
+    addEventListener('scroll', function () { dock.classList.toggle('show', scrollY > hero.offsetHeight * .7); }, { passive: true });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
