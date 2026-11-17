@@ -229,7 +229,7 @@
 </footer>
 
 <script>
-  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them. Same logic as the home page.
+  // MakeMyTrip / Goibibo: ask for dates, then open the listing on them (the homepage links here with ?ota=).
   (function () {
     var HOTEL = '202609111336168255';
     var form = document.getElementById('dates'), site = null;
@@ -253,6 +253,9 @@
         form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     });
+    // The homepage's MakeMyTrip / Goibibo buttons arrive as /links/?ota=mmt|goibibo: open that site's date form straight away.
+    var ota = new URLSearchParams(location.search).get('ota'), pre = ota && document.querySelector('[data-dated="' + ota + '"]');
+    if (pre) pre.click();
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!din.value || !dout.value || dout.value <= din.value) { err.textContent = 'Check-out has to be after check-in.'; return; }

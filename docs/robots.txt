@@ -1,7 +1,4 @@
 User-agent: *
-Disallow: /dashboard/
-Disallow: /stay/
-Disallow: /checkin/
-Disallow: /mockup/
+Allow: /
 
 Sitemap: https://hariomniwas.in/sitemap.xml
