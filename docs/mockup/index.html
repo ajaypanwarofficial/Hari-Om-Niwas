@@ -52,17 +52,6 @@
   .hero h1 em { font-style: italic; }
   .hero p.sub { font-size: clamp(18px, 2.2vw, 21px); max-width: 34ch; margin: 0 0 30px; color: #F1E7D6; }
   .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  /* centred lockup hero */
-  .hero { align-items: center; text-align: center; }
-  .hero::after { background: linear-gradient(180deg, rgba(20,14,10,.62) 0%, rgba(20,14,10,.5) 45%, rgba(20,14,10,.82) 100%); }
-  .hero .wrap { display: flex; flex-direction: column; align-items: center; padding: 104px 0 48px; }
-  .hero .lockup { width: clamp(150px, 14vw, 190px); height: auto; color: #F3ECE1; margin: 0 0 26px; }
-  .hero h1 { font-size: clamp(34px, 4.2vw, 54px); line-height: 1.05; max-width: 20ch; margin: 0 0 16px; }
-  @media (min-width: 900px) { .hero p.sub { max-width: 46ch; } .hero .wrap { padding: 96px 0 40px; } .hero h1 { max-width: none; } .hero .rating { margin-top: 20px; } }
-  .hero p.sub { margin: 0 auto 28px; }
-  .hero .ctas { justify-content: center; }
-  .hero .rating { margin-left: auto; margin-right: auto; }
-  .nav .brand { visibility: hidden; }
   .rating { display: inline-flex; align-items: center; gap: 10px; font-family: var(--sans); font-size: 13.5px; margin-top: 26px;
             padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .rating b { font-weight: 600; } .rating .st { color: #F2B544; letter-spacing: 1px; }
@@ -229,16 +218,7 @@
 <section class="hero" id="top">
   <img src="/gallery/photos/01.jpg" alt="The living room at Hari Om Niwas: a long sofa, a wooden table and a Jodhpur rug">
   <div class="wrap">
-    <svg class="lockup" viewBox="0 0 520 670" role="img" aria-label="Hari Om Niwas, Jodhpur">
-      <path d="M7 670V262A253 253 0 0 1 513 262V670" fill="none" stroke="currentColor" stroke-width="13"/>
-      <g fill="currentColor" font-family="Arimo, Arial, sans-serif" text-anchor="middle">
-        <text x="260" y="248" font-size="21" letter-spacing="9" fill="#EBDDC4">JODHPUR</text>
-        <text x="260" y="368" font-size="94">HARI</text>
-        <text x="260" y="462" font-size="94">OM</text>
-        <text x="260" y="556" font-size="94">NIWAS</text>
-      </g>
-      <rect x="212" y="588" width="96" height="6" fill="#C2643C"/>
-    </svg>
+    <p class="eyebrow">Mahamandir · Jodhpur</p>
     <h1>Stay like a local <em>in the Blue City</em><span class="dot">.</span></h1>
     <p class="sub">A private suite in our 19-year-old family home, with its own entrance, home-cooked meals, and Mehrangarh Fort from the roof at sunset.</p>
     <div class="ctas">
