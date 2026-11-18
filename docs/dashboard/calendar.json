@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T18:45:29.288Z",
+  "generatedAt": "2026-11-18T20:15:27.910Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -7,7 +7,7 @@
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 3
+      "count": 4
     },
     {
       "name": "Booking.com",
@@ -210,6 +210,16 @@
       "summary": "Ingoibibo (Not Available)",
       "start": "2026-11-21",
       "end": "2026-11-22",
+      "allDay": true,
+      "nights": 1
+    },
+    {
+      "uid": "1418fb94e984-2ec7dc9d1e588f4ed5450b7d85aaa68d@airbnb.com",
+      "source": "airbnb",
+      "sourceName": "Airbnb",
+      "summary": "Reserved",
+      "start": "2026-11-22",
+      "end": "2026-11-23",
       "allDay": true,
       "nights": 1
     },
