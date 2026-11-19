@@ -230,6 +230,7 @@
   .bye h1 { font-weight: 500; font-size: 30px; line-height: 1.2; color: var(--heading); margin: 30px 0 10px; }
   .bye > p { color: var(--faint); font-style: italic; margin: 0 auto 26px; max-width: 320px; }
   .bye .btn { margin-top: 10px; }
+  .bye .site { font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: .08em; color: var(--faint); margin: 26px 0 0; }
 </style>
 <script>document.documentElement.classList.add('stay-wait'); setTimeout(function () { document.documentElement.classList.remove('stay-wait'); }, 5000);</script>
 <script>if(/(^|\.)hariomniwas\.in$/.test(location.hostname)){var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-N9T654R9V7';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-N9T654R9V7');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.href||'',n=null,t=(a.textContent||'').trim().slice(0,40);if(/wa\.me|whatsapp/.test(h)||a.hasAttribute('data-wa'))n=location.pathname.indexOf('/stay')===0?'stay_request':'whatsapp_click';else if(/airbnb\./.test(h))n='airbnb_click';else if(/booking\.com/.test(h))n='booking_click';else if(/[?&]from=/.test(h))n='see_home_click';if(n)gtag('event',n,{link_text:t,link_url:h})},true)}</script>
@@ -443,9 +444,8 @@
   <h1>You have checked out of Hari&nbsp;Om&nbsp;Niwas.</h1>
   <p>Thank you for staying with us. Safe travels.</p>
   <a class="btn" href="https://g.page/r/CchzUS4GFyaOEBM/review" target="_blank" rel="noopener">Leave us a Google review</a>
-  <a class="btn ghost" href="/jodhpur/">Jodhpur notes</a>
   <a class="btn ghost" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Follow @hariomniwas</a>
-  <a class="btn ghost" href="/?from=stay-bye">Stay with us again</a>
+  <p class="site">hariomniwas.in</p>
 </div>
 
 <script>
