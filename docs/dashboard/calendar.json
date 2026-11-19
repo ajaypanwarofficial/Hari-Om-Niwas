@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T21:45:29.149Z",
+  "generatedAt": "2026-11-19T23:00:28.634Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -259,9 +259,9 @@
       "sourceName": "Booking.com",
       "summary": "CLOSED - Not available",
       "start": "2028-04-01",
-      "end": "2028-05-19",
+      "end": "2028-05-20",
       "allDay": true,
-      "nights": 48
+      "nights": 49
     }
   ]
 }
