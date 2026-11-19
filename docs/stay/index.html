@@ -226,11 +226,13 @@
 
   /* ---------- Checked out (see the stay-gate script at the bottom) ---------- */
   .stay-wait main { visibility: hidden; }
-  .bye { max-width: 480px; margin: 0 auto; padding: 0 16px calc(40px + env(safe-area-inset-bottom)); text-align: center; }
+  .bye { max-width: 480px; min-height: 100vh; min-height: 100svh; margin: 0 auto; padding: 32px 16px calc(32px + env(safe-area-inset-bottom)); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .bye .cover { padding: 0; }
+  .bye .cover .logo { width: 116px; }
   .bye h1 { font-weight: 500; font-size: 30px; line-height: 1.2; color: var(--heading); margin: 30px 0 10px; }
   .bye > p { color: var(--faint); font-style: italic; margin: 0 auto 26px; max-width: 320px; }
   .bye .btn { margin-top: 10px; }
-  .bye .site { font-style: normal; font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: .08em; color: var(--faint); margin: 26px 0 0; }
+  .bye .site { font-style: normal; font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: .08em; color: var(--faint); margin: 28px auto 0; }
 </style>
 <script>document.documentElement.classList.add('stay-wait'); setTimeout(function () { document.documentElement.classList.remove('stay-wait'); }, 5000);</script>
 <script>if(/(^|\.)hariomniwas\.in$/.test(location.hostname)){var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-N9T654R9V7';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-N9T654R9V7');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.href||'',n=null,t=(a.textContent||'').trim().slice(0,40);if(/wa\.me|whatsapp/.test(h)||a.hasAttribute('data-wa'))n=location.pathname.indexOf('/stay')===0?'stay_request':'whatsapp_click';else if(/airbnb\./.test(h))n='airbnb_click';else if(/booking\.com/.test(h))n='booking_click';else if(/[?&]from=/.test(h))n='see_home_click';if(n)gtag('event',n,{link_text:t,link_url:h})},true)}</script>
