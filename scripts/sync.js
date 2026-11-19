@@ -20,6 +20,10 @@
 //      a day or so after checkout; a stay that disappears after its checkout
 //      date is kept in calendar.json. A stay that disappears BEFORE its
 //      checkout date was cancelled, so it is dropped and the nights reopen.
+//   6. Booking.com also trims the nights already passed from a stay in
+//      progress (an 18-20 Nov stay reads 19-20 on the 19th, under a new UID).
+//      If a stay from that platform keeps its checkout but its check-in moves
+//      up to today, the original check-in is kept.
 //   3. From Airbnb, only "Reserved" entries are used. Airbnb labels every
 //      other unavailable date "Airbnb (Not available)", including copies of
 //      other platforms' bookings it imported. Passing those on would send
@@ -237,10 +241,23 @@ async function main() {
     }
   }
 
-  // Keep finished stays the platforms have stopped listing (rule 5).
   // Today in Jodhpur, not UTC: Booking.com drops a stay at midnight IST on
   // checkout day, while UTC is still on the day before (5:30 behind).
   const today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+
+  // Keep the real check-in of a stay in progress (rule 6). Booking.com trims
+  // nights already passed (an 18-20 stay reads 19-20 on the 19th) and gives it
+  // a new UID. Same platform, same checkout, start moved up to today or
+  // earlier = trimmed, not changed.
+  for (const e of all) {
+    const p = prevBookings.find((b) => b.source === e.source && b.end === e.end && b.start < e.start);
+    if (p && e.start.slice(0, 10) <= today) {
+      e.start = p.start;
+      e.nights = p.nights;
+    }
+  }
+
+  // Keep finished stays the platforms have stopped listing (rule 5).
   const seen = new Set(all.map((e) => e.source + '|' + e.uid));
   for (const b of prevBookings) {
     if (b.source !== 'manual' && !seen.has(b.source + '|' + b.uid) && b.end.slice(0, 10) <= today) all.push(b);

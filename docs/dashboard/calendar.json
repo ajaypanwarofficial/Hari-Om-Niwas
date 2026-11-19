@@ -189,10 +189,10 @@
       "source": "booking",
       "sourceName": "Booking.com",
       "summary": "CLOSED - Not available",
-      "start": "2026-11-19",
+      "start": "2026-11-18",
       "end": "2026-11-20",
       "allDay": true,
-      "nights": 1
+      "nights": 2
     },
     {
       "uid": "5ea362e0-19a1-443c-a653-d866b2bcf77f",
