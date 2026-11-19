@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T18:45:29.049Z",
+  "generatedAt": "2026-11-19T21:45:29.149Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -194,7 +194,7 @@
       "nights": 2
     },
     {
-      "uid": "5d780f28-25f5-4a91-a719-2ad071938ae4",
+      "uid": "d8686c7e-af6f-404d-b5a6-abe6335433b7",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
@@ -204,7 +204,7 @@
       "nights": 1
     },
     {
-      "uid": "0a7b0ac1-e47f-4d4b-b64f-471816f8c7c1",
+      "uid": "019a96ed-4297-462d-887f-8d3f8fc6ce9b",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
