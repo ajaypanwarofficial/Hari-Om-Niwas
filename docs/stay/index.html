@@ -223,7 +223,15 @@
   footer p { font-family: 'Work Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin: 0; }
   footer a { text-decoration: none; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+  /* ---------- Checked out (see the stay-gate script at the bottom) ---------- */
+  .stay-wait main { visibility: hidden; }
+  .bye { max-width: 480px; margin: 0 auto; padding: 0 16px calc(40px + env(safe-area-inset-bottom)); text-align: center; }
+  .bye h1 { font-weight: 500; font-size: 30px; line-height: 1.2; color: var(--heading); margin: 30px 0 10px; }
+  .bye > p { color: var(--faint); font-style: italic; margin: 0 auto 26px; max-width: 320px; }
+  .bye .btn { margin-top: 10px; }
 </style>
+<script>document.documentElement.classList.add('stay-wait'); setTimeout(function () { document.documentElement.classList.remove('stay-wait'); }, 5000);</script>
 <script>if(/(^|\.)hariomniwas\.in$/.test(location.hostname)){var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-N9T654R9V7';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-N9T654R9V7');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.href||'',n=null,t=(a.textContent||'').trim().slice(0,40);if(/wa\.me|whatsapp/.test(h)||a.hasAttribute('data-wa'))n=location.pathname.indexOf('/stay')===0?'stay_request':'whatsapp_click';else if(/airbnb\./.test(h))n='airbnb_click';else if(/booking\.com/.test(h))n='booking_click';else if(/[?&]from=/.test(h))n='see_home_click';if(n)gtag('event',n,{link_text:t,link_url:h})},true)}</script>
 </head>
 <body>
@@ -419,6 +427,82 @@
 
   <footer><a href="#"><div class="arch-mark" aria-hidden="true"></div><p>Hari Om Niwas · Mahamandir, Jodhpur</p></a></footer>
 </main>
+
+<!-- Shown instead of the guide once this phone's stay is over. -->
+<div class="bye" id="bye" hidden>
+  <div class="cover">
+    <svg class="logo" viewBox="233 163 534 667" role="img" aria-label="Hari Om Niwas, Jodhpur">
+      <path class="arch" d="M247 830V430a253 253 0 0 1 506 0v400" stroke-width="14"/>
+      <text class="city" x="500" y="418" text-anchor="middle" font-size="21" letter-spacing="8.5">JODHPUR</text>
+      <text class="word" x="500" y="530" text-anchor="middle" font-size="97" stroke="none">HARI</text>
+      <text class="word" x="500" y="625" text-anchor="middle" font-size="97" stroke="none">OM</text>
+      <text class="word" x="500" y="719" text-anchor="middle" font-size="97" stroke="none">NIWAS</text>
+      <rect x="452" y="759" width="96" height="6" fill="#B85C38"/>
+    </svg>
+  </div>
+  <h1>You have checked out of Hari&nbsp;Om&nbsp;Niwas.</h1>
+  <p>Thank you for staying with us. Safe travels.</p>
+  <a class="btn" href="https://g.page/r/CchzUS4GFyaOEBM/review" target="_blank" rel="noopener">Leave us a Google review</a>
+  <a class="btn ghost" href="/jodhpur/">Jodhpur notes</a>
+  <a class="btn ghost" href="https://instagram.com/hariomniwas" target="_blank" rel="noopener">Follow @hariomniwas</a>
+  <a class="btn ghost" href="/?from=stay-bye">Stay with us again</a>
+</div>
+
+<script>
+/* ======================= Stay gate =======================
+   The guide works for the length of this phone's stay, then shows "You have checked out".
+   - First open: finds today's stay in /dashboard/calendar.json and works until noon on its checkout day.
+   - No stay found (e.g. not in the calendar): works for 96 hours from first open.
+   - Stay extended: picks up the new checkout. Same phone, a new stay a week or more later: works again.
+   - Host test links: ?host (this phone always sees the guide), ?guest (undo that), ?preview=bye (see the goodbye). */
+(function () {
+  var D = document.documentElement, NOON = 12, FALLBACK_H = 96, GAP_DAYS = 7;
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  function at(day, h) { return Date.parse(day + 'T' + (h < 10 ? '0' : '') + h + ':00:00+05:30'); }
+  var q = new URLSearchParams(location.search);
+  if (q.has('host')) set('hon-host', '1');
+  if (q.has('guest')) del('hon-host');
+  var now = Date.now(), today = new Date(now + 330 * 6e4).toISOString().slice(0, 10), saved = null;
+  try { saved = JSON.parse(get('hon-stay') || 'null'); } catch (e) {}
+
+  function show() { D.classList.remove('stay-wait'); }
+  function bye() { del('hon-k'); document.querySelector('main').hidden = true; document.getElementById('bye').hidden = false; document.title = 'Hari Om Niwas — Thank you'; show(); }
+  function keep(b) { saved = { start: b.start, end: b.end, until: at(b.end, NOON) }; set('hon-stay', JSON.stringify(saved)); show(); }
+  // Entries that can be a guest's stay: every platform entry (Booking.com and MMT list real stays as
+  // "Not available"), direct bookings; not our own "Blocked" days or long closures.
+  function isStay(b) { return b.nights <= 30 && (b.source !== 'manual' || b.kind === 'direct'); }
+
+  if (q.get('preview') === 'bye') return bye();
+  if (get('hon-host') || (saved && now < saved.until)) return show();
+
+  var done = false, t = setTimeout(function () { decide(null); }, 4000);
+  fetch('/dashboard/calendar.json?v=' + now, { cache: 'no-store' }).then(function (r) { return r.json(); })
+    .then(decide, function () { decide(null); });
+
+  function decide(cal) {
+    if (done) return; done = true; clearTimeout(t);
+    var stay = null;
+    ((cal && cal.bookings) || []).forEach(function (b) {
+      if (isStay(b) && b.start <= today && now < at(b.end, NOON) && (!stay || b.start > stay.start)) stay = b;
+    });
+    if (saved) {                                                       // this phone's stay has run out
+      if (stay && stay.start === saved.start && stay.end > saved.end) return keep(stay);           // extended
+      if (stay && at(stay.start, 0) >= at(saved.end, 0) + GAP_DAYS * 864e5) return keep(stay);     // came back
+      return cal ? bye() : show();                                     // can't check right now: don't lock them out
+    }
+    if (stay) return keep(stay);
+    if (!cal) return show();                                           // decide on the next open
+    keep({ start: today, end: new Date(now + 330 * 6e4 + FALLBACK_H * 36e5).toISOString().slice(0, 10) });
+    saved.until = now + FALLBACK_H * 36e5; set('hon-stay', JSON.stringify(saved));
+  }
+  // Left open past checkout: check again when they come back to the tab.
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && saved && !get('hon-host') && Date.now() > saved.until) location.reload();
+  });
+})();
+</script>
 
 <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Map">
   <div class="v-scroll" id="v-scroll"><img id="v-img" alt=""></div>
