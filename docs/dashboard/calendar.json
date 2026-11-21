@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T07:15:38.326Z",
+  "generatedAt": "2026-11-21T07:30:34.565Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -14,7 +14,8 @@
       "name": "Booking.com",
       "key": "booking",
       "ok": true,
-      "count": 2
+      "count": 1,
+      "ignoredBlocks": 1
     },
     {
       "name": "MMT / Goibibo",
@@ -205,7 +206,7 @@
       "nights": 1
     },
     {
-      "uid": "1eb30c5c-762b-487d-af46-37a397050696",
+      "uid": "ingo-2026-11-21-2026-11-22",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
@@ -263,16 +264,6 @@
       "end": "2027-04-03",
       "allDay": true,
       "nights": 3
-    },
-    {
-      "uid": "07d940e4f6998413d0b17f3d91f85361@booking.com",
-      "source": "booking",
-      "sourceName": "Booking.com",
-      "summary": "CLOSED - Not available",
-      "start": "2028-04-01",
-      "end": "2028-05-21",
-      "allDay": true,
-      "nights": 50
     }
   ]
 }
