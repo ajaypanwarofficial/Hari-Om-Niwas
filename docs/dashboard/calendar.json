@@ -196,24 +196,14 @@
       "nights": 2
     },
     {
-      "uid": "db582c9b-0f25-4074-b122-853c6a5ec059",
+      "uid": "ingo-2026-11-20-2026-11-22",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
       "start": "2026-11-20",
-      "end": "2026-11-21",
-      "allDay": true,
-      "nights": 1
-    },
-    {
-      "uid": "ingo-2026-11-21-2026-11-22",
-      "source": "ingo",
-      "sourceName": "MMT / Goibibo",
-      "summary": "Ingoibibo (Not Available)",
-      "start": "2026-11-21",
       "end": "2026-11-22",
       "allDay": true,
-      "nights": 1
+      "nights": 2
     },
     {
       "uid": "1418fb94e984-2ec7dc9d1e588f4ed5450b7d85aaa68d@airbnb.com",
