@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T00:30:27.347Z",
+  "generatedAt": "2026-11-21T03:30:33.172Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -205,7 +205,7 @@
       "nights": 1
     },
     {
-      "uid": "d9265812-8939-4f6b-aa9f-84c3ea374c99",
+      "uid": "96296627-9e74-4206-b96f-de654e3f7fe0",
       "source": "ingo",
       "sourceName": "MMT / Goibibo",
       "summary": "Ingoibibo (Not Available)",
