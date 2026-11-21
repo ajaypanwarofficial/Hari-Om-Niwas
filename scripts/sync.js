@@ -32,6 +32,11 @@
 //      copies alike. Any Booking.com, MMT or Agoda entry whose nights are all
 //      already covered by an Airbnb reservation or a date you blocked is
 //      treated as a copy and dropped.
+//   7. Booking.com's end-of-calendar "CLOSED" block (30+ nights reaching
+//      ~18 months out) is not a guest and is ignored.
+//   8. MMT sends one entry per night: back-to-back MMT nights are joined
+//      into one stay with a fixed UID. If two different MMT guests stay
+//      back-to-back, list the second guest's check-in in mmt-splits.json.
 //
 // Dates you want blocked everywhere (family, maintenance) go in
 // blocked-dates.json at the repo root. See that file for the format.
@@ -43,7 +48,10 @@ const path = require('path');
 
 const FEEDS = [
   { name: 'Airbnb', key: 'airbnb', url: process.env.AIRBNB_ICAL_URL, keep: (e) => /^reserved$/i.test((e.summary || '').trim()) },
-  { name: 'Booking.com', key: 'booking', url: process.env.BOOKING_ICAL_URL },
+  // Rule 7: Booking.com marks every date past the end of its loaded calendar
+  // "CLOSED", which reads as one long stay that grows a night every day
+  // (1 Apr 2028 onwards, 50 nights on 21 Nov 2026). Not a guest: ignored.
+  { name: 'Booking.com', key: 'booking', url: process.env.BOOKING_ICAL_URL, keep: (e) => !isCalendarEdge(e) },
   // MMT refuses to import a link containing "ingo", "google", "booking", "airbnb"
   // or "agoda" (it takes those for another platform's link), hence feed-for-mmt.
   { name: 'MMT / Goibibo', key: 'ingo', file: 'mmt', url: process.env.INGO_ICAL_URL },
@@ -65,6 +73,57 @@ function addDays(iso, n) {
   d.setUTCDate(d.getUTCDate() + n);
   return d.toISOString().slice(0, 10);
 }
+
+function todayIST() {
+  return new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+}
+
+// Rule 7: longer than 28 nights AND reaching 15+ months ahead (Booking's
+// calendar edge is ~18 months out and moves forward daily, while the start
+// stays put). A real guest never matches both.
+function isCalendarEdge(e) {
+  return (e.nights || 0) > 28 && e.end.slice(0, 10) >= addDays(todayIST(), 450);
+}
+
+// mmt-splits.json: ["2026-12-21"] = a new MMT guest checks in that day, so
+// back-to-back MMT nights are NOT joined across it (rule 8). Only needed
+// when two different MMT guests stay back-to-back.
+function readMmtSplits() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'mmt-splits.json'), 'utf8'));
+    return new Set(Array.isArray(raw) ? raw.filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)) : []);
+  } catch (e) {
+    if (e.code !== 'ENOENT') console.warn('mmt-splits.json could not be read: ' + e.message);
+    return new Set();
+  }
+}
+
+// Rule 8: MMT sends one entry per NIGHT, not per stay, and gives some nights
+// a new UID on almost every fetch. Back-to-back MMT nights are joined into
+// one stay. Nights that are only copies of Airbnb / your blocks are left
+// alone (rule 4 drops them later), so a copy never gets glued onto a guest.
+function joinNightly(events, sourceKey, trustedNights, splits) {
+  // Only entries fetched this run: ones carried forward from the last run (feed
+  // down) are already joined and must not be glued onto anything.
+  const fresh = (e) => e.source === sourceKey && e.allDay && fetchedNow.has(e);
+  const mine = events.filter(fresh)
+    .sort((a, b) => (a.start < b.start ? -1 : 1));
+  const isCopy = (e) => nightsOf(e).every((n) => trustedNights.has(n));
+  const out = [];
+  for (const e of mine) {
+    const last = out[out.length - 1];
+    if (last && !isCopy(e) && !isCopy(last) && last.end === e.start && !splits.has(e.start)) {
+      last.end = e.end;
+      last.nights = nightsOf(last).length;
+    } else {
+      out.push({ ...e });
+    }
+  }
+  return events.filter((e) => !fresh(e)).concat(out);
+}
+
+// Entries fetched live this run (rule 8 joins only these).
+const fetchedNow = new WeakSet();
 
 function nightsOf(ev) {
   const out = [];
@@ -230,6 +289,7 @@ async function main() {
     try {
       const parsed = parseICS(await fetchText(feed.url), feed.key, feed.name);
       const events = feed.keep ? parsed.filter(feed.keep) : parsed;
+      for (const ev of events) fetchedNow.add(ev);
       all.push(...events);
       const entry = { name: feed.name, key: feed.key, ok: true, count: events.length };
       if (parsed.length !== events.length) entry.ignoredBlocks = parsed.length - events.length;
@@ -243,7 +303,17 @@ async function main() {
 
   // Today in Jodhpur, not UTC: Booking.com drops a stay at midnight IST on
   // checkout day, while UTC is still on the day before (5:30 behind).
-  const today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+  const today = todayIST();
+
+  // Join MMT's per-night entries into stays (rule 8).
+  const manual = readManualBlocks();
+  const earlyTrusted = new Set(all.concat(manual).filter((e) => TRUSTED.has(e.source)).flatMap(nightsOf));
+  const mmtSplits = readMmtSplits();
+  const joined = joinNightly(all, 'ingo', earlyTrusted, mmtSplits);
+  all.length = 0;
+  all.push(...joined);
+  const ingoStatus = status.find((s) => s.key === 'ingo');
+  if (ingoStatus && ingoStatus.ok) ingoStatus.count = all.filter((e) => e.source === 'ingo').length;
 
   // Keep the real check-in of a stay in progress (rule 6). Booking.com trims
   // nights already passed (an 18-20 stay reads 19-20 on the 19th) and gives it
@@ -251,19 +321,27 @@ async function main() {
   // earlier = trimmed, not changed.
   for (const e of all) {
     const p = prevBookings.find((b) => b.source === e.source && b.end === e.end && b.start < e.start);
-    if (p && e.start.slice(0, 10) <= today) {
+    // A split you added (mmt-splits.json) is a new guest's check-in: keep it.
+    if (p && e.start.slice(0, 10) <= today && !(e.source === 'ingo' && mmtSplits.has(e.start.slice(0, 10)))) {
       e.start = p.start;
       e.nights = p.nights;
     }
   }
 
+  // MMT stays get a fixed UID from their dates (rule 8), set after rule 6 so a
+  // trimmed stay keeps its original UID.
+  for (const e of all) if (e.source === 'ingo' && e.allDay) e.uid = `ingo-${e.start.slice(0, 10)}-${e.end.slice(0, 10)}`;
+
   // Keep finished stays the platforms have stopped listing (rule 5).
   const seen = new Set(all.map((e) => e.source + '|' + e.uid));
+  const liveNights = new Set(all.map((e) => nightsOf(e).map((n) => e.source + '|' + n)).flat());
   for (const b of prevBookings) {
-    if (b.source !== 'manual' && !seen.has(b.source + '|' + b.uid) && b.end.slice(0, 10) <= today) all.push(b);
+    if (b.source === 'manual' || seen.has(b.source + '|' + b.uid) || b.end.slice(0, 10) > today) continue;
+    // Already part of a stay still listed (e.g. an old per-night MMT entry now joined).
+    if (nightsOf(b).every((n) => liveNights.has(b.source + '|' + n))) continue;
+    all.push(b);
   }
 
-  const manual = readManualBlocks();
   all.push(...manual);
   status.push({ name: 'Blocked by you', key: 'manual', ok: true, count: manual.length });
 
