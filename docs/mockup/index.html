@@ -5,7 +5,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hari Om Niwas — private suite homestay in Jodhpur</title>
-<meta name="description" content="A private suite in our family home in Mahamandir, Jodhpur: own entrance, home-cooked Rajasthani meals, Mehrangarh Fort from the roof. ★ 5.0 from 10 reviews.">
+<meta name="description" content="A private suite in our family home in Mahamandir, Jodhpur: own entrance, home-cooked Rajasthani meals, Mehrangarh Fort from the roof. ★ 5.0 from 14 reviews.">
 
 <meta name="theme-color" content="#F3EDE0">
 <meta property="og:type" content="website">
@@ -159,21 +159,37 @@
   .split { display: flex; gap: 8px; flex-wrap: wrap; }
   .split span { display: inline-flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 12.5px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: var(--card); border: 1.4px solid var(--sand); }
   .split svg { width: 15px; height: 15px; }
-  .reviews { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
+  .reviews { display: grid; grid-auto-flow: column; grid-auto-columns: 86%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; align-items: start; }
   .reviews::-webkit-scrollbar { display: none; }
   .rv { scroll-snap-align: start; margin: 0; background: var(--card); border: 1.4px solid var(--sand); border-radius: 8px; padding: 22px 22px 20px; display: flex; flex-direction: column; }
-  .rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .rv-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
   .rv .stars { color: #E0A030; letter-spacing: 1.5px; font-size: 14px; }
+  .rv .srcs { display: inline-flex; gap: 10px; }
   .rv .src { display: inline-flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 11.5px; font-weight: 500; color: var(--faint); }
   .rv .src svg { width: 14px; height: 14px; }
-  .rv blockquote { margin: 0 0 16px; font-size: 17px; line-height: 1.5; flex: 1; }
-  .rv figcaption { font-family: var(--sans); font-size: 13px; color: var(--faint); }
+  .rv blockquote { margin: 0 0 18px; font-size: 17px; line-height: 1.55; flex: 1; }
+  .rv blockquote p { margin: 0 0 .7em; } .rv blockquote p:last-child { margin: 0; }
+  .rv blockquote.clamp { display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; flex: none; }
+  .rv .more { align-self: flex-start; margin: -8px 0 16px; padding: 0; background: none; border: 0; font-family: var(--sans); font-size: 12.5px; font-weight: 600; color: var(--terra); cursor: pointer; }
+  .rv figcaption { font-family: var(--sans); font-size: 13px; color: var(--faint); padding-top: 14px; border-top: 1.4px dotted var(--sand); }
   .rv figcaption b { color: var(--ink); font-weight: 600; }
+  .rv.short blockquote { font-size: 30px; font-style: italic; font-weight: 300; line-height: 1.2; color: var(--teak); display: flex; align-items: center; }
   .hint { font-family: var(--sans); font-size: 12px; color: var(--faint); margin-top: 6px; }
   @media (min-width: 900px) {
-    .reviews { display: block; columns: 3; column-gap: 16px; overflow: visible; margin: 0; padding: 0; }
-    .rv { break-inside: avoid; margin-bottom: 16px; }
-    .hint { display: none; }
+    .reviews { display: grid; grid-auto-flow: row; grid-template-columns: repeat(12, 1fr); gap: 18px; overflow: visible; padding: 0; align-items: stretch; }
+    .rv { grid-column: span 4; padding: 26px 26px 22px; }
+    .rv.feat { grid-column: span 5; padding: 34px 34px 28px; }
+    .rv.feat-a { grid-column: span 7; }
+    .rv.feat blockquote { font-size: 19px; line-height: 1.6; }
+    .rv.feat blockquote::before { content: "\201C"; display: block; font-size: 64px; line-height: .6; height: 26px; color: var(--terra); font-weight: 300; }
+    .rv.feat-a { background: #F7EFE0; }
+    .rv.short blockquote { font-size: 40px; justify-content: center; text-align: center; }
+    .rv blockquote.clamp { display: block; -webkit-line-clamp: unset; overflow: visible; flex: 1; }
+    .rv .more, .hint { display: none; }
+  }
+  @media (min-width: 900px) and (max-width: 1099px) {
+    .rv, .rv.feat, .rv.feat-a { grid-column: span 6; }
+    .rv.short { grid-column: span 12; }
   }
 
   /* ---------- location ---------- */
@@ -289,7 +305,7 @@
       <a class="btn" href="#avail" data-avail>Check availability</a>
       <a class="btn ghost" href="#home">See the home</a>
     </div>
-    <a class="rating" href="#reviews"><span class="st">★★★★★</span><span><b>5.0</b> from 10 guest reviews · Google &amp; Airbnb</span></a>
+    <a class="rating" href="#reviews"><span class="st">★★★★★</span><span><b>5.0</b> from 14 guest reviews · Google, Airbnb &amp; Booking.com</span></a>
   </div>
 </section>
 
@@ -396,56 +412,67 @@
     <h2>In their words<span class="dot">.</span></h2>
     <div class="score">
       <div class="big">5.0</div>
-      <div><span class="st">★★★★★</span><small>10 reviews, every one five stars</small></div>
+      <div><span class="st">★★★★★</span><small>14 reviews, every one five stars</small></div>
       <div class="split">
-        <span><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google · 7</span>
-        <span><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb · 3</span>
+        <span><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google · 9</span>
+        <span><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb · 4</span>
+        <span><svg aria-hidden="true" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#003580"/><path fill="#fff" d="M7 5.5h5.2c2.4 0 3.8 1.2 3.8 3 0 1.2-.7 2-1.6 2.4 1.3.3 2.2 1.3 2.2 2.8 0 2.1-1.6 3.3-4.2 3.3H7zm2.6 2.1v3h2.2c1 0 1.6-.6 1.6-1.5s-.6-1.5-1.6-1.5zm0 5v3.5h2.5c1.2 0 1.9-.6 1.9-1.7 0-1.1-.7-1.8-1.9-1.8z"/><circle cx="18.2" cy="16.4" r="1.4" fill="#00A3E0"/></svg>Booking.com · 1</span>
       </div>
     </div>
     <div class="reviews">
-<figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>You can feel that whoever built this place put their heart into it. Everything was neat and clean and even the handwash and bodywash were good quality. … They especially loved the rooftop, which had a crazy view of Mehrangarh Fort and a really nice vibe in the evening.</blockquote>
+<figure class="rv feat feat-a">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></span></div>
+      <blockquote><p>Our stay in Jodhpur was made truly special by Ajay and his family. The place itself is lovely, beautifully maintained and comfortable, but what really made it memorable was the people.</p><p>Ajay was incredibly attentive and thoughtful throughout, and his parents were an absolute delight. A special mention to his mother, whose lovely tea and breakfast made us feel so at home. There was such genuine warmth in the way they welcomed us, and the fact that they took the time to celebrate my birthday with me made the stay even more special. It is a gesture I will always remember fondly.</p><p>It felt less like staying at an Airbnb and more like being welcomed into someone’s home. We left with lovely memories and so much appreciation for Jodhpur’s hospitality. Would 100% recommend staying here!</p></blockquote>
+      <figcaption><b>Esha</b> · Mumbai</figcaption>
+    </figure>
+<figure class="rv feat">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>I booked Hari Om Niwas for my brother and his wife during their visit to Jodhpur and they had a really good experience. They told me you can feel that whoever built this place put their heart into it. Everything was neat and clean and even the handwash and bodywash were good quality. Uncle and aunty were very sweet and Ajay was a great host.</p><p>They especially loved the rooftop, which had a crazy view of Mehrangarh Fort and a really nice vibe in the evening. The whole place made them feel at home rather than like they were staying in just another BnB. Really glad I chose this place for them.</p></blockquote>
       <figcaption><b>Geeteshwar C.</b> · Booked for his brother and sister-in-law</figcaption>
     </figure>
 <figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
-      <blockquote>The place itself is lovely, beautifully maintained and comfortable, but what really made it memorable was the people. … It felt less like staying at an Airbnb and more like being welcomed into someone’s home.</blockquote>
-      <figcaption><b>Esha</b> · Mumbai</figcaption>
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>We had a lovely stay! The place was cosy, comfortable, and made even more special by the warm and welcoming hosts who made us feel right at home. A special shoutout to the delicious home-cooked breakfast and coffee — the poha and aloo parathas were absolutely yummy! Highly recommend this place for a wonderful, homely experience.</p></blockquote>
+      <figcaption><b>Ishita K.</b></figcaption>
     </figure>
 <figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>Lovely property with amazing hosts. One of the very few places in the hospitality industry where the photos resemble the actual house (and not some random AI slop).</blockquote>
-      <figcaption><b>Umang R.</b></figcaption>
-    </figure>
-<figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>Rooms are exactly as in the pictures, lovely, cosy, cute. The owner takes care of every decorating detail … You can order home made food at very good prices from the available menu.</blockquote>
-      <figcaption><b>Aleksandra M.</b></figcaption>
-    </figure>
-<figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>Loved every nooks and corner of home. Ajay’s hospitality felt like home. Homemade dal dhokli made this stay even more special.</blockquote>
-      <figcaption><b>Kushal P.</b></figcaption>
-    </figure>
-<figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>Very well-maintained, clean, and beautifully managed. The availability of parking was an added advantage. The best part was the stunning rooftop view of the Blue City.</blockquote>
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>I had a wonderful experience staying here! The property was very well-maintained, clean, and beautifully managed. The availability of parking was an added advantage. The best part was the stunning rooftop view of the Blue City, which was absolutely शानदार! If you’re looking for a comfortable stay with a beautiful view, this place is absolutely worth it!</p></blockquote>
       <figcaption><b>Sudarshan C.</b></figcaption>
     </figure>
 <figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
-      <blockquote>Ajay was a very good host, very friendly. Homely food, best Ram Khichdi by Aunty ji.</blockquote>
-      <figcaption><b>Suraj</b></figcaption>
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>Stay at Hari Om Nivas was very comfortable. Rooms are exactly as in the pictures, lovely, cosy, cute. The owner takes care of every decorating detail, is very helpful when you have questions. You can order home made food at very good prices from the available menu. I will surely come back there.</p></blockquote>
+      <figcaption><b>Aleksandra M.</b></figcaption>
     </figure>
 <figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></div>
-      <blockquote>It’s newly renovated and fresh. … Good homely vibe. Loved the food Aunty made 😍</blockquote>
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#003580"/><path fill="#fff" d="M7 5.5h5.2c2.4 0 3.8 1.2 3.8 3 0 1.2-.7 2-1.6 2.4 1.3.3 2.2 1.3 2.2 2.8 0 2.1-1.6 3.3-4.2 3.3H7zm2.6 2.1v3h2.2c1 0 1.6-.6 1.6-1.5s-.6-1.5-1.6-1.5zm0 5v3.5h2.5c1.2 0 1.9-.6 1.9-1.7 0-1.1-.7-1.8-1.9-1.8z"/><circle cx="18.2" cy="16.4" r="1.4" fill="#00A3E0"/></svg>Booking.com</span></span></div>
+      <blockquote><p>We had a great experience staying here. The property is well-maintained and beautiful. The service and hospitality were wonderful. The home-cooked food was delicious too. I would definitely consider staying at this property again when I visit Jodhpur.</p></blockquote>
+      <figcaption><b>Gaurav J.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>Lovely property with amazing hosts. One of the very few places in the hospitality industry where the photos resemble the actual house (and not some random AI slop). Location is also excellent with most of the popular spots and cafes within a 5km radius.</p></blockquote>
+      <figcaption><b>Umang R.</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></span></div>
+      <blockquote><p>It’s an amazing place, had all the amenities and Ajay is super friendly and helps you with anything that’s needed during your stay. I would recommend this place to anybody who’s coming to Jodhpur.</p></blockquote>
+      <figcaption><b>Aditya</b></figcaption>
+    </figure>
+<figure class="rv">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></span></div>
+      <blockquote><p>I stayed here for 1 night and the place has the whole vibe. It’s newly renovated and fresh. Good homely vibe. Loved the food Aunty made 😍 Would love to come back again.</p><p>Ajay was a very good host, very friendly. Homely food, best Ram Khichdi by Aunty ji.</p></blockquote>
       <figcaption><b>Suraj P.</b></figcaption>
     </figure>
 <figure class="rv">
-      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></div>
-      <blockquote>Felt like home.</blockquote>
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Google</span></span></div>
+      <blockquote><p>We had a wonderful stay at Hari Om Niwas in Jodhpur. Loved every nook and corner of the home. Ajay’s hospitality felt like home. Homemade dal dhokli made this stay even more special.</p></blockquote>
+      <figcaption><b>Kushal P.</b></figcaption>
+    </figure>
+<figure class="rv short">
+      <div class="rv-top"><span class="stars" role="img" aria-label="5 out of 5">★★★★★</span><span class="srcs"><span class="src"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="#FF385C" d="M12 2.5c-1 0-1.8.6-2.4 1.8C7.7 8 5.6 12.3 4.3 15.3c-1.2 2.9.7 5.9 3.6 5.9 1.6 0 2.9-.9 4.1-2.3 1.2 1.4 2.5 2.3 4.1 2.3 2.9 0 4.8-3 3.6-5.9-1.3-3-3.4-7.3-5.3-11C13.8 3.1 13 2.5 12 2.5zm0 13.1c-1-1.3-1.9-2.9-1.9-4.1 0-1.2.8-2 1.9-2s1.9.8 1.9 2c0 1.2-.9 2.8-1.9 4.1z"/></svg>Airbnb</span></span></div>
+      <blockquote><p>Felt like home.</p></blockquote>
       <figcaption><b>Adarsh</b></figcaption>
     </figure>
     </div>
@@ -493,7 +520,7 @@
   </div>
 </footer>
 
-<div class="dock" id="dock"><span><b>★ 5.0 · 10 reviews</b>Private suite · family homestay</span><a class="btn" href="#avail" data-avail>Check availability</a></div>
+<div class="dock" id="dock"><span><b>★ 5.0 · 14 reviews</b>Private suite · family homestay</span><a class="btn" href="#avail" data-avail>Check availability</a></div>
 
 <script>
   // Show the bottom bar once the hero has scrolled away; fade sections in as they arrive.
@@ -549,6 +576,19 @@
     av.addEventListener('click', function (e) { if (e.target === av || e.target.hasAttribute('data-close')) av.classList.remove('open'); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape') av.classList.remove('open'); });
   })();
+</script>
+<script>
+/* Reviews: on phones long quotes fold to 9 lines with a Read more. */
+(function () {
+  if (matchMedia('(min-width: 900px)').matches) return;
+  document.querySelectorAll('.rv blockquote').forEach(function (q) {
+    q.classList.add('clamp');
+    if (q.scrollHeight <= q.clientHeight + 2) { q.classList.remove('clamp'); return; }
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'more'; b.textContent = 'Read more';
+    b.addEventListener('click', function () { q.classList.remove('clamp'); b.remove(); });
+    q.after(b);
+  });
+})();
 </script>
 </body>
 </html>
