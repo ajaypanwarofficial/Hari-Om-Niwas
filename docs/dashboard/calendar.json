@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T20:57:28.424Z",
+  "generatedAt": "2026-11-26T08:00:30.295Z",
   "feedFormat": 6,
   "tokenExpires": "2027-09-23",
   "sources": [
@@ -7,7 +7,8 @@
       "name": "Airbnb",
       "key": "airbnb",
       "ok": true,
-      "count": 5
+      "count": 4,
+      "ignoredBlocks": 1
     },
     {
       "name": "Booking.com",
@@ -19,8 +20,9 @@
     {
       "name": "MMT / Goibibo",
       "key": "ingo",
-      "ok": true,
-      "count": 0
+      "ok": false,
+      "error": "HTTP 403",
+      "carriedForward": 1
     },
     {
       "name": "Agoda",
