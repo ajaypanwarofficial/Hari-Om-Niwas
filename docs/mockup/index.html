@@ -562,13 +562,13 @@
     </div>
     <label>Guests<select id="av-g"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
     <a class="btn" id="av-go" href="https://airbnb.co.in/h/hariomniwas" target="_blank" rel="noopener" aria-disabled="true">See price on Airbnb</a>
-    <div class="av-alt"><a id="av-bk" href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener">Prefer Booking.com?</a></div>
+    <div class="av-alt"><a id="av-bk" href="https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html" target="_blank" rel="noopener">Prefer Booking.com?</a><a id="av-mmt" href="/links/?ota=mmt">Prefer MakeMyTrip?</a></div>
   </div>
 </div>
 <script>
   (function () {
     var av = document.getElementById('avail'), ci = document.getElementById('av-in'), co = document.getElementById('av-out'),
-        g = document.getElementById('av-g'), go = document.getElementById('av-go'), bk = document.getElementById('av-bk');
+        g = document.getElementById('av-g'), go = document.getElementById('av-go'), bk = document.getElementById('av-bk'), mmt = document.getElementById('av-mmt');
     function iso(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); }
     function plus(s, n) { var d = new Date(s + 'T12:00'); d.setDate(d.getDate() + n); return iso(d); }
     ci.min = iso(new Date());
@@ -579,6 +579,10 @@
       if (!ok) return;
       go.href = 'https://airbnb.co.in/h/hariomniwas?check_in=' + ci.value + '&check_out=' + co.value + '&adults=' + g.value;
       bk.href = 'https://www.booking.com/hotel/in/hari-om-niwas-jodhpur.html?checkin=' + ci.value + '&checkout=' + co.value + '&group_adults=' + g.value + '&no_rooms=1';
+      // MakeMyTrip direct-booking link (zcp): same guest price, 2% commission. MMT wants MMDDYYYY.
+      var mdy = function (s) { var x = s.split('-'); return x[1] + x[2] + x[0]; };
+      mmt.href = 'https://www.makemytrip.com/hotels/hotel-details/?hotelId=202609111336168255&checkin=' + mdy(ci.value) + '&checkout=' + mdy(co.value) + '&roomStayQualifier=' + g.value + 'e0e&city=CTJDH&country=IN&currency=INR&zcp=0e26f3339da8';
+      mmt.target = '_blank'; mmt.rel = 'noopener';
     }
     [ci, co, g].forEach(function (el) { el.addEventListener('change', upd); el.addEventListener('input', upd); });
     document.querySelectorAll('[data-avail]').forEach(function (a) {

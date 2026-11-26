@@ -265,7 +265,7 @@
         // MakeMyTrip wants MMDDYYYY.
         url = 'https://www.makemytrip.com/hotels/hotel-details/?hotelId=' + HOTEL +
               '&checkin=' + a[1] + a[2] + a[0] + '&checkout=' + b[1] + b[2] + b[0] +
-              '&roomStayQualifier=' + adults + 'e0e&city=CTJDH&country=IN&currency=INR';
+              '&roomStayQualifier=' + adults + 'e0e&city=CTJDH&country=IN&currency=INR&zcp=0e26f3339da8'; // zcp = MMT direct-booking link (2% commission)
       } else {
         // Goibibo wants YYYYMMDD.
         var ci = a.join(''), co = b.join('');
